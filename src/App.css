@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  height: 11rem;
+}
+
+#sliders {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+#fields {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+.color-field-container {
+  background-color: #c2c2c2;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .4rem;
+  border-radius: 5px;
+}
+
+.color-field::-webkit-outer-spin-button, .color-field::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.color-field {
+  appearance: unset;
+  -moz-appearance: textfield;
+  color: black;
+  height: 100%;
+  background-color: unset;
+  border: none;
+  padding: 0;
+  text-align: center;
+}
+
+.color-field-btn {
+  height: 100%;
+  background-color: unset;
+  border-radius: 0;
+  padding: 0;
+}
+
+.custom-range {
+  width: 15rem;
+}
