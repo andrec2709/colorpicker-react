@@ -5,70 +5,60 @@ import './App.css'
 // Make a simple colorpicker app.
 // Read draft.md
 
-function Slider({ id, value, onChange, min = 0, max = 255 }) {
-
-  return <input
-    type="range"
-    id={id}
-    className='custom-range'
-    min={min}
-    max={max}
-    value={value}
-    onChange={e => onChange(e, e.target.value, e.target.getAttribute('id'))}
-  />;
-}
-
-function ColorField({ id, value, onChange, classInput = 'color-field', typeInput = 'number', maxLength,min = 0, max = 255 }) {
-  async function handleClick() {
-    await navigator.clipboard.writeText(value);
+function Field({ value, onChange, color, id }) {
+  async function handleCopy() {
+    await navigator.clipboard.writeText(value)
+      .then(() => { console.log('success') }, () => { console.log('fail') });
   }
 
   return (
-    <div className='color-field-container'>
-      <input
-        type={typeInput}
-        id={id}
-        className={classInput}
-        min={min}
-        max={max}
-        value={value}
-        maxLength={maxLength}
-        onChange={(e) => onChange(e, e.target.value, e.target.getAttribute('id'))} />
-      <button
-        className='color-field-btn'
-        onClick={handleClick}
-      >
-        📋
+    <div className='field-container' id={id}>
+      <input min={0} max={255} value={value} onChange={onChange} type='text' data-color={color} />
+      <button onClick={handleCopy}>
+        <img src='/src/assets/copy.png'></img>
       </button>
     </div>
   );
 }
 
-function toHEX(r, g, b) {
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+function LabeledComponent({ label, content }) {
+  return (
+    <div className='labeled-container'>
+      <span>{label}</span>
+      {content}
+    </div>
+  );
+}
+
+function Slider({ label, value, onChange, color, id }) {
+  return (
+    <>
+      <div className='slider-container' id={id}>
+        <span>{label}</span>
+        <input type="range" value={value} onChange={onChange} data-color={color} min={0} max={255} />
+        <Field value={value} onChange={onChange} color={color} />
+      </div>
+    </>
+  );
 }
 
 export default function ColorPickerApp() {
   const [red, setRed] = useState(0);
   const [green, setGreen] = useState(0);
   const [blue, setBlue] = useState(0);
-  const [hex, setHex] = useState(toHEX(red, green, blue));
-  useEffect(() => {
+  const [rgb, setRgb] = useState([red, green, blue]);
+  const [hex, setHex] = useState(
+    `#${rgb[0].toString(16).padStart(2, '0')}${rgb[1].toString(16).padStart(2, '0')}${rgb[2].toString(16).padStart(2, '0')}`
+  );
+  console.log(hex);
 
-    const newColor = `rgb(${red}, ${green}, ${blue})`;
-    document.documentElement.style.backgroundColor = newColor;
+  function handleChange(e) {
+    const color = e.target.dataset.color;
+    let value = isNaN(parseInt(e.target.value)) ? '' : parseInt(e.target.value, 10);
 
-  }, [red, green, blue]);
+    if (value < 0) { value = 0 }
 
-  function handleChange(e, value, color) {
-
-    if (!/^[0-9]{0,3}$/.test(value)) { return }
-
-    else if (value < 0) { value = 0 }
-
-    else if (value > 255) { value = 255 }
-
-    value = parseInt(value);
+    if (value > 255) { value = 255 }
 
     let nextRed = red;
     let nextGreen = green;
@@ -87,59 +77,21 @@ export default function ColorPickerApp() {
         setBlue(value);
         nextBlue = value;
         break;
-      case 'red-field':
-        setRed(value);
-        nextRed = value;
-        break;
-      case 'green-field':
-        setGreen(value);
-        nextGreen = value;
-        break;
-      case 'blue-field':
-        setBlue(value);
-        nextBlue = value;
-        break;
     }
 
-    setHex(toHEX(nextRed, nextGreen, nextBlue));
-  }
+    setRgb([nextRed, nextGreen, nextBlue]);
+    setHex(`#${nextRed.toString(16).padStart(2, '0')}${nextGreen.toString(16).padStart(2, '0')}${nextBlue.toString(16).padStart(2, '0')}`)
 
-  function handleHexChange(e, value, color) {
-    setHex(value);
-
-    value = value.replace('#', '')
-
-    const r = parseInt(value.slice(0, 2), 16);
-    const g = parseInt(value.slice(2, 4), 16);
-    const b = parseInt(value.slice(4, 6), 16);
-
-    if (!isNaN(r)) setRed(r)
-    if (!isNaN(g)) setGreen(g)
-    if (!isNaN(b)) setBlue(b)
-
+    const root = document.documentElement;
+    root.style.backgroundColor = `rgb(${nextRed}, ${nextGreen}, ${nextBlue})`;
   }
 
   return (
     <>
-      <div id='sliders'>
-        <Slider id='red' onChange={handleChange} value={red} />
-        <Slider id='green' onChange={handleChange} value={green} />
-        <Slider id='blue' onChange={handleChange} value={blue} />
-      </div>
-      <div id='fields'>
-        <ColorField id='red-field' onChange={handleChange} value={red} />
-        <ColorField id='green-field' onChange={handleChange} value={green} />
-        <ColorField id='blue-field' onChange={handleChange} value={blue} />
-
-        <ColorField
-          id='hex-field'
-          onChange={handleHexChange}
-          typeInput='text'
-          classInput='color-field hex-field'
-          value={hex}
-          maxLength={7}
-        />
-      </div>
+      <Slider label='R' value={red} onChange={handleChange} color='red' id='red-slider' />
+      <Slider label='G' value={green} onChange={handleChange} color='green' id='green-slider' />
+      <Slider label='B' value={blue} onChange={handleChange} color='blue' id='blue-slider' />
+      <Field value={hex} id='hex-field' />
     </>
   );
 }

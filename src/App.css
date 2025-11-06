@@ -3,68 +3,74 @@
 }
 
 #root {
-  max-width: 1280px;
   margin: 0 auto;
+  text-align: center;
+  border: 1px solid ;
+  border-radius: 10px;
   padding: 2rem;
-  text-align: center;
+  display: grid;
+  grid-template: 
+  "a a" auto
+  "b b" auto
+  "c c" auto 
+  ". d" auto / auto auto;
+  row-gap: .5rem;
+}
+
+#red-slider {
+  grid-area: a;
+}
+#green-slider {
+  grid-area: b;
+}
+#blue-slider {
+  grid-area: c;
+}
+#hex-field {
+  margin-top: 1rem;
+  grid-area: d;
+}
+
+.slider-container {
   display: flex;
-  border-radius: 5px;
   align-items: center;
-  height: 11rem;
 }
 
-#sliders {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-evenly;
+.slider-container > span {
+  margin-right: 1rem;
 }
 
-#fields {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-evenly;
+.slider-container > input {
+  margin-right: 1rem;
 }
 
-.color-field-container {
-  background-color: #c2c2c2;
-  width: fit-content;
+.field-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: .4rem;
+  height: 2rem;
+  background-color: rgb(199, 199, 199);
   border-radius: 5px;
 }
 
-.color-field::-webkit-outer-spin-button, .color-field::-webkit-inner-spin-button {
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.color-field {
-  appearance: unset;
-  -moz-appearance: textfield;
+.field-container > input {
   color: black;
-  height: 100%;
-  background-color: unset;
   border: none;
-  padding: 0;
-  text-align: center;
-}
-
-.hex-field {
   width: 4rem;
-}
-
-.color-field-btn {
   height: 100%;
   background-color: unset;
-  border-radius: 0;
-  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+
 }
 
-.custom-range {
-  width: 15rem;
+.field-container > button {
+  height: 100%;
+  border: none;
+  background-color: unset;
+}
+
+.field-container > button > img {
+  width: 20px;
 }
