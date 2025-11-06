@@ -5,7 +5,7 @@
 #root {
   margin: 0 auto;
   text-align: center;
-  border: 1px solid ;
+  border: 1px solid black;
   border-radius: 10px;
   padding: 2rem;
   display: grid;
@@ -15,6 +15,7 @@
   "c c" auto 
   ". d" auto / auto auto;
   row-gap: .5rem;
+  box-shadow: .4rem .4rem rgb(0, 0, 0);
 }
 
 #red-slider {
@@ -31,16 +32,16 @@
   grid-area: d;
 }
 
-.slider-container {
+.labeled-container {
   display: flex;
   align-items: center;
 }
 
-.slider-container > span {
+.labeled-container > span {
   margin-right: 1rem;
 }
 
-.slider-container > input {
+.labeled-container > input {
   margin-right: 1rem;
 }
 
