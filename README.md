@@ -1,16 +1,35 @@
-# React + Vite
+# Colorpicker made with React
+This is a React study project, this simple colorpicker is supposed to be part of my portfolio.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## How to run locally
 
-Currently, two official plugins are available:
+- Clone this repository:
+```
+git clone https://github.com/andrec2709/colorpicker-react/
+```
+- Move into the directory:
+```
+cd colorpicker-react/
+```
+- Install dependencies:
+```
+npm install
+```
+- Build the app:
+```
+npm run build
+```
+- Start preview:
+```
+npm run preview
+```
+- Done :). You can now open the web app by using the URL vite will provide. It defaults to localhost:4173/ :
+```
+my-app@0.0.0 preview
+> vite preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  ➜  Local:   http://localhost:4173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
