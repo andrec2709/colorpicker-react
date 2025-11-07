@@ -1,6 +1,10 @@
 # Colorpicker made with React
 This is a React study project, this simple colorpicker is supposed to be part of my portfolio.
 
+## Try It
+
+This app is hosted on Netlify, you can [try it out here](https://colorpicker-react-project.netlify.app/).
+
 ## How to run locally
 
 - Clone this repository:
