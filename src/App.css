@@ -5,28 +5,30 @@
 #root {
   margin: 0 auto;
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid rgb(0, 0, 0, 50%);
   border-radius: 10px;
   padding: 2rem;
   display: grid;
-  grid-template: 
-  "a a" auto
-  "b b" auto
-  "c c" auto 
-  ". d" auto / auto auto;
+  grid-template:
+    "a a" auto
+    "b b" auto
+    "c c" auto ". d" auto / auto auto;
   row-gap: .5rem;
-  box-shadow: .4rem .4rem rgb(0, 0, 0);
+  box-shadow: .4rem .4rem rgb(0, 0, 0, 50%);
 }
 
 #red-slider {
   grid-area: a;
 }
+
 #green-slider {
   grid-area: b;
 }
+
 #blue-slider {
   grid-area: c;
 }
+
 #hex-field {
   margin-top: 1rem;
   grid-area: d;
@@ -37,11 +39,11 @@
   align-items: center;
 }
 
-.labeled-container > span {
+.labeled-container>span {
   margin-right: 1rem;
 }
 
-.labeled-container > input {
+.labeled-container>input {
   margin-right: 1rem;
 }
 
@@ -53,7 +55,7 @@
   border-radius: 5px;
 }
 
-.field-container > input {
+.field-container>input {
   color: black;
   border: none;
   width: 4rem;
@@ -66,12 +68,48 @@
 
 }
 
-.field-container > button {
+.field-container>button {
   height: 100%;
   border: none;
   background-color: unset;
 }
 
-.field-container > button > img {
+.field-container>button>img {
   width: 20px;
+}
+
+
+.tooltip {
+  width: fit-content;
+  height: fit-content;
+  min-width: 6rem;
+  min-height: 3rem;
+  padding: .5rem;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  justify-self: center;
+  font-weight: 500;
+  transform: translateY(-3rem);
+  bottom: 0;
+  transition: transform .3s ease;
+}
+
+
+.tooltip-success {
+  background-color: rgb(42, 207, 111);
+  color: rgb(2, 2, 2);
+}
+
+.tooltip-fail {
+  background-color: rgb(212, 25, 25);
+  color: rgb(0, 0, 0);
+}
+
+.tooltip-hidden {
+  transform: translateY(3rem);
+  /* display: none; */
 }

@@ -1,72 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import ToolTip from './components/ToolTip';
+import Slider from './components/Slider';
+import HexField from './components/HexField';
 import './App.css'
+import ContextProvider from './contexts/ContextProvider';
 
 // Exercise:
 // Make a simple colorpicker app.
 // Read draft.md
-
-function Field({ value, onChange, color, id }) {
-  async function handleCopy() {
-    await navigator.clipboard.writeText(value)
-      .then(() => { console.log('success') }, () => { console.log('fail') });
-  }
-
-  async function handlePaste(e) {
-    e.preventDefault();
-
-    await navigator.clipboard
-      .readText()
-      .then((clipText) => {
-        const color = e.target.dataset.color;
-
-        switch (color) {
-          case 'hex':
-            clipText = clipText.replace('#', '');
-            e.target.value = `#${clipText.slice(0, 6)}`;
-            break;
-          default:
-            e.target.value = clipText;
-            break;
-        }
-      });
-  }
-
-  return (
-    <div className='field-container' id={id}>
-      <input min={0} max={255} value={value} onChange={onChange} onPaste={handlePaste} type='text' data-color={color} />
-      <button onClick={handleCopy}>
-        <img src='/src/assets/copy.png'></img>
-      </button>
-    </div>
-  );
-}
-
-function LabeledComponent({ label, id, children }) {
-  return (
-    <div className='labeled-container' id={id}>
-      <span>{label}</span>
-      {children}
-    </div>
-  );
-}
-
-function Slider({ label, value, onChange, color, id, min = 0, max = 255 }) {
-
-  return (
-    <LabeledComponent id={id} label={label}>
-      <input type="range" value={value} onChange={onChange} data-color={color} min={min} max={max} />
-      <Field value={value} onChange={onChange} color={color} />
-    </LabeledComponent>
-  );
-}
-
-function HexField({ value, id, label, onChange }) {
-  return (
-    <LabeledComponent id={id} label={label}>
-      <Field value={value} onChange={onChange} color='hex' />
-    </LabeledComponent>
-  );
-}
 
 export default function ColorPickerApp() {
   const [red, setRed] = useState(0);
@@ -77,7 +18,6 @@ export default function ColorPickerApp() {
   );
   const root = document.documentElement;
   root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-
 
   function handleChange(e) {
     const color = e.target.dataset.color;
@@ -134,11 +74,12 @@ export default function ColorPickerApp() {
   }
 
   return (
-    <>
+    <ContextProvider>
+      <ToolTip id='tooltip'/>
       <Slider label='R' value={red} onChange={handleChange} color='red' id='red-slider' />
       <Slider label='G' value={green} onChange={handleChange} color='green' id='green-slider' />
       <Slider label='B' value={blue} onChange={handleChange} color='blue' id='blue-slider' />
       <HexField value={hex} id='hex-field' label='HEX' onChange={handleHexChange} />
-    </>
+    </ContextProvider>
   );
 }
