@@ -4,7 +4,9 @@
 
 #root {
   margin: 0 auto;
-  text-align: center;
+}
+
+#colorpicker {
   background-color: rgb(35, 39, 47);
   border-radius: 10px;
   padding: 2rem;
@@ -16,33 +18,38 @@
   row-gap: .5rem;
 }
 
-#red-slider {
+#red-color {
   grid-area: a;
 }
 
-#green-slider {
+#green-color {
   grid-area: b;
 }
 
-#blue-slider {
+#blue-color {
   grid-area: c;
 }
 
-#hex-field {
+#hex-color {
   margin-top: 1rem;
   grid-area: d;
 }
 
-.labeled-container {
+.color-container {
   display: flex;
   align-items: center;
 }
 
-.labeled-container>span {
+.color-container>.slider-container {
   margin-right: 1rem;
 }
 
-.labeled-container>input {
+.slider-container {
+  display: flex;
+  align-items: center;
+}
+
+.slider-container>label {
   margin-right: 1rem;
 }
 
@@ -67,17 +74,40 @@
 
 }
 
-.field-container>button {
+.copy-btn {
   height: 100%;
   border: none;
   background-color: unset;
+
+  & > img {
+    width: 20px;
+    filter: invert();
+  }
+
+  &:hover {
+    opacity: 80%;
+  }
+
+  &:active {
+    opacity: 50%;
+  }
 }
 
-.field-container>button>img {
-  width: 20px;
-  filter: invert();
+.visually-hidden {
+  clip-path: inset(50%);
+  position: absolute;
+  margin: 0;
+  padding: 0;
 }
 
+.field-wrapper-label {
+  display: flex;
+  align-items: center;
+}
+
+.field-wrapper-label>label {
+  margin-right: 1rem;
+}
 
 .tooltip {
   width: fit-content;
@@ -111,5 +141,4 @@
 
 .tooltip-hidden {
   transform: translateY(3rem);
-  /* display: none; */
 }

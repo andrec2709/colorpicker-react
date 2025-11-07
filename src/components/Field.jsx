@@ -1,6 +1,6 @@
 import { useToolTip } from "../contexts/ToolTipContext";
 
-export default function Field({ value, onChange, color, id }) {
+export const Field = ({ id, value, onChange, textLabel, color, classLabel = 'visually-hidden' }) => {
   const { showMessage } = useToolTip();
 
   async function handleCopy() {
@@ -34,13 +34,17 @@ export default function Field({ value, onChange, color, id }) {
         }
       });
   }
-
   return (
-    <div className='field-container' id={id}>
-      <input min={0} max={255} value={value} onChange={onChange} onPaste={handlePaste} type='text' data-color={color} />
-      <button onClick={handleCopy}>
-        <img src='/copy.png'></img>
-      </button>
+    <div className="field-wrapper-label">
+      <label htmlFor={id} className={classLabel}>{textLabel}</label>
+      <div className='field-container'>
+        <input type="text" id={id} value={value} onChange={onChange} data-color={color} onPaste={handlePaste} />
+        <button className="copy-btn" onClick={handleCopy}>
+          <img src="/copy.png" alt="copy" />
+        </button>
+      </div>
     </div>
   );
-}
+};
+
+export default Field;
