@@ -5,7 +5,7 @@
 #root {
   margin: 0 auto;
   text-align: center;
-  border: 1px solid rgb(0, 0, 0, 50%);
+  background-color: rgb(35, 39, 47);
   border-radius: 10px;
   padding: 2rem;
   display: grid;
@@ -14,7 +14,6 @@
     "b b" auto
     "c c" auto ". d" auto / auto auto;
   row-gap: .5rem;
-  box-shadow: .4rem .4rem rgb(0, 0, 0, 50%);
 }
 
 #red-slider {
@@ -51,12 +50,12 @@
   display: flex;
   align-items: center;
   height: 2rem;
-  background-color: rgb(199, 199, 199);
+  background-color: rgb(90, 97, 112);
   border-radius: 5px;
 }
 
 .field-container>input {
-  color: black;
+  color: rgb(247, 247, 247);
   border: none;
   width: 4rem;
   height: 100%;
@@ -76,6 +75,7 @@
 
 .field-container>button>img {
   width: 20px;
+  filter: invert();
 }
 
 
