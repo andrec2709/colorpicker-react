@@ -12,12 +12,15 @@ import Colorpicker from './components/Colorpicker';
 // Read draft.md
 
 export default function ColorPickerApp() {
-  const [red, setRed] = useState(0);
-  const [green, setGreen] = useState(0);
-  const [blue, setBlue] = useState(0);
+  const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
+
+  const [red, setRed] = useState(parseInt(lastColor[0]));
+  const [green, setGreen] = useState(parseInt(lastColor[1]));
+  const [blue, setBlue] = useState(parseInt(lastColor[2]));
   const [hex, setHex] = useState(
     `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
   );
+
   const root = document.documentElement;
   root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
 
@@ -48,7 +51,8 @@ export default function ColorPickerApp() {
         break;
     }
 
-    setHex(`#${nextRed.toString(16).padStart(2, '0')}${nextGreen.toString(16).padStart(2, '0')}${nextBlue.toString(16).padStart(2, '0')}`)
+    setHex(`#${nextRed.toString(16).padStart(2, '0')}${nextGreen.toString(16).padStart(2, '0')}${nextBlue.toString(16).padStart(2, '0')}`);
+    localStorage.setItem('last-color', `${nextRed},${nextGreen},${nextBlue}`);
   }
 
   function handleHexChange(e) {

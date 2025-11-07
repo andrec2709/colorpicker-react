@@ -61,12 +61,13 @@
   border-radius: 5px;
 }
 
-.field-container>input {
+.field-container > input {
   color: rgb(247, 247, 247);
   border: none;
   width: 4rem;
   height: 100%;
   background-color: unset;
+  padding: .3rem;
 
   &:focus {
     outline: none;

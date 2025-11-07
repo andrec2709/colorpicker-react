@@ -6,9 +6,9 @@ It will be a simple colorpicker for RGB color space: You will have separate slid
 
 - [x] Modify any of the three sliders to modify the color value;
 - [x] Insert any value between 0 and 255 directly for each slider;
-- [ ] Insert a HEX value;
-- [ ] Copy the HEX value;
-- [ ] Copy each R, G, B value individually.
+- [x] Insert a HEX value;
+- [x] Copy the HEX value;
+- [x] Copy each R, G, B value individually.
 
 ## How will the app look?
 
