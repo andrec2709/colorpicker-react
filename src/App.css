@@ -14,8 +14,10 @@
   grid-template:
     "a a" auto
     "b b" auto
-    "c c" auto ". d" auto / auto auto;
+    "c c" auto 
+    ". d" auto / auto auto;
   row-gap: .5rem;
+  margin-bottom: 1rem;
 }
 
 #red-color {
@@ -128,6 +130,74 @@
   bottom: 0;
   transition: transform .3s ease;
 }
+
+#editor {
+  height: fit-content;
+  background-color: rgb(35, 39, 47);
+  border-radius: 10px;
+  padding: .5rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#editor-header {
+  display: flex;
+  align-items: center;
+}
+
+#editor-header > p{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  margin-left: auto;
+}
+
+
+#add-btn, #back-btn {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: unset;
+  height: 100%;
+  display: flex;
+}
+
+#add-btn {
+  margin-left: auto;
+}
+
+#add-btn > img, #back-btn > img {
+  width: 20px;
+  filter: invert();
+}
+
+#palette-container {
+  height: 15rem;
+  overflow-y: scroll;
+}
+
+.palette {
+  display: flex;
+  width: 5rem;
+  height: 5rem;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+  column-gap: .1rem;
+  row-gap: .1rem;
+  background-color: rgb(24, 24, 24);
+  border-radius: 5px;
+  padding: .4rem 0;
+  overflow: hidden;
+}
+
+.color-preview {
+  border-radius: 2px;
+  width: 1rem;
+  height: 1rem;
+}
+
+
 
 
 .tooltip-success {

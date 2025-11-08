@@ -3,17 +3,26 @@ import ToolTip from './components/ToolTip';
 import './App.css'
 import ContextProvider from './contexts/ContextProvider';
 import Field from './components/Field';
-import { Color } from './components/Color';
+import Color from './components/Color';
 import Slider from './components/Slider';
 import Colorpicker from './components/Colorpicker';
+import Editor from './components/Editor';
+import Header from './components/Header';
+import PaletteContainer from './components/PaletteContainer';
+
+import palettesData from './palettes.json';
+import Palette from './components/Palette';
 
 // Exercise:
 // Make a simple colorpicker app.
 // Read draft.md
 
 export default function ColorPickerApp() {
+  
+  const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id}/>);
+  
   const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
-
+  
   const [red, setRed] = useState(parseInt(lastColor[0]));
   const [green, setGreen] = useState(parseInt(lastColor[1]));
   const [blue, setBlue] = useState(parseInt(lastColor[2]));
@@ -99,6 +108,20 @@ export default function ColorPickerApp() {
           <Field value={hex} id='hex-field' textLabel='HEX' onChange={handleHexChange} color='hex' classLabel='' />
         </Color>
       </Colorpicker>
+      <Editor>
+        <Header>
+          <button id="back-btn">
+            <img src="/arrow.png" alt="go back" />
+          </button>
+          <p>Hello World</p>
+          <button id="add-btn">
+            <img src="/add.png" alt="new palette" />
+          </button>
+        </Header>
+        <PaletteContainer>
+          {palettes}
+        </PaletteContainer>
+      </Editor>
     </ContextProvider>
   );
 }

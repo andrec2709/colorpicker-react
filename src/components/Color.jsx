@@ -8,3 +8,5 @@ export const Color = ({ children, id }) => {
     </div>
   );
 };
+
+export default Color;
