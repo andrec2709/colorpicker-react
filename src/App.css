@@ -18,6 +18,7 @@
     ". d" auto / auto auto;
   row-gap: .5rem;
   margin-bottom: 1rem;
+  width: 22rem;
 }
 
 #red-color {
@@ -138,11 +139,13 @@
   padding: .5rem 1rem;
   display: flex;
   flex-direction: column;
+  max-width: 22rem;
 }
 
 #editor-header {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
 }
 
 #editor-header > p{
@@ -174,6 +177,10 @@
 #palette-container {
   height: 15rem;
   overflow-y: scroll;
+  display: grid;
+  grid: auto-flow / 1fr 1fr 1fr 1fr;
+  max-width: 22rem;
+  row-gap: .5rem;
 }
 
 .palette {

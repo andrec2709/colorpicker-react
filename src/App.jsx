@@ -113,7 +113,7 @@ export default function ColorPickerApp() {
           <button id="back-btn">
             <img src="/arrow.png" alt="go back" />
           </button>
-          <p>Hello World</p>
+          <p>Palettes</p>
           <button id="add-btn">
             <img src="/add.png" alt="new palette" />
           </button>
