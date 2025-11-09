@@ -21,7 +21,7 @@ import { ColorItem } from './components/ColorItem';
 // Read draft.md
 
 export default function ColorPickerApp() {
-  const { selectedPalette, palettesData, selectPalette } = usePalette();
+  const { selectedPalette, palettesData, selectPalette, updatePalettesData } = usePalette();
   const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
 
   const colorItems = [];
@@ -99,6 +99,24 @@ export default function ColorPickerApp() {
 
   }
 
+  function handleAddColor() {
+    if (selectedPalette === null) {
+      return;
+    }
+
+    const colorToAdd = [red, green, blue, hex];
+    const colorId = `R${red}G${green}B${blue}${Object.keys(selectedPalette.colors).length.toString(10).padStart('4', '0000')}`;
+    
+    selectedPalette.colors[colorId] = colorToAdd;
+
+    const updatedPalettes = palettesData.map(palette => {
+      return palette;
+    });
+
+    updatePalettesData(updatedPalettes);
+  
+  }
+
 
   return (
     <>
@@ -119,6 +137,7 @@ export default function ColorPickerApp() {
         <Color id='hex-color'>
           <Field value={hex} id='hex-field' textLabel='HEX' onChange={handleHexChange} color='hex' classLabel='' />
         </Color>
+        <button id='add-color' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
       </Colorpicker>
       <Editor>
         <Header>

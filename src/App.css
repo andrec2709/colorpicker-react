@@ -15,7 +15,7 @@
     "a a" auto
     "b b" auto
     "c c" auto 
-    ". d" auto / auto auto;
+    "d e" auto / auto auto;
   row-gap: .5rem;
   margin-bottom: 1rem;
   width: 22rem;
@@ -33,9 +33,24 @@
   grid-area: c;
 }
 
+#add-color {
+  grid-area: d;
+  width: 6rem;
+  border: none;
+  background-color: rgb(90, 97, 112);
+  border-radius: 5px;
+  justify-content: start;
+}
+
+#add-color:disabled {
+  background-color: rgb(57, 61, 68);
+  
+}
+
 #hex-color {
   margin-top: 1rem;
-  grid-area: d;
+  grid-area: e;
+  justify-content: end;
 }
 
 .color-container {
@@ -241,7 +256,6 @@
   width: 15px;
   filter: invert();
 }
-
 
 .tooltip-success {
   background-color: rgb(42, 207, 111);
