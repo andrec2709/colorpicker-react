@@ -4,6 +4,7 @@
 
 #root {
   margin: 0 auto;
+  width: 25rem;
 }
 
 #colorpicker {
@@ -18,7 +19,7 @@
     "d e" auto / auto auto;
   row-gap: .5rem;
   margin-bottom: 1rem;
-  width: 22rem;
+  width: 100%;
 }
 
 #red-color {
@@ -155,7 +156,7 @@
   padding: .5rem 1rem;
   display: flex;
   flex-direction: column;
-  max-width: 22rem;
+  max-width: 25rem;
 }
 
 #editor-header {
@@ -200,13 +201,15 @@
 }
 
 #palettes-list {
-  height: 15rem;
+  height: 20rem;
   overflow-y: scroll;
   scrollbar-width: none;
-  display: grid;
-  grid: auto-flow / 1fr 1fr 1fr 1fr;
-  max-width: 22rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: flex-start;
   row-gap: .5rem;
+  column-gap: .5rem;
 }
 
 .palette {
@@ -231,7 +234,7 @@
 }
 
 .color-item {
-  width: 4.5rem;
+  width: 5.3rem;
   height: 3rem;
   border-radius: 2px;
   display: flex;
@@ -246,7 +249,7 @@
   row-gap: .5rem;
   column-gap: .5rem;
   overflow-y: scroll;
-  height: 15rem;
+  height: 20rem;
   scrollbar-width: none;
 }
 

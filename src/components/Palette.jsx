@@ -3,17 +3,24 @@ import ColorPreview from "./ColorPreview";
 import { usePalette } from "../contexts/PaletteContext";
 
 export const Palette = ({ paletteData }) => {
-    
+
     const [name, setName] = useState(paletteData?.name);
     const [colors, setColors] = useState(paletteData?.colors);
     const { selectPalette } = usePalette();
 
-    let colorItems = [];
+    const colorItems = [];
+    const maxColorItems = 16;
+    let counter = 0
 
     for (const key in colors) {
-        if (colors.hasOwnProperty(key)) {
-            colorItems.push(<ColorPreview previewColor={colors[key]} key={key} colorId={key} />);
+        if (counter >= maxColorItems) { break }
+        else {
+            if (colors.hasOwnProperty(key)) {
+                colorItems.push(<ColorPreview previewColor={colors[key]} key={key} colorId={key} />);
+            }
         }
+
+        counter += 1;
     }
 
     return (

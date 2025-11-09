@@ -196,7 +196,7 @@ export default function ColorPickerApp() {
           </button>
         </Header>
         <PalettesListView
-          style={{ visibility: `${selectedPalette === null ? 'visible' : 'hidden'}`, display: `${selectedPalette === null ? 'grid' : 'none'}` }}
+          style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }}
         >
           {palettes}
         </PalettesListView>
