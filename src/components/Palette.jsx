@@ -1,10 +1,12 @@
 import { useState } from "react";
 import ColorPreview from "./ColorPreview";
+import { usePalette } from "../contexts/PaletteContext";
 
 export const Palette = ({ paletteData }) => {
     
-    const [name, setName] = useState(paletteData.name);
-    const [colors, setColors] = useState(paletteData.colors);
+    const [name, setName] = useState(paletteData?.name);
+    const [colors, setColors] = useState(paletteData?.colors);
+    const { selectPalette } = usePalette();
 
     let colorItems = [];
 
@@ -15,7 +17,7 @@ export const Palette = ({ paletteData }) => {
     }
 
     return (
-        <div className="palette" data-name={name}>
+        <div className="palette" data-name={name} onClick={() => selectPalette(paletteData)}>
             {colorItems}
         </div>
     );

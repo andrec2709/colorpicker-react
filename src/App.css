@@ -174,9 +174,10 @@
   filter: invert();
 }
 
-#palette-container {
+#palettes-list {
   height: 15rem;
   overflow-y: scroll;
+  scrollbar-width: none;
   display: grid;
   grid: auto-flow / 1fr 1fr 1fr 1fr;
   max-width: 22rem;
@@ -204,7 +205,22 @@
   height: 1rem;
 }
 
+.color-item {
+  width: 3.5rem;
+  height: 3rem;
+  border-radius: 2px;
+}
 
+#palette-detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  row-gap: .5rem;
+  column-gap: .5rem;
+  overflow-y: scroll;
+  height: 15rem;
+  scrollbar-width: none;
+}
 
 
 .tooltip-success {

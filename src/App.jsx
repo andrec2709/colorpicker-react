@@ -8,21 +8,34 @@ import Slider from './components/Slider';
 import Colorpicker from './components/Colorpicker';
 import Editor from './components/Editor';
 import Header from './components/Header';
-import PaletteContainer from './components/PaletteContainer';
+import PalettesListView from './components/PalettesListView';
 
 import palettesData from './palettes.json';
 import Palette from './components/Palette';
+import PaletteDetailView from './components/PaletteDetailView';
+import { usePalette } from './contexts/PaletteContext';
+import { ColorItem } from './components/ColorItem';
 
 // Exercise:
 // Make a simple colorpicker app.
 // Read draft.md
 
 export default function ColorPickerApp() {
-  
-  const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id}/>);
-  
+
+  const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
+
+  const { selectedPalette, selectPalette } = usePalette();
+
+  const colorItems = [];
+
+  for (const key in selectedPalette?.colors) {
+    if (selectedPalette.colors.hasOwnProperty(key)) {
+      colorItems.push(<ColorItem previewColor={selectedPalette.colors[key]} key={key} />);
+    }
+  }
+
   const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
-  
+
   const [red, setRed] = useState(parseInt(lastColor[0]));
   const [green, setGreen] = useState(parseInt(lastColor[1]));
   const [blue, setBlue] = useState(parseInt(lastColor[2]));
@@ -89,7 +102,7 @@ export default function ColorPickerApp() {
   }
 
   return (
-    <ContextProvider>
+    <>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
         <Color id='red-color'>
@@ -110,18 +123,29 @@ export default function ColorPickerApp() {
       </Colorpicker>
       <Editor>
         <Header>
-          <button id="back-btn">
+          <button
+            id="back-btn"
+            style={{ visibility: `${selectedPalette === null ? 'hidden' : 'visible'}` }}
+            onClick={() => selectPalette(null)}
+          >
             <img src="/arrow.png" alt="go back" />
           </button>
-          <p>Palettes</p>
-          <button id="add-btn">
+          <p>{selectedPalette?.name ?? 'Palettes'}</p>
+          <button id="add-btn" style={{ visibility: `${selectedPalette === null ? 'visible' : 'hidden'}` }}>
             <img src="/add.png" alt="new palette" />
           </button>
         </Header>
-        <PaletteContainer>
+        <PalettesListView
+          style={{ visibility: `${selectedPalette === null ? 'visible' : 'hidden'}`, display: `${selectedPalette === null ? 'grid' : 'none'}` }}
+        >
           {palettes}
-        </PaletteContainer>
+        </PalettesListView>
+        <PaletteDetailView
+        style={{display: `${selectedPalette === null ? 'none' : 'flex'}`}}
+        >
+          {colorItems}
+        </PaletteDetailView>
       </Editor>
-    </ContextProvider>
+    </>
   );
 }
