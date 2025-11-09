@@ -211,12 +211,12 @@ export default function ColorPickerApp() {
           </button>
         </Header>
         <PalettesListView
-          style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }}
+          style={{ display: `${selectedPalette === null ? 'grid' : 'none'}` }}
         >
           {palettes}
         </PalettesListView>
         <PaletteDetailView
-          style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }}
+          style={{ display: `${selectedPalette === null ? 'none' : 'grid'}` }}
         >
           {colorItems}
         </PaletteDetailView>

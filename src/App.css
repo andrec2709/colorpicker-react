@@ -258,11 +258,11 @@ button {
   height: 20rem;
   overflow-y: scroll;
   scrollbar-width: none;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 5rem);
+  justify-content: center;
   align-content: flex-start;
-  row-gap: .5rem;
-  column-gap: .5rem;
+  gap: .5rem;
 }
 
 .palette {
@@ -287,8 +287,6 @@ button {
 }
 
 .color-item {
-  width: 5.3rem;
-  width: clamp(4rem, 20%, 6rem);
   height: 3rem;
   border-radius: 2px;
   display: flex;
@@ -297,11 +295,11 @@ button {
 }
 
 #palette-detail {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, clamp(4rem, 20%, 6rem));
   align-content: flex-start;
-  row-gap: .5rem;
-  column-gap: .5rem;
+  gap: .5rem;
+  justify-content: center;
   overflow-y: scroll;
   height: 20rem;
   scrollbar-width: none;
