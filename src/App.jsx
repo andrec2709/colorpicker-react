@@ -21,6 +21,28 @@ import { useToolTip } from './contexts/ToolTipContext';
 // Make a simple colorpicker app.
 // Read draft.md
 
+function randomId(size = 8) {
+  const chars = [
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+    's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '@', '!',
+    '#', '$', '%', '&', '*', '?', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+  ];
+
+  let number;
+  let finalId = '';
+  const max = 69;
+  const min = 0;
+
+  for (let index = 0; index < size; index++) {
+    number = Math.floor(Math.random() * (max - min + 1) + min);
+    finalId += chars[number];
+  }
+
+  return finalId;
+
+}
+
 export default function ColorPickerApp() {
   const { selectedPalette, palettesData, selectPalette, updatePalettesData } = usePalette();
   const { showMessage } = useToolTip();
@@ -114,7 +136,7 @@ export default function ColorPickerApp() {
     }
 
     const colorToAdd = [red, green, blue, hex];
-    const colorId = `R${red.toString(10)[0]}G${green.toString(10)[0]}B${blue.toString(10)[0]}${Object.keys(selectedPalette.colors).length.toString(10).padStart(4, '0000')}`;
+    const colorId = randomId(12);
 
     selectedPalette.colors[colorId] = colorToAdd;
 
@@ -129,9 +151,10 @@ export default function ColorPickerApp() {
   }
 
   function handleAddPalette() {
+
     const newPalette = {
       name: `Palette ${Object.keys(palettesData).length + 1}`,
-      id: `PLT${(Object.keys(palettesData).length + 1).toString(10).padStart(4, '0000')}`,
+      id: randomId(),
       colors: {}
     };
 
@@ -145,7 +168,7 @@ export default function ColorPickerApp() {
 
   function handleDeletePalette() {
 
-    if (selectedPalette === null){
+    if (selectedPalette === null) {
       return;
     }
 
@@ -188,7 +211,7 @@ export default function ColorPickerApp() {
             <img src="/arrow.png" alt="go back" />
           </button>
           <p>{selectedPalette?.name ?? 'Palettes'}</p>
-          <button id="add-btn" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
+          <button id="palette-add" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
             <img src="/add.png" alt="new palette" />
           </button>
           <button id='palette-delete' style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }} onClick={handleDeletePalette}>
