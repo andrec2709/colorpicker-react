@@ -15,6 +15,7 @@ import Palette from './components/Palette';
 import PaletteDetailView from './components/PaletteDetailView';
 import { usePalette } from './contexts/PaletteContext';
 import { ColorItem } from './components/ColorItem';
+import { useToolTip } from './contexts/ToolTipContext';
 
 // Exercise:
 // Make a simple colorpicker app.
@@ -22,6 +23,8 @@ import { ColorItem } from './components/ColorItem';
 
 export default function ColorPickerApp() {
   const { selectedPalette, palettesData, selectPalette, updatePalettesData } = usePalette();
+  const { showMessage } = useToolTip();
+
   const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
 
   const colorItems = [];
@@ -101,22 +104,58 @@ export default function ColorPickerApp() {
 
   function handleAddColor() {
     if (selectedPalette === null) {
+      showMessage('Please select a palette first', 'fail');
+      return;
+    }
+
+    if (isNaN(red) || isNaN(green) || isNaN(blue) || red === "" || green === "" || blue === "") {
+      showMessage('Not a valid color!', 'fail');
       return;
     }
 
     const colorToAdd = [red, green, blue, hex];
-    const colorId = `R${red}G${green}B${blue}${Object.keys(selectedPalette.colors).length.toString(10).padStart('4', '0000')}`;
-    
+    const colorId = `R${red.toString(10)[0]}G${green.toString(10)[0]}B${blue.toString(10)[0]}${Object.keys(selectedPalette.colors).length.toString(10).padStart(4, '0000')}`;
+
     selectedPalette.colors[colorId] = colorToAdd;
 
     const updatedPalettes = palettesData.map(palette => {
       return palette;
     });
 
+    console.log(selectedPalette)
+    console.log(palettesData)
     updatePalettesData(updatedPalettes);
-  
+
   }
 
+  function handleAddPalette() {
+    const newPalette = {
+      name: `Palette ${Object.keys(palettesData).length + 1}`,
+      id: `PLT${(Object.keys(palettesData).length + 1).toString(10).padStart(4, '0000')}`,
+      colors: {}
+    };
+
+    palettesData.push(newPalette)
+    const newPalettesData = palettesData;
+
+    selectPalette(newPalette);
+    updatePalettesData(newPalettesData);
+
+  }
+
+  function handleDeletePalette() {
+
+    if (selectedPalette === null){
+      return;
+    }
+
+    const updatedPalettes = palettesData.filter(palette => palette.id !== selectedPalette.id);
+
+    selectPalette(null);
+
+    updatePalettesData(updatedPalettes);
+
+  }
 
   return (
     <>
@@ -149,8 +188,11 @@ export default function ColorPickerApp() {
             <img src="/arrow.png" alt="go back" />
           </button>
           <p>{selectedPalette?.name ?? 'Palettes'}</p>
-          <button id="add-btn" style={{ visibility: `${selectedPalette === null ? 'visible' : 'hidden'}` }}>
+          <button id="add-btn" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
             <img src="/add.png" alt="new palette" />
+          </button>
+          <button id='palette-delete' style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }} onClick={handleDeletePalette}>
+            <img src="/delete.png" alt="delete palette" />
           </button>
         </Header>
         <PalettesListView
@@ -159,7 +201,7 @@ export default function ColorPickerApp() {
           {palettes}
         </PalettesListView>
         <PaletteDetailView
-        style={{display: `${selectedPalette === null ? 'none' : 'flex'}`}}
+          style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }}
         >
           {colorItems}
         </PaletteDetailView>

@@ -18,38 +18,14 @@ export const ColorItem = ({ previewColor, colorId }) => {
     }
 
     function handleRemoveColor() {
-        // delete selectedPalette['colors'][colorId];
-        // const newobj = JSON.parse(JSON.stringify(palettesData));
-        // updatePalettesData(newobj);
-        // updatePalettesData(prevData => {
-        //     console.log("HERE")
-        //     return prevData;
-            // const updatedPalettes = prevData.map(palette => {
-            //     if (palette.id === selectedPalette.id) {
-            //         const newColors = { ...palette.colors };
-
-            //         delete newColors[colorId];
-
-            //         return {
-            //             ...palette,
-            //             colors: newColors
-            //         }
-            //     }
-
-            //     return palette;
-            // });
-            // console.log(updatedPalettes)
-            // return {...updatedPalettes};
-        // });
-
         const updatedPalettes = palettesData.map(palette => {
             if (palette.id === selectedPalette.id) {
-                const newColors = palette.colors;
-                delete newColors[colorId];
+                const colors = palette.colors;
+                delete colors[colorId];
 
                 return {
                     ...palette,
-                    newColors
+                    colors
                 }
             }
 

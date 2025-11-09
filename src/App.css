@@ -44,7 +44,7 @@
 
 #add-color:disabled {
   background-color: rgb(57, 61, 68);
-  
+
 }
 
 #hex-color {
@@ -185,9 +185,18 @@
   margin-left: auto;
 }
 
-#add-btn > img, #back-btn > img {
+#add-btn > img, #back-btn > img, #palette-delete > img {
   width: 20px;
   filter: invert();
+}
+
+#palette-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: unset;
+  margin-left: auto;
 }
 
 #palettes-list {
