@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useToolTip } from "../contexts/ToolTipContext";
 import { usePalette } from "../contexts/PaletteContext";
 
-export const ColorItem = ({ previewColor, colorId }) => {
+export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const [color, setColor] = useState(previewColor);
     const { showMessage } = useToolTip();
@@ -35,7 +35,12 @@ export const ColorItem = ({ previewColor, colorId }) => {
     }
 
     return (
-        <div className="color-item" data-color={color} style={{ backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})` }}>
+        <div 
+        className="color-item" 
+        data-color={color} 
+        style={{ backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})` }}
+        onClick={() => onClick(color)}
+        >
             <button className="color-copy" onClick={handleCopy}>
                 <img src="/copy.png" alt="copy color" />
             </button>

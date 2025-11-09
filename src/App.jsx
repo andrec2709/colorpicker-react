@@ -53,7 +53,7 @@ export default function ColorPickerApp() {
 
   for (const key in selectedPalette?.colors) {
     if (selectedPalette.colors.hasOwnProperty(key)) {
-      colorItems.push(<ColorItem previewColor={selectedPalette.colors[key]} key={key} colorId={key} />);
+      colorItems.push(<ColorItem previewColor={selectedPalette.colors[key]} key={key} colorId={key} onClick={handleSelectColor} />);
     }
   }
 
@@ -68,6 +68,13 @@ export default function ColorPickerApp() {
 
   const root = document.documentElement;
   root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+
+  function handleSelectColor(color) {
+    setRed(color[0]);
+    setGreen(color[1]);
+    setBlue(color[2]);
+    setHex(color[3]);
+  }
 
   function handleChange(e) {
     const color = e.target.dataset.color;
