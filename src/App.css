@@ -130,6 +130,7 @@
   transform: translateY(-3rem);
   bottom: 0;
   transition: transform .3s ease;
+  z-index: 999;
 }
 
 #editor {
@@ -206,9 +207,12 @@
 }
 
 .color-item {
-  width: 3.5rem;
+  width: 4.5rem;
   height: 3rem;
   border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  padding: .1rem;
 }
 
 #palette-detail {
@@ -220,6 +224,22 @@
   overflow-y: scroll;
   height: 15rem;
   scrollbar-width: none;
+}
+
+.color-copy, .color-delete {
+  height: fit-content;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: rgba(10, 10, 10, 0.76);
+  border-radius: 20px;
+}
+
+.color-copy img, .color-delete img {
+  width: 15px;
+  filter: invert();
 }
 
 

@@ -12,7 +12,7 @@ export const Palette = ({ paletteData }) => {
 
     for (const key in colors) {
         if (colors.hasOwnProperty(key)) {
-            colorItems.push(<ColorPreview previewColor={colors[key]} key={key} />);
+            colorItems.push(<ColorPreview previewColor={colors[key]} key={key} colorId={key} />);
         }
     }
 

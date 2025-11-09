@@ -10,7 +10,7 @@ import Editor from './components/Editor';
 import Header from './components/Header';
 import PalettesListView from './components/PalettesListView';
 
-import palettesData from './palettes.json';
+// import palettesData from './palettes.json';
 import Palette from './components/Palette';
 import PaletteDetailView from './components/PaletteDetailView';
 import { usePalette } from './contexts/PaletteContext';
@@ -21,16 +21,14 @@ import { ColorItem } from './components/ColorItem';
 // Read draft.md
 
 export default function ColorPickerApp() {
-
+  const { selectedPalette, palettesData, selectPalette } = usePalette();
   const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
-
-  const { selectedPalette, selectPalette } = usePalette();
 
   const colorItems = [];
 
   for (const key in selectedPalette?.colors) {
     if (selectedPalette.colors.hasOwnProperty(key)) {
-      colorItems.push(<ColorItem previewColor={selectedPalette.colors[key]} key={key} />);
+      colorItems.push(<ColorItem previewColor={selectedPalette.colors[key]} key={key} colorId={key} />);
     }
   }
 
@@ -100,6 +98,7 @@ export default function ColorPickerApp() {
     }
 
   }
+
 
   return (
     <>

@@ -24,11 +24,12 @@ import { useState } from "react";
     // }
 
 
-export const ColorPreview = ({ previewColor }) => {
-    const [color, setColor] = useState(`rgb(${previewColor[0]},${previewColor[1]},${previewColor[2]})`);
-
+export const ColorPreview = ({ previewColor, colorId }) => {
+    
+    const [color, setColor] = useState(previewColor);
+    
     return (
-        <div className="color-preview" data-color={color} style={{backgroundColor: color}}>
+        <div className="color-preview" data-color={color} style={{backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})`}}>
 
         </div>
     );

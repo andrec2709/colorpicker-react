@@ -6,13 +6,22 @@ export const usePalette = () => useContext(PaletteContext);
 
 export const PaletteProvider = ({ children }) => {
     const [selectedPalette, setSelectedPalette] = useState(null);
+    
+    const [palettesData, setPalettesData] = useState(
+        JSON.parse(localStorage.getItem('palettesData'))
+    );
 
     function selectPalette(paletteData) {
         setSelectedPalette(paletteData);
     }
 
+    function updatePalettesData(palettesData) {
+        localStorage.setItem('palettesData', JSON.stringify(palettesData));
+        setPalettesData(palettesData);
+    }
+
     return (
-        <PaletteContext.Provider value={{ selectedPalette, selectPalette }}>
+        <PaletteContext.Provider value={{ selectedPalette, palettesData, selectPalette, updatePalettesData }}>
             {children}
         </PaletteContext.Provider>
     );
