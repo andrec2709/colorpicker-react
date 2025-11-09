@@ -1,6 +1,6 @@
 import { useToolTip } from "../contexts/ToolTipContext";
 
-export const Field = ({ id, value, onChange, textLabel, color, classLabel = 'visually-hidden' }) => {
+export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabel = 'visually-hidden' }) => {
   const { showMessage } = useToolTip();
 
   async function handleCopy() {
@@ -35,7 +35,7 @@ export const Field = ({ id, value, onChange, textLabel, color, classLabel = 'vis
       });
   }
   return (
-    <div className="field-wrapper-label">
+    <div className="field-wrapper-label" id={mainId}>
       <label htmlFor={id} className={classLabel}>{textLabel}</label>
       <div className='field-container'>
         <input type="text" id={id} value={value} onChange={onChange} data-color={color} onPaste={handlePaste} />

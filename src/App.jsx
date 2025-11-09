@@ -21,7 +21,7 @@ import { useToolTip } from './contexts/ToolTipContext';
 // Make a simple colorpicker app.
 // Read draft.md
 
-function randomId(size = 8) {
+function randomId(size = 12) {
   const chars = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
     's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -184,21 +184,13 @@ export default function ColorPickerApp() {
     <>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
-        <Color id='red-color'>
-          <Slider value={red} id='red-slider' textLabel='R' onChange={handleChange} color='red' />
-          <Field value={red} id='red-field' textLabel='R' onChange={handleChange} color='red' />
-        </Color>
-        <Color id='green-color'>
-          <Slider value={green} id='green-slider' textLabel='G' onChange={handleChange} color='green' />
-          <Field value={green} id='green-field' textLabel='G' onChange={handleChange} color='green' />
-        </Color>
-        <Color id='blue-color'>
-          <Slider value={blue} id='blue-slider' textLabel='B' onChange={handleChange} color='blue' />
-          <Field value={blue} id='blue-field' textLabel='B' onChange={handleChange} color='blue' />
-        </Color>
-        <Color id='hex-color'>
-          <Field value={hex} id='hex-field' textLabel='HEX' onChange={handleHexChange} color='hex' classLabel='' />
-        </Color>
+        <Slider value={red} id='red-slider' mainId='red-slider-container' textLabel='R' onChange={handleChange} color='red' />
+        <Field value={red} id='red-field' mainId='red-field-container' textLabel='R' onChange={handleChange} color='red' />
+        <Slider value={green} id='green-slider' mainId='green-slider-container' textLabel='G' onChange={handleChange} color='green' />
+        <Field value={green} id='green-field' mainId='green-field-container' textLabel='G' onChange={handleChange} color='green' />
+        <Slider value={blue} id='blue-slider' mainId='blue-slider-container' textLabel='B' onChange={handleChange} color='blue' />
+        <Field value={blue} id='blue-field' mainId='blue-field-container' textLabel='B' onChange={handleChange} color='blue' />
+        <Field value={hex} id='hex-field' mainId='hex-field-container' onChange={handleHexChange} color='hex' classLabel='' />
         <button id='add-color' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
       </Colorpicker>
       <Editor>

@@ -7,38 +7,67 @@ button {
 }
 
 #root {
-  margin: 0 auto;
-  width: 25rem;
+  align-self: center;
+  width: clamp(17rem, 80vw, 30rem);
+  display: flex;
+  flex-direction: column;
 }
 
 #colorpicker {
   background-color: rgb(35, 39, 47);
   border-radius: 10px;
-  padding: 2rem;
+  padding: clamp(1rem, 5vw, 2rem);
   display: grid;
   grid-template:
-    "a a" auto
-    "b b" auto
-    "c c" auto "d e" auto / auto auto;
+    "a b" auto
+    "c d" auto
+    "e f" auto 
+    "g h" auto / auto min-content;
   row-gap: .5rem;
   margin-bottom: 1rem;
   width: 100%;
 }
 
-#red-color {
+#red-slider-container {
+  width: fit-content;
+  justify-self: start;
   grid-area: a;
 }
 
-#green-color {
+#red-field-container {
+  justify-self: end;
+  width: fit-content;
   grid-area: b;
 }
 
-#blue-color {
+#green-slider-container {
+  width: fit-content;
+  justify-self: start;
   grid-area: c;
 }
 
-#add-color {
+#green-field-container {
+  justify-self: end;
+  width: fit-content;
   grid-area: d;
+}
+
+#blue-slider-container {
+  width: fit-content;
+  justify-self: start;
+  grid-area: e;
+}
+
+#blue-field-container {
+  justify-self: end;
+  width: fit-content;
+  grid-area: f;
+}
+
+#add-color {
+  width: fit-content;
+  justify-self: start;
+  grid-area: g;
   width: 6rem;
   border: none;
   background-color: rgb(90, 97, 112);
@@ -58,11 +87,20 @@ button {
   }
 }
 
+#hex-field-container {
+  justify-self: end;
+  width: fit-content;
+  grid-area: h;
+  
+}
 
 #hex-color {
   margin-top: 1rem;
-  grid-area: e;
   justify-content: end;
+}
+
+#red-slider, #green-slider, #blue-slider {
+  width: clamp(6rem, 30vw, 12rem);
 }
 
 .color-container {
@@ -87,6 +125,7 @@ button {
   display: flex;
   align-items: center;
   height: 2rem;
+  width: fit-content;
   background-color: rgb(90, 97, 112);
   border-radius: 5px;
 }
@@ -167,7 +206,7 @@ button {
   padding: .5rem 1rem;
   display: flex;
   flex-direction: column;
-  max-width: 25rem;
+  /* max-width: 25rem; */
 }
 
 #editor-header {
@@ -230,7 +269,6 @@ button {
   scrollbar-width: none;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
   align-content: flex-start;
   row-gap: .5rem;
   column-gap: .5rem;
