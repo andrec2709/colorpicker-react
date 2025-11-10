@@ -44,7 +44,7 @@ function randomId(size = 12) {
 }
 
 export default function ColorPickerApp() {
-  const { selectedPalette, palettesData, selectPalette, updatePalettesData } = usePalette();
+  const { selectedPalette, selectedPaletteName, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData } = usePalette();
   const { showMessage } = useToolTip();
 
   const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
@@ -187,6 +187,28 @@ export default function ColorPickerApp() {
 
   }
 
+  function handleNameChange(e) {
+
+    if (e.target.value.length < 30) {
+      setSelectedPaletteName(e.target.value);
+
+      const updatedPalettes = palettesData.map(palette => {
+        if (palette.id === selectedPalette.id) {
+          const name = e.target.value;
+
+          return {
+            ...palette,
+            name
+          };
+        }
+
+        return palette;
+      });
+
+      updatePalettesData(updatedPalettes);
+    }
+  }
+
   return (
     <>
       <Colorpicker id='colorpicker'>
@@ -197,7 +219,7 @@ export default function ColorPickerApp() {
         <Field value={green} id='green-field' mainId='green-field-container' textLabel='G' onChange={handleChange} color='green' />
         <Slider value={blue} id='blue-slider' mainId='blue-slider-container' textLabel='B' onChange={handleChange} color='blue' />
         <Field value={blue} id='blue-field' mainId='blue-field-container' textLabel='B' onChange={handleChange} color='blue' />
-        <Field value={hex} id='hex-field' mainId='hex-field-container' onChange={handleHexChange} color='hex' classLabel='' />
+        <Field value={hex} id='hex-field' mainId='hex-field-container' textLabel='HEX' onChange={handleHexChange} color='hex' classLabel='' />
         <button id='add-color' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
       </Colorpicker>
       <Editor>
@@ -209,7 +231,15 @@ export default function ColorPickerApp() {
           >
             <img src="/arrow.png" alt="go back" />
           </button>
-          <p>{selectedPalette?.name ?? 'Palettes'}</p>
+          <label htmlFor="palette-title" id='palette-title-label'>Palette title</label>
+          <input
+            type='text'
+            id='palette-title'
+            value={selectedPaletteName}
+            onChange={(e) => handleNameChange(e)}
+            disabled={selectedPalette === null ? true : false}
+            aria-label='palette title'
+          />
           <button id="palette-add" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
             <img src="/add.png" alt="new palette" />
           </button>

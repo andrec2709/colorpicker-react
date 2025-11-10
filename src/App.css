@@ -76,6 +76,7 @@ button {
 
   &:disabled {
     background-color: rgb(57, 61, 68);
+    color: rgb(185, 185, 185);
   }
 
   &:hover {
@@ -179,6 +180,20 @@ button {
   margin-right: 1rem;
 }
 
+#hex-field-container > label {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  clip-path: inset(50%);
+}
+
+#palette-title-label {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  clip-path: inset(50%);
+}
+
 .tooltip {
   width: fit-content;
   height: fit-content;
@@ -255,7 +270,7 @@ button {
 }
 
 #palettes-list {
-  height: 20rem;
+  height: clamp(15rem, 35vh, 20rem);
   overflow-y: scroll;
   scrollbar-width: none;
   display: grid;
@@ -314,13 +329,32 @@ button {
   justify-content: center;
   border: none;
   background-color: rgba(10, 10, 10, 0.76);
-  border-radius: 20px;
+  border-radius: 50%;
 }
 
 .color-copy img,
 .color-delete img {
   width: 15px;
   filter: invert();
+}
+
+#palette-title {
+  margin-left: auto;
+  width: 50%;
+  padding: 0;
+  font-size: 1.2rem;
+  border: none;
+  background-color: unset;
+  height: 100%;
+  text-align: center;
+  
+  &:disabled {
+    color: unset;
+  }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .tooltip-success {

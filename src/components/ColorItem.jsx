@@ -8,7 +8,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     const { showMessage } = useToolTip();
     const { selectedPalette, palettesData, updatePalettesData } = usePalette();
 
-    function handleCopy() {
+    function handleCopy(e) {
+        e.stopPropagation();
         navigator.clipboard.writeText(color[3])
             .then(() => {
                 showMessage('Copied!', 'ok');
@@ -17,7 +18,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             });
     }
 
-    function handleRemoveColor() {
+    function handleRemoveColor(e) {
+        e.stopPropagation();
         const updatedPalettes = palettesData.map(palette => {
             if (palette.id === selectedPalette.id) {
                 const colors = palette.colors;
@@ -40,6 +42,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         data-color={color} 
         style={{ backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})` }}
         onClick={() => onClick(color)}
+        tabIndex="0"
+        role="button"
         >
             <button className="color-copy" onClick={handleCopy}>
                 <img src="/copy.png" alt="copy color" />

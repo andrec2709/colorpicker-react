@@ -6,6 +6,7 @@ export const usePalette = () => useContext(PaletteContext);
 
 export const PaletteProvider = ({ children }) => {
     const [selectedPalette, setSelectedPalette] = useState(null);
+    const [selectedPaletteName, setSelectedPaletteName] = useState(selectedPalette?.name ?? 'Palettes');
     
     const [palettesData, setPalettesData] = useState(
         JSON.parse(localStorage.getItem('palettesData') || '[]')
@@ -13,6 +14,7 @@ export const PaletteProvider = ({ children }) => {
 
     function selectPalette(paletteData) {
         setSelectedPalette(paletteData);
+        setSelectedPaletteName(paletteData?.name ?? 'Palettes');
     }
 
     function updatePalettesData(newPalettesData) {
@@ -21,7 +23,7 @@ export const PaletteProvider = ({ children }) => {
     }
 
     return (
-        <PaletteContext.Provider value={{ selectedPalette, palettesData, selectPalette, updatePalettesData }}>
+        <PaletteContext.Provider value={{ selectedPalette, selectedPaletteName, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData }}>
             {children}
         </PaletteContext.Provider>
     );

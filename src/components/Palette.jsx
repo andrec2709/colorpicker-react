@@ -24,7 +24,14 @@ export const Palette = ({ paletteData }) => {
     }
 
     return (
-        <div className="palette" data-name={name} onClick={() => selectPalette(paletteData)}>
+        <div 
+        className="palette" 
+        data-name={name} 
+        onClick={() => selectPalette(paletteData)}
+        tabIndex="0"
+        role="button"
+        aria-label="palette"
+        >
             {colorItems}
         </div>
     );
