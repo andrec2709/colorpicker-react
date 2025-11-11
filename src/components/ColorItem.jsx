@@ -46,10 +46,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         role="button"
         >
             <button className="color-copy" onClick={handleCopy}>
-                <img src="/copy.png" alt="copy color" />
+                <img src="./copy.svg" alt="copy color" />
             </button>
             <button className="color-delete" onClick={handleRemoveColor}>
-                <img src="/delete.png" alt="delete color" />
+                <img src="./delete.svg" alt="delete color" />
             </button>
         </div>
     );

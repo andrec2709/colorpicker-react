@@ -40,7 +40,7 @@ export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabe
       <div className='field-container'>
         <input type="text" id={id} value={value} onChange={onChange} data-color={color} onPaste={handlePaste} />
         <button className="copy-btn" onClick={handleCopy}>
-          <img src="/copy.png" alt="copy" />
+          <img src="./copy.svg" alt="copy" />
         </button>
       </div>
     </div>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="132.9301mm"
+   height="123.91374mm"
+   viewBox="0 0 132.9301 123.91374"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowWideRounded"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid"
+       markerUnits="strokeWidth">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:round"
+         d="m -2.75,3 3,-3 -3,-3"
+         id="path2" />
+    </marker>
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-16.240293,-48.717701)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:12.065;stroke-linecap:round;stroke-dasharray:none"
+       id="path3"
+       d="m 105,90.945198 a 38.136986,38.136986 0 0 1 37.98161,34.697942 38.136986,38.136986 0 0 1 -31.13155,40.95579" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:12.065;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;marker-end:url(#ArrowWideRounded);paint-order:markers fill stroke"
+       d="M 105,90.945196 H 27.787787"
+       id="path4" />
+  </g>
+</svg>

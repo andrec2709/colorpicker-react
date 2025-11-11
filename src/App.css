@@ -120,6 +120,7 @@ button {
 
 .slider-container>label {
   margin-right: 1rem;
+  font-weight: 500;
 }
 
 .field-container {

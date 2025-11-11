@@ -229,7 +229,7 @@ export default function ColorPickerApp() {
             style={{ visibility: `${selectedPalette === null ? 'hidden' : 'visible'}` }}
             onClick={() => selectPalette(null)}
           >
-            <img src="/arrow.png" alt="go back" />
+            <img src="./arrow.svg" alt="go back" />
           </button>
           <label htmlFor="palette-title" id='palette-title-label'>Palette title</label>
           <input
@@ -241,10 +241,10 @@ export default function ColorPickerApp() {
             aria-label='palette title'
           />
           <button id="palette-add" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
-            <img src="/add.png" alt="new palette" />
+            <img src="./plus.svg" alt="new palette" />
           </button>
           <button id='palette-delete' style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }} onClick={handleDeletePalette}>
-            <img src="/delete.png" alt="delete palette" />
+            <img src="./delete.svg" alt="delete palette" />
           </button>
         </Header>
         <PalettesListView
