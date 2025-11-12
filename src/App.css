@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  /* shape-rendering: crispEdges; */
 }
 
 button {
@@ -356,6 +357,45 @@ button {
   &:focus {
     outline: none;
   }
+}
+
+.slider-test-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: .4rem;
+  width: 10rem;
+  user-select: none;
+}
+
+.slider-thumb {
+  aspect-ratio: 1 / 1;
+  background-color: rgb(230, 230, 230);
+  border: .5px solid rgb(70, 70, 70);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgb(84, 89, 110);
+  position: absolute;
+  opacity: .5;
+  user-select: none;
+}
+
+.slider-track {
+  user-select: none;
+  width: 100%;
+  height: 25%;
+  background-color: rgb(228, 228, 228);
+  border-radius: 10px;
+
+}
+
+.slider-track-filled {
+  user-select: none;
+  background-color: rgb(124, 53, 255);
+  border: .5px solid rgba(27, 0, 61, 0.2);
+  height: 25%;
+  border-radius: 10px;
+  position: absolute;
+  
 }
 
 .tooltip-success {

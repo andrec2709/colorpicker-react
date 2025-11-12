@@ -3,8 +3,7 @@ import ToolTip from './components/ToolTip';
 import './App.css'
 import ContextProvider from './contexts/ContextProvider';
 import Field from './components/Field';
-import Color from './components/Color';
-import Slider from './components/Slider';
+import ColorRange from './components/ColorRange';
 import Colorpicker from './components/Colorpicker';
 import Editor from './components/Editor';
 import Header from './components/Header';
@@ -16,6 +15,7 @@ import PaletteDetailView from './components/PaletteDetailView';
 import { usePalette } from './contexts/PaletteContext';
 import { ColorItem } from './components/ColorItem';
 import { useToolTip } from './contexts/ToolTipContext';
+import SliderTest from './components/Slider';
 
 // Exercise:
 // Make a simple colorpicker app.
@@ -59,12 +59,13 @@ export default function ColorPickerApp() {
 
   const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
 
-  const [red, setRed] = useState(parseInt(lastColor[0]));
+  // const [red, setRed] = useState(parseInt(lastColor[0]));
+  const [red, setRed] = useState(0);
   const [green, setGreen] = useState(parseInt(lastColor[1]));
   const [blue, setBlue] = useState(parseInt(lastColor[2]));
-  const [hex, setHex] = useState(
-    `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
-  );
+  // const [hex, setHex] = useState(
+  //   `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
+  // );
 
   const root = document.documentElement;
   root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
@@ -76,36 +77,6 @@ export default function ColorPickerApp() {
     setHex(color[3]);
   }
 
-  function handleChange(e) {
-    const color = e.target.dataset.color;
-    let value = isNaN(parseInt(e.target.value)) ? '' : parseInt(e.target.value, 10);
-
-    if (value < 0) { value = 0 }
-
-    if (value > 255) { value = 255 }
-
-    let nextRed = red;
-    let nextGreen = green;
-    let nextBlue = blue;
-
-    switch (color) {
-      case 'red':
-        setRed(value);
-        nextRed = value;
-        break;
-      case 'green':
-        setGreen(value);
-        nextGreen = value;
-        break;
-      case 'blue':
-        setBlue(value);
-        nextBlue = value;
-        break;
-    }
-
-    setHex(`#${nextRed.toString(16).padStart(2, '0')}${nextGreen.toString(16).padStart(2, '0')}${nextBlue.toString(16).padStart(2, '0')}`);
-    localStorage.setItem('last-color', `${nextRed},${nextGreen},${nextBlue}`);
-  }
 
   function handleHexChange(e) {
     let value = e.target.value;
@@ -209,18 +180,18 @@ export default function ColorPickerApp() {
     }
   }
 
+  function handleChange(e) {
+    // console.log('Red will be > ' + e.dataset.value);
+    setRed(e);
+  }
+
   return (
     <>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
-        <Slider value={red} id='red-slider' mainId='red-slider-container' textLabel='R' onChange={handleChange} color='red' />
+        <ColorRange value={red} id='red-slider' mainId='red-slider-container' textLabel='R' onChange={handleChange} color='red' />
         <Field value={red} id='red-field' mainId='red-field-container' textLabel='R' onChange={handleChange} color='red' />
-        <Slider value={green} id='green-slider' mainId='green-slider-container' textLabel='G' onChange={handleChange} color='green' />
-        <Field value={green} id='green-field' mainId='green-field-container' textLabel='G' onChange={handleChange} color='green' />
-        <Slider value={blue} id='blue-slider' mainId='blue-slider-container' textLabel='B' onChange={handleChange} color='blue' />
-        <Field value={blue} id='blue-field' mainId='blue-field-container' textLabel='B' onChange={handleChange} color='blue' />
-        <Field value={hex} id='hex-field' mainId='hex-field-container' textLabel='HEX' onChange={handleHexChange} color='hex' classLabel='' />
-        <button id='add-color' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
+        
       </Colorpicker>
       <Editor>
         <Header>
