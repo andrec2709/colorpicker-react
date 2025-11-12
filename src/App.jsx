@@ -60,12 +60,12 @@ export default function ColorPickerApp() {
   const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
 
   // const [red, setRed] = useState(parseInt(lastColor[0]));
-  const [red, setRed] = useState(0);
+  const [red, setRed] = useState(parseInt(lastColor[0]));
   const [green, setGreen] = useState(parseInt(lastColor[1]));
   const [blue, setBlue] = useState(parseInt(lastColor[2]));
-  // const [hex, setHex] = useState(
-  //   `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
-  // );
+  const [hex, setHex] = useState(
+    `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
+  );
 
   const root = document.documentElement;
   root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
@@ -79,7 +79,7 @@ export default function ColorPickerApp() {
 
 
   function handleHexChange(e) {
-    let value = e.target.value;
+    let value = e.dataset.value;
 
     if (/^#[a-fA-F0-9]{0,6}$/.test(value)) {
 
@@ -181,8 +181,38 @@ export default function ColorPickerApp() {
   }
 
   function handleChange(e) {
-    // console.log('Red will be > ' + e.dataset.value);
-    setRed(e);
+    console.log(e);
+
+    const color = e.dataset.color;
+    let value;
+    if (e.tagName === 'INPUT') {
+      value = isNaN(parseInt(e.value)) ? '' : parseInt(e.value, 10);
+    } else {
+      console.log('test')
+      value = isNaN(parseInt(e.dataset.value)) ? '' : parseInt(e.dataset.value, 10);
+    }
+
+    let nextRed = red;
+    let nextGreen = green;
+    let nextBlue = blue;
+    switch (color) {
+      case 'red':
+        setRed(value);
+        nextRed = value;
+        break;
+      case 'green':
+        setGreen(value);
+        nextGreen = value;
+        break;
+      case 'blue':
+        setBlue(value);
+        nextBlue = value;
+        break;
+    }
+
+    setHex(`#${nextRed.toString(16).padStart(2, '0')}${nextGreen.toString(16).padStart(2, '0')}${nextBlue.toString(16).padStart(2, '0')}`);
+    localStorage.setItem('last-color', `${nextRed},${nextGreen},${nextBlue}`);
+
   }
 
   return (
@@ -191,7 +221,12 @@ export default function ColorPickerApp() {
         <ToolTip id='tooltip' />
         <ColorRange value={red} id='red-slider' mainId='red-slider-container' textLabel='R' onChange={handleChange} color='red' />
         <Field value={red} id='red-field' mainId='red-field-container' textLabel='R' onChange={handleChange} color='red' />
-        
+        <ColorRange value={green} id='green-slider' mainId='green-slider-container' textLabel='G' onChange={handleChange} color='green' />
+        <Field value={green} id='green-field' mainId='green-field-container' textLabel='G' onChange={handleChange} color='green' />
+        <ColorRange value={blue} id='blue-slider' mainId='blue-slider-container' textLabel='B' onChange={handleChange} color='blue' />
+        <Field value={blue} id='blue-field' mainId='blue-field-container' textLabel='B' onChange={handleChange} color='blue' />
+        <Field value={hex} id='hex-field' mainId='hex-field-container' textLabel='HEX' onChange={handleHexChange} color='hex' classLabel='' />
+        <button id='add-color' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
       </Colorpicker>
       <Editor>
         <Header>

@@ -38,7 +38,7 @@ export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabe
     <div className="field-wrapper-label" id={mainId}>
       <label htmlFor={id} className={classLabel}>{textLabel}</label>
       <div className='field-container'>
-        <input type="text" id={id} value={value} onChange={onChange} data-color={color} onPaste={handlePaste} />
+        <input type="text" id={id} value={value} onChange={e => onChange(e.currentTarget)} data-color={color} data-value={value} onPaste={handlePaste} />
         <button className="copy-btn" onClick={handleCopy}>
           <img src="./copy.svg" alt="copy" />
         </button>
