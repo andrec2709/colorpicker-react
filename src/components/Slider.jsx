@@ -14,7 +14,7 @@ export const Slider = (
     }
 ) => {
     const [sliderTrackFill, setSliderTrackFill] = useState(0);
-    const [handlePos, setHandlePos] = useState(0);
+    const [thumbPos, setThumbPos] = useState(0);
     const [isPressed, setIsPressed] = useState(false);
     const elementRef = useRef(null);
 
@@ -28,7 +28,7 @@ export const Slider = (
         pos = Math.max(0, Math.min(width, pos));
 
 
-        setHandlePos(`${pos - handleSize / 2}px`);
+        setThumbPos(`${pos - handleSize / 2}px`);
         setSliderTrackFill(`${pos}px`)
     }
 
@@ -46,7 +46,7 @@ export const Slider = (
         let newValue = min + pos / width * (max - min);
         newValue = Math.round(newValue)
 
-        setHandlePos(`${pos - handleSize / 2}px`)
+        setThumbPos(`${pos - handleSize / 2}px`)
         setSliderTrackFill(`${pos}px`);
 
         // elementRef.current.dataset.value = newValue;
@@ -110,7 +110,7 @@ export const Slider = (
                 className="slider-thumb"
                 style={{
                     width: handleSize,
-                    left: handlePos
+                    left: thumbPos
                 }}
             ></div>
             <div className="slider-track"></div>
