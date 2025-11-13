@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import { useEffect, useState } from "react";
 
 export const Slider = (
@@ -12,73 +13,72 @@ export const Slider = (
     }
 ) => {
     const [sliderTrackFill, setSliderTrackFill] = useState(0);
+    const [handlePos, setHandlePos] = useState(0);
     const [isPressed, setIsPressed] = useState(false);
-    const [target, setTarget] = useState(null);
-    const [handlePos, setHandlePos] = useState(`-${calcThumbPos() ?? handleSize / 2}px`);
-    console.log(handlePos);
-    function calcThumbPos() {
-        const rect = target?.getBoundingClientRect();
-        console.log(rect)
+    const elementRef = useRef(null);
 
-        if (rect === undefined) return null;
+    function calcThumbPos(target) {
+        const rect = target.getBoundingClientRect();
 
-        const x1 = rect?.left;
-        const width = rect?.width;
+        const width = rect.width;
 
-        const clientX = (value * width / max) + x1; 
-        console.log(`x1: ${x1}\nwidth: ${width}\nclientX: ${clientX}`);
-        let pos = clientX - x1;
+        let pos = value * width / max;
+
         pos = Math.max(0, Math.min(width, pos));
 
-        // console.log(pos - handleSize / 2);
 
-        return pos - handleSize / 2;
-        // setHandlePos(`${pos - handleSize / 2}px`);
+        setHandlePos(`${pos - handleSize / 2}px`);
+        setSliderTrackFill(`${pos}px`)
     }
 
-    useEffect(() => {
-        setHandlePos(`${calcThumbPos}px`);
-    }, [target]);
+    const handlePointerMove = useCallback((e) => {
+
+        e.preventDefault();
+        const rect = elementRef.current.getBoundingClientRect();
+
+        const x1 = rect.left;
+        const width = rect.width;
+
+        let pos = e.clientX - x1;
+        pos = Math.max(0, Math.min(width, pos));
+
+        let newValue = min + pos / width * (max - min);
+        newValue = Math.round(newValue)
+
+        setHandlePos(`${pos - handleSize / 2}px`)
+        setSliderTrackFill(`${pos}px`);
+
+        elementRef.current.dataset.value = newValue;
+        onChange(elementRef.current);
+    }, [min, max, handleSize]);
+
+    const handlePointerDown = (e) => {
+        e.preventDefault();
+        handlePointerMove(e);
+        setIsPressed(true);
+    }
+
+    const handlePointerUp = () => setIsPressed(false);
 
     useEffect(() => {
-        const handlePointerMove = (e) => {
+        if (elementRef.current) {
+            calcThumbPos(elementRef.current);
+        }
+    }, [value]);
 
-            const rect = target.getBoundingClientRect();
-
-            const x1 = rect.left;
-            const width = rect.width;
-
-            let pos = e.clientX - x1;
-            pos = Math.max(0, Math.min(width, pos));
-
-            let newValue = min + pos / width * (max - min);
-            newValue = Math.round(newValue)
-
-            setHandlePos(`${pos - handleSize / 2}px`)
-            setSliderTrackFill(`${pos}px`);
-
-            target.dataset.value = newValue;
-            onChange(target);
-        };
-
-        const handlePointerUp = () => setIsPressed(false);
+    useEffect(() => {
 
         if (isPressed) {
-            document.addEventListener('mousemove', handlePointerMove);
-            document.addEventListener('mouseup', handlePointerUp);
+            document.addEventListener('pointermove', handlePointerMove);
+            document.addEventListener('pointerup', handlePointerUp, {once: true});
         }
 
         return () => {
-            document.removeEventListener('mousemove', handlePointerMove);
-            document.removeEventListener('mouseup', handlePointerUp);
+            document.removeEventListener('pointermove', handlePointerMove);
+            document.removeEventListener('pointerup', handlePointerUp);
         };
 
     }, [isPressed]);
-
-    const handlePointerDown = (e) => {
-        setTarget(e.currentTarget);
-        setIsPressed(true);
-    }
 
     return (
         <div
@@ -87,7 +87,7 @@ export const Slider = (
             data-value={value}
             data-color={color}
             onPointerDown={handlePointerDown}
-            onLoad={(e) => {setTarget(e.currentTarget)}}
+            ref={elementRef}
             style={{
                 height: handleSize
             }}

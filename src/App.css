@@ -289,8 +289,8 @@ button {
   flex-wrap: wrap;
   align-content: flex-start;
   justify-content: space-between;
-  column-gap: .1rem;
-  row-gap: .1rem;
+  column-gap: .12rem;
+  row-gap: .12rem;
   background-color: rgb(24, 24, 24);
   border-radius: 5px;
   padding: .4rem .2rem;
@@ -365,16 +365,18 @@ button {
   align-items: center;
   height: .4rem;
   user-select: none;
+  touch-action: none;
 }
 
 .slider-thumb {
   aspect-ratio: 1 / 1;
-  background-color: rgb(187, 192, 201);
-  border: 3px solid rgb(171, 171, 207);
+  background-color: rgb(93, 0, 168);
+  border: 3px solid rgb(187, 187, 187);
   border-radius: 50%;
-  box-shadow: 0 0 2px rgb(6, 6, 8);
+  box-shadow: 0 0 2px rgb(0, 0, 0);
   position: absolute;
   user-select: none;
+  touch-action: none;
 }
 
 .slider-track {
@@ -383,16 +385,18 @@ button {
   height: 25%;
   background-color: rgb(196, 196, 196);
   border-radius: 10px;
+  touch-action: none;
 
 }
 
 .slider-track-filled {
   user-select: none;
-  background-color: rgb(0, 102, 255);
-  border: .5px solid rgba(148, 148, 148, 0.2);
+  background-color: rgb(120, 25, 209);
+  border: .5px solid rgba(180, 180, 180, 0.5);
   height: 25%;
   border-radius: 10px;
   position: absolute;
+  touch-action: none;
   
 }
 

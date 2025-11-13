@@ -1,0 +1,157 @@
+from random import randint
+
+# Generates random palettes data in order to test app's performance
+
+totalPallets = 100
+colorsPerPallet = 30
+palettes = []
+
+file = open("./src/test.json", "w+")
+
+
+def randomID(idSize: int = 12) -> str:
+
+    finalID = ""
+    chars = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+        "@",
+        "!",
+        "#",
+        "$",
+        "%",
+        "&",
+        "*",
+        "?",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+    ]
+
+    for i in range(idSize):
+        finalID += chars[randint(0, len(chars) - 1)]
+
+    return finalID
+
+
+def randomColor() -> list:
+    RGB_MAX = 255
+    RGB_MIN = 0
+
+    r = randint(RGB_MIN, RGB_MAX)
+    g = randint(RGB_MIN, RGB_MAX)
+    b = randint(RGB_MIN, RGB_MAX)
+    HEX = "#{:0>2}{:0>2}{:0>2}".format(
+        hex(r).replace("0x", ""), hex(g).replace("0x", ""), hex(b).replace("0x", "")
+    )
+
+    finalColor = [r, g, b, HEX]
+
+    return finalColor
+
+
+file.write("[\n")
+
+for p in range(totalPallets):
+    paletteName = "Palette {}".format(p + 1)
+    paletteID = randomID()
+    colors = {}
+    for c in range(colorsPerPallet):
+        color = randomColor()
+        colorID = randomID()
+        colors[colorID] = color
+
+    palette = {
+        "name": paletteName,
+        "id": paletteID,
+        "colors": colors,
+    }
+
+    palettes.append(palette)
+
+size = len(palettes)
+current = 1
+
+for p in palettes:
+    file.write("""{{\n\t"name": "{}",\n\t"id": "{}",\n\t"colors": {{\n""".format(p["name"], p["id"])
+    )
+
+    colorSize = len(p['colors'])
+    currentColor = 1
+    
+    for i, c in p['colors'].items():
+        print("i -> {}; c -> {}".format(i, c))
+        
+        if (currentColor == colorSize):
+            file.write("""\t\t"{}": [{}, {}, {}, "{}"]\n""".format(i, c[0], c[1], c[2], c[3]))
+        else:
+            file.write("""\t\t"{}": [{}, {}, {}, "{}"],\n""".format(i, c[0], c[1], c[2], c[3]))
+        
+        currentColor += 1
+    
+    if (current == size):
+        file.write("}\n}")
+    else:
+        file.write("}\n},")
+    
+    current += 1
+
+file.write("\n]")
+file.close()

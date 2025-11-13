@@ -15,7 +15,7 @@ import PaletteDetailView from './components/PaletteDetailView';
 import { usePalette } from './contexts/PaletteContext';
 import { ColorItem } from './components/ColorItem';
 import { useToolTip } from './contexts/ToolTipContext';
-import SliderTest from './components/Slider';
+
 
 // Exercise:
 // Make a simple colorpicker app.
@@ -79,8 +79,8 @@ export default function ColorPickerApp() {
 
 
   function handleHexChange(e) {
-    let value = e.dataset.value;
-
+    let value = e.value;
+    console.log(value)
     if (/^#[a-fA-F0-9]{0,6}$/.test(value)) {
 
       setHex(value);
@@ -90,7 +90,7 @@ export default function ColorPickerApp() {
       const nextRed = parseInt(value.slice(0, 2).padStart(2, '0'), 16);
       const nextGreen = parseInt(value.slice(2, 4).padStart(2, '0'), 16);
       const nextBlue = parseInt(value.slice(4, 6).padStart(2, '0'), 16);
-
+      console.log(`nextRed: ${nextRed}\nnextGreen: ${nextGreen}\nnextBlue: ${nextBlue}`);
       setRed(nextRed);
       setGreen(nextGreen);
       setBlue(nextBlue);
@@ -122,8 +122,6 @@ export default function ColorPickerApp() {
       return palette;
     });
 
-    console.log(selectedPalette)
-    console.log(palettesData)
     updatePalettesData(updatedPalettes);
 
   }
@@ -181,16 +179,16 @@ export default function ColorPickerApp() {
   }
 
   function handleChange(e) {
-    console.log(e);
 
     const color = e.dataset.color;
     let value;
     if (e.tagName === 'INPUT') {
       value = isNaN(parseInt(e.value)) ? '' : parseInt(e.value, 10);
     } else {
-      console.log('test')
       value = isNaN(parseInt(e.dataset.value)) ? '' : parseInt(e.dataset.value, 10);
     }
+
+    value = Math.max(0, Math.min(value, 255));
 
     let nextRed = red;
     let nextGreen = green;
@@ -217,6 +215,7 @@ export default function ColorPickerApp() {
 
   return (
     <>
+    
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
         <ColorRange value={red} id='red-slider' mainId='red-slider-container' textLabel='R' onChange={handleChange} color='red' />
