@@ -77,9 +77,7 @@ export default function ColorPickerApp() {
   }
 
 
-  function handleHexChange(e) {
-    let value = e.value;
-    console.log(value)
+  function handleHexChange(value, color) {
     if (/^#[a-fA-F0-9]{0,6}$/.test(value)) {
 
       setHex(value);
@@ -177,16 +175,9 @@ export default function ColorPickerApp() {
     }
   }
 
-  function handleChange(e) {
+  function handleChange(value, color) {
 
-    const color = e.dataset.color;
-    let value;
-    if (e.tagName === 'INPUT') {
-      value = isNaN(parseInt(e.value)) ? '' : parseInt(e.value, 10);
-    } else {
-      value = isNaN(parseInt(e.dataset.value)) ? '' : parseInt(e.dataset.value, 10);
-    }
-
+    value = isNaN(parseInt(value)) ? '' : parseInt(value, 10);
     value = Math.max(0, Math.min(value, 255));
 
     let nextRed = red;

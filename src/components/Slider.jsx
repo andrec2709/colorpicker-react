@@ -49,8 +49,8 @@ export const Slider = (
         setHandlePos(`${pos - handleSize / 2}px`)
         setSliderTrackFill(`${pos}px`);
 
-        elementRef.current.dataset.value = newValue;
-        onChange(elementRef.current);
+        // elementRef.current.dataset.value = newValue;
+        onChange(newValue, color);
     }, [min, max, handleSize]);
 
     const handlePointerDown = (e) => {
