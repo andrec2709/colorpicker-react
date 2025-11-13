@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import ToolTip from './components/ToolTip';
-import './App.css'
-import ContextProvider from './contexts/ContextProvider';
 import Field from './components/Field';
 import ColorRange from './components/ColorRange';
 import Colorpicker from './components/Colorpicker';
@@ -15,6 +13,7 @@ import PaletteDetailView from './components/PaletteDetailView';
 import { usePalette } from './contexts/PaletteContext';
 import { ColorItem } from './components/ColorItem';
 import { useToolTip } from './contexts/ToolTipContext';
+import './App.css'
 
 
 // Exercise:
