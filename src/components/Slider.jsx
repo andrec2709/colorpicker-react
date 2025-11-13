@@ -9,7 +9,8 @@ export const Slider = (
         onChange,
         value,
         id,
-        color
+        color,
+        labelledBy
     }
 ) => {
     const [sliderTrackFill, setSliderTrackFill] = useState(0);
@@ -87,7 +88,14 @@ export const Slider = (
             data-value={value}
             data-color={color}
             onPointerDown={handlePointerDown}
+            onKeyDown={e => console.log(e)}
             ref={elementRef}
+            tabIndex="0"
+            role="slider"
+            aria-valuemin={min}
+            aria-valuemax={max}
+            aria-valuenow={value}
+            aria-labelledby={labelledBy}
             style={{
                 height: handleSize
             }}
