@@ -203,9 +203,22 @@ export default function ColorPickerApp() {
 
   }
 
+  function handlePickRandom(){
+    
+    const r = Math.round(Math.random()*255);
+    const g = Math.round(Math.random()*255);
+    const b = Math.round(Math.random()*255);
+
+    handleChange(r, 'red');
+    handleChange(g, 'green');
+    handleChange(b, 'blue');
+  }
+
   return (
     <>
-    
+      <div className='options-container'>
+        <button id='randomizer' onClick={handlePickRandom} ><img src="./random.svg" alt="Pick a random color" /></button>
+      </div>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
         <ColorRange value={red} id='red-slider' mainId='red-slider-container' textLabel='R' labelId="red-slider-label" onChange={handleChange} color='red' />

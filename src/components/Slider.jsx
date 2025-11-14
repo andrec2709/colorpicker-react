@@ -16,9 +16,15 @@ export const Slider = (
     const [sliderTrackFill, setSliderTrackFill] = useState(0);
     const [thumbPos, setThumbPos] = useState(0);
     const [isPressed, setIsPressed] = useState(false);
+
+    const [isDragging, setIsDragging] = useState(false);
+    const startXRef = useRef(0);
+    const movedRef = useRef(false);
+    const MOVE_THRESHOLD = 3; // px
+
     const elementRef = useRef(null);
 
-    function calcThumbPos(target) {
+    const calcThumbPos = (target) => {
         const rect = target.getBoundingClientRect();
 
         const width = rect.width;
@@ -32,9 +38,10 @@ export const Slider = (
         setSliderTrackFill(`${pos}px`)
     }
 
-    const handlePointerMove = useCallback((e) => {
+    const handlePointerMove = useCallback((e, { initial = false } = {}) => {
 
         e.preventDefault();
+        
         const rect = elementRef.current.getBoundingClientRect();
 
         const x1 = rect.left;
@@ -43,23 +50,77 @@ export const Slider = (
         let pos = e.clientX - x1;
         pos = Math.max(0, Math.min(width, pos));
 
+        if (!initial) {
+            const delta = Math.abs(e.clientX - startXRef.current);
+            if (!movedRef.current && delta > MOVE_THRESHOLD) {
+                movedRef.current = true;
+                setIsDragging(true);
+            }
+        }
+
         let newValue = min + pos / width * (max - min);
         newValue = Math.round(newValue)
 
         setThumbPos(`${pos - handleSize / 2}px`)
         setSliderTrackFill(`${pos}px`);
 
-        // elementRef.current.dataset.value = newValue;
         onChange(newValue, color);
-    }, [min, max, handleSize]);
+    }, [min, max, handleSize, onChange, color]);
 
     const handlePointerDown = (e) => {
         e.preventDefault();
-        handlePointerMove(e);
+
+        startXRef.current = e.clientX;
+        movedRef.current = false;
+        setIsDragging(false); // not dragging yet
+
+        if (elementRef.current) {
+            elementRef.current.focus();
+        }
+
+        handlePointerMove(e, { initial: true });
         setIsPressed(true);
     }
 
-    const handlePointerUp = () => setIsPressed(false);
+    const handlePointerUp = () => {
+        setIsPressed(false);
+
+        if (movedRef.current) {
+            movedRef.current = false;
+            setIsDragging(false);
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        const keys = ['ArrowLeft', 'ArrowRight'];
+
+        if (keys.includes(e.key)) e.preventDefault();
+
+        let newValue = value;
+        
+        let modifier = 1;
+
+        if (e.repeat) {
+            modifier += 6;
+        }
+
+        if (e.ctrlKey) {
+            modifier += 10;
+        }
+
+        switch (e.key) {
+            case 'ArrowLeft':
+                newValue -= modifier;
+                break;
+            case 'ArrowRight':
+                newValue += modifier;
+                break;
+        }
+
+        newValue = Math.max(min, Math.min(newValue, max));
+
+        onChange(newValue, color);
+    };
 
     useEffect(() => {
         if (elementRef.current) {
@@ -79,16 +140,18 @@ export const Slider = (
             document.removeEventListener('pointerup', handlePointerUp);
         };
 
-    }, [isPressed]);
+    }, [isPressed, handlePointerMove]);
 
     return (
         <div
             id={id}
-            className="slider-test-container"
+            className="slider"
             data-value={value}
             data-color={color}
+            data-pressed={isPressed}
+            data-dragging={isDragging}
             onPointerDown={handlePointerDown}
-            onKeyDown={e => console.log(e)}
+            onKeyDown={handleKeyDown}
             ref={elementRef}
             tabIndex="0"
             role="slider"
