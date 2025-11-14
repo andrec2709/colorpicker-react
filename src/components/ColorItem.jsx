@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useToolTip } from "../contexts/ToolTipContext";
 import { usePalette } from "../contexts/PaletteContext";
+import CopyIcon from '../assets/copy.svg';
+import DeleteIcon from '../assets/delete.svg';
 
 export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
@@ -46,10 +48,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         role="button"
         >
             <button className="color-copy" onClick={handleCopy}>
-                <img src="./copy.svg" alt="copy color" />
+                <img src={CopyIcon} alt="copy color" />
             </button>
             <button className="color-delete" onClick={handleRemoveColor}>
-                <img src="./delete.svg" alt="delete color" />
+                <img src={DeleteIcon} alt="delete color" />
             </button>
         </div>
     );

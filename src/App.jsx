@@ -14,6 +14,15 @@ import Options from './components/Options';
 import { usePalette } from './contexts/PaletteContext';
 import { useToolTip } from './contexts/ToolTipContext';
 
+
+// Assets
+import LockIcon from './assets/lock.svg';
+import UnlockIcon from './assets/unlock.svg';
+import RandomIcon from './assets/random.svg';
+import PlusIcon from './assets/plus.svg';
+import ArrowIcon from './assets/arrow.svg';
+import DeleteIcon from './assets/delete.svg';
+
 import './App.css'
 
 
@@ -309,8 +318,8 @@ export default function ColorPickerApp() {
     <>
       <Options>
         <button id='grayscale' ref={optGrayscaleRef} onClick={handleOptions} data-opt='grayscale' className='options-button'>Grayscale</button>
-        <button id='randomizer' className='randomizer' onClick={handlePickRandom} ><img src="./random.svg" alt="Pick a random color" /></button>
-        <button id='lock' className='lock' ref={optLockRef} onClick={handleOptions} data-opt='lock'><img src={isLocked ? './lock.svg' : './unlock.svg'} alt="Lock distance between colors" title='lock distance between colors.&#10;You must move using the slider with the highest value.' /></button>
+        <button id='randomizer' className='randomizer' onClick={handlePickRandom} ><img src={RandomIcon} alt="Pick a random color" /></button>
+        <button id='lock' className='lock' ref={optLockRef} onClick={handleOptions} data-opt='lock'><img src={isLocked ? LockIcon : UnlockIcon} alt="Lock distance between colors" title='lock distance between colors.&#10;You must move using the slider with the highest value.' /></button>
       </Options>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
@@ -330,7 +339,7 @@ export default function ColorPickerApp() {
             style={{ visibility: `${selectedPalette === null ? 'hidden' : 'visible'}` }}
             onClick={() => selectPalette(null)}
           >
-            <img src="./arrow.svg" alt="go back" />
+            <img src={ArrowIcon} alt="go back" />
           </button>
           <label htmlFor="palette-title" id='palette-title-label'>Palette title</label>
           <input
@@ -342,10 +351,10 @@ export default function ColorPickerApp() {
             aria-label='palette title'
           />
           <button id="palette-add" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
-            <img src="./plus.svg" alt="new palette" />
+            <img src={PlusIcon} alt="new palette" />
           </button>
           <button id='palette-delete' style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }} onClick={handleDeletePalette}>
-            <img src="./delete.svg" alt="delete palette" />
+            <img src={DeleteIcon} alt="delete palette" />
           </button>
         </Header>
         <PalettesListView

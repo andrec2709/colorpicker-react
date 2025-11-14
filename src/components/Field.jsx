@@ -1,4 +1,5 @@
 import { useToolTip } from "../contexts/ToolTipContext";
+import CopyIcon from '../assets/copy.svg';
 
 export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabel = 'visually-hidden' }) => {
   const { showMessage } = useToolTip();
@@ -40,7 +41,7 @@ export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabe
       <div className='field-container'>
         <input type="text" id={id} value={value} onChange={e => onChange(e.currentTarget.value, color)} data-color={color} onPaste={handlePaste} />
         <button className="copy-btn" onClick={handleCopy}>
-          <img src="./copy.svg" alt="copy" />
+          <img src={CopyIcon} alt="copy" />
         </button>
       </div>
     </div>
