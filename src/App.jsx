@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ToolTip from './components/ToolTip';
 import Field from './components/Field';
 import ColorRange from './components/ColorRange';
@@ -6,13 +6,14 @@ import Colorpicker from './components/Colorpicker';
 import Editor from './components/Editor';
 import Header from './components/Header';
 import PalettesListView from './components/PalettesListView';
-
-// import palettesData from './palettes.json';
 import Palette from './components/Palette';
 import PaletteDetailView from './components/PaletteDetailView';
+import ColorItem from './components/ColorItem';
+import Options from './components/Options';
+
 import { usePalette } from './contexts/PaletteContext';
-import { ColorItem } from './components/ColorItem';
 import { useToolTip } from './contexts/ToolTipContext';
+
 import './App.css'
 
 
@@ -30,7 +31,7 @@ function randomId(size = 12) {
 
   let number;
   let finalId = '';
-  const max = 69;
+  const max = chars.length - 1;
   const min = 0;
 
   for (let index = 0; index < size; index++) {
@@ -58,16 +59,28 @@ export default function ColorPickerApp() {
 
   const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
 
-  // const [red, setRed] = useState(parseInt(lastColor[0]));
+
   const [red, setRed] = useState(parseInt(lastColor[0]));
   const [green, setGreen] = useState(parseInt(lastColor[1]));
   const [blue, setBlue] = useState(parseInt(lastColor[2]));
-  const [hex, setHex] = useState(
-    `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
-  );
+  const [hex, setHex] = useState(`#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`);
 
   const root = document.documentElement;
   root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+
+  // Options
+  const [useGrayscale, setUseGrayscale] = useState(false);
+  const optGrayscaleRef = useRef(null);
+
+  // Lock
+  const [isLocked, setIsLocked] = useState(false);
+  const optLockRef = useRef(null);
+  const leadColor = useRef(null);
+  const redLeadDiff = useRef(null);
+  const greenLeadDiff = useRef(null);
+  const blueLeadDiff = useRef(null);
+
+  const options = useRef([optGrayscaleRef, optLockRef]);
 
   function handleSelectColor(color) {
     setRed(color[0]);
@@ -183,19 +196,47 @@ export default function ColorPickerApp() {
     let nextRed = red;
     let nextGreen = green;
     let nextBlue = blue;
-    switch (color) {
-      case 'red':
-        setRed(value);
-        nextRed = value;
-        break;
-      case 'green':
-        setGreen(value);
-        nextGreen = value;
-        break;
-      case 'blue':
-        setBlue(value);
-        nextBlue = value;
-        break;
+
+    if (useGrayscale) {
+      setRed(value);
+      setGreen(value);
+      setBlue(value);
+
+      nextRed = value;
+      nextGreen = value;
+      nextBlue = value;
+    } else if (isLocked) {
+
+      if (color !== leadColor.current[0]) return;
+
+      // clamping values
+      const valueRed = Math.max(0, Math.min(255, value - redLeadDiff.current));
+      const valueGreen = Math.max(0, Math.min(255, value - greenLeadDiff.current));
+      const valueBlue = Math.max(0, Math.min(255, value - blueLeadDiff.current));
+
+      
+      setRed(valueRed);
+      setGreen(valueGreen);
+      setBlue(valueBlue);
+
+      nextRed = valueRed;
+      nextGreen = valueGreen;
+      nextBlue = valueBlue;
+    } else {
+      switch (color) {
+        case 'red':
+          setRed(value);
+          nextRed = value;
+          break;
+        case 'green':
+          setGreen(value);
+          nextGreen = value;
+          break;
+        case 'blue':
+          setBlue(value);
+          nextBlue = value;
+          break;
+      }
     }
 
     setHex(`#${nextRed.toString(16).padStart(2, '0')}${nextGreen.toString(16).padStart(2, '0')}${nextBlue.toString(16).padStart(2, '0')}`);
@@ -203,22 +244,74 @@ export default function ColorPickerApp() {
 
   }
 
-  function handlePickRandom(){
-    
-    const r = Math.round(Math.random()*255);
-    const g = Math.round(Math.random()*255);
-    const b = Math.round(Math.random()*255);
+  function handlePickRandom() {
+
+    const r = Math.round(Math.random() * 255);
+    const g = Math.round(Math.random() * 255);
+    const b = Math.round(Math.random() * 255);
 
     handleChange(r, 'red');
     handleChange(g, 'green');
     handleChange(b, 'blue');
   }
 
+  function handleOptions(e) {
+    const optClicked = e.currentTarget.dataset.opt;
+
+    if (options.current) {
+      options.current.forEach(option => {
+
+        if (option.current.dataset.opt === optClicked) {
+          option.current.classList.toggle('selected');
+        } else {
+          option.current.classList.remove('selected');
+        }
+      });
+
+      switch (optClicked) {
+        case 'grayscale':
+          setUseGrayscale(!useGrayscale);
+          setIsLocked(false);
+          break;
+        case 'lock':
+          setUseGrayscale(false);
+          handleLockColors();
+          break;
+      }
+    }
+
+  }
+
+  function handleLockColors() {
+    if (optLockRef) {
+      setIsLocked(!isLocked);
+
+      if (red > green) {
+        leadColor.current = ['red', red];
+      } else {
+        leadColor.current = ['green', green];
+      }
+
+      if (leadColor.current[1] < blue) {
+        leadColor.current = ['blue', blue];
+      }
+
+      redLeadDiff.current = Math.abs(leadColor.current[1] - red);
+      greenLeadDiff.current = Math.abs(leadColor.current[1] - green);
+      blueLeadDiff.current = Math.abs(leadColor.current[1] - blue);
+
+      return;
+    }
+
+  }
+
   return (
     <>
-      <div className='options-container'>
-        <button id='randomizer' onClick={handlePickRandom} ><img src="./random.svg" alt="Pick a random color" /></button>
-      </div>
+      <Options>
+        <button id='grayscale' ref={optGrayscaleRef} onClick={handleOptions} data-opt='grayscale' className='options-button'>Grayscale</button>
+        <button id='randomizer' className='randomizer' onClick={handlePickRandom} ><img src="./random.svg" alt="Pick a random color" /></button>
+        <button id='lock' className='lock' ref={optLockRef} onClick={handleOptions} data-opt='lock'><img src={isLocked ? './lock.svg' : './unlock.svg'} alt="Lock distance between colors" title='lock distance between colors.&#10;You must move using the slider with the highest value.' /></button>
+      </Options>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
         <ColorRange value={red} id='red-slider' mainId='red-slider-container' textLabel='R' labelId="red-slider-label" onChange={handleChange} color='red' />

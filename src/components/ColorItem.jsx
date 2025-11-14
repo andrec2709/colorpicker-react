@@ -54,3 +54,5 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         </div>
     );
 };
+
+export default ColorItem;

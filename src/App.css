@@ -3,7 +3,7 @@
   /* shape-rendering: crispEdges; */
 }
 
-*:focus {
+*:focus-visible {
   outline: 1px solid rgba(204, 204, 204, 0.425);
 }
 
@@ -26,8 +26,7 @@ button {
   grid-template:
     "a b" auto
     "c d" auto
-    "e f" auto 
-    "g h" auto / auto min-content;
+    "e f" auto "g h" auto / auto min-content;
   row-gap: .5rem;
   margin-bottom: 1rem;
   width: 100%;
@@ -97,7 +96,7 @@ button {
   justify-self: end;
   width: fit-content;
   grid-area: h;
-  
+
 }
 
 #hex-color {
@@ -105,7 +104,9 @@ button {
   justify-content: end;
 }
 
-#red-slider, #green-slider, #blue-slider {
+#red-slider,
+#green-slider,
+#blue-slider {
   width: clamp(6rem, 30vw, 12rem);
 }
 
@@ -186,7 +187,7 @@ button {
   margin-right: 1rem;
 }
 
-#hex-field-container > label {
+#hex-field-container>label {
   margin: 0;
   padding: 0;
   position: absolute;
@@ -353,7 +354,7 @@ button {
   background-color: unset;
   height: 100%;
   text-align: center;
-  
+
   &:disabled {
     color: unset;
   }
@@ -370,6 +371,7 @@ button {
   height: .4rem;
   user-select: none;
   touch-action: none;
+
 }
 
 .slider-thumb {
@@ -403,12 +405,12 @@ button {
   border-radius: 10px;
   position: absolute;
   touch-action: none;
-  
+
 }
 
 .slider-thumb,
 .slider-track-filled {
-  transition: left .1s ease-in-out;
+  transition: left .1s cubic-bezier(0, .5, .3, .5);
 }
 
 .slider[data-dragging="true"] .slider-thumb,
@@ -429,28 +431,62 @@ button {
   justify-content: space-evenly;
 }
 
-#randomizer {
-  width: fit-content;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
+
+.randomizer,
+.lock {
   border: none;
   padding: .5rem;
   background-color: rgb(90, 97, 112);
+  width: fit-content;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#randomizer:hover {
+.randomizer:hover,
+.lock:hover {
   opacity: 80%;
 }
 
-#randomizer:active {
+.randomizer:active,
+.lock:active {
   opacity: 50%;
 }
 
-#randomizer > img {
+.randomizer>img,
+.lock>img {
   width: 30px;
+  filter: invert();
+}
+
+.options-button {
+  border: none;
+  padding: .5rem;
+  background-color: rgb(90, 97, 112);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+.options-button:hover {
+  opacity: 80%;
+}
+
+.options-button:active {
+  opacity: 50%;
+}
+
+.selected {
+  background-color: rgb(5, 187, 5);
+  color: rgb(29, 29, 29);
+}
+
+.selected>img {
+  filter: none;
 }
 
 .tooltip-success {
