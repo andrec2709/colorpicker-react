@@ -1,4 +1,3 @@
-import { usePalette } from "../contexts/PaletteContext";
 
 export const PaletteDetailView = ({ children, style }) => {
 

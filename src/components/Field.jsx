@@ -22,17 +22,9 @@ export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabe
     await navigator.clipboard
       .readText()
       .then((clipText) => {
-        const color = e.target.dataset.color;
-
-        switch (color) {
-          case 'hex':
-            clipText = clipText.replace('#', '');
-            e.target.value = `#${clipText.slice(0, 6)}`;
-            break;
-          default:
-            e.target.value = clipText;
-            break;
-        }
+        
+        onChange(clipText, color);
+        
       });
   }
   return (

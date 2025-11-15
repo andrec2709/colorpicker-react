@@ -1,20 +1,23 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 export const PaletteContext = createContext();
 
 export const usePalette = () => useContext(PaletteContext);
 
 export const PaletteProvider = ({ children }) => {
-    const [selectedPalette, setSelectedPalette] = useState(null);
-    const [selectedPaletteName, setSelectedPaletteName] = useState(selectedPalette?.name ?? 'Palettes');
+    const [selectedPaletteId, setSelectedPaletteId] = useState(null);
     
     const [palettesData, setPalettesData] = useState(
         JSON.parse(localStorage.getItem('palettesData') || '[]')
     );
 
+    const selectedPalette = useMemo(
+        () => palettesData.find(p => p.id === selectedPaletteId) ?? null,
+        [palettesData, selectedPaletteId]
+    );
+
     function selectPalette(paletteData) {
-        setSelectedPalette(paletteData);
-        setSelectedPaletteName(paletteData?.name ?? 'Palettes');
+        setSelectedPaletteId(paletteData?.id ?? null);
     }
 
     function updatePalettesData(newPalettesData) {
@@ -23,7 +26,7 @@ export const PaletteProvider = ({ children }) => {
     }
 
     return (
-        <PaletteContext.Provider value={{ selectedPalette, selectedPaletteName, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData }}>
+        <PaletteContext.Provider value={{ selectedPalette, selectedPaletteId, palettesData, selectPalette, setSelectedPaletteId, updatePalettesData }}>
             {children}
         </PaletteContext.Provider>
     );

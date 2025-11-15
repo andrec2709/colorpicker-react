@@ -6,13 +6,12 @@ import DeleteIcon from '../assets/delete.svg';
 
 export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
-    const [color, setColor] = useState(previewColor);
     const { showMessage } = useToolTip();
-    const { selectedPalette, palettesData, updatePalettesData } = usePalette();
+    const { selectedPaletteId, palettesData, updatePalettesData } = usePalette();
 
     function handleCopy(e) {
         e.stopPropagation();
-        navigator.clipboard.writeText(color[3])
+        navigator.clipboard.writeText(previewColor.hex)
             .then(() => {
                 showMessage('Copied!', 'ok');
             }, () => {
@@ -23,29 +22,27 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     function handleRemoveColor(e) {
         e.stopPropagation();
         const updatedPalettes = palettesData.map(palette => {
-            if (palette.id === selectedPalette.id) {
-                const colors = palette.colors;
-                delete colors[colorId];
-
+            if (palette.id === selectedPaletteId) {
                 return {
                     ...palette,
-                    colors
-                }
+                    colors: palette.colors.filter(c => c.id !== colorId)
+                };
             }
 
             return palette;
         });
         updatePalettesData(updatedPalettes);
+
     }
 
     return (
-        <div 
-        className="color-item" 
-        data-color={color} 
-        style={{ backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})` }}
-        onClick={() => onClick(color)}
-        tabIndex="0"
-        role="button"
+        <div
+            className="color-item"
+            data-color={previewColor}
+            style={{ backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})` }}
+            onClick={() => onClick(previewColor)}
+            tabIndex="0"
+            role="button"
         >
             <button className="color-copy" onClick={handleCopy}>
                 <img src={CopyIcon} alt="copy color" />

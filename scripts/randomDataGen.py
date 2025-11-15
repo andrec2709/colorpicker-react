@@ -2,11 +2,11 @@ from random import randint
 
 # Generates random palettes data in order to test app's performance
 
-totalPallets = 100
-colorsPerPallet = 30
+totalPallets = 1
+colorsPerPallet = 10
 palettes = []
 
-file = open("./src/test.json", "w+")
+file = open("./scripts/test.json", "w+")
 
 
 def randomID(idSize: int = 12) -> str:
@@ -91,10 +91,11 @@ def randomID(idSize: int = 12) -> str:
     return finalID
 
 
-def randomColor() -> list:
+def randomColor() -> dict:
     RGB_MAX = 255
     RGB_MIN = 0
 
+    colorID = randomID()
     r = randint(RGB_MIN, RGB_MAX)
     g = randint(RGB_MIN, RGB_MAX)
     b = randint(RGB_MIN, RGB_MAX)
@@ -102,7 +103,7 @@ def randomColor() -> list:
         hex(r).replace("0x", ""), hex(g).replace("0x", ""), hex(b).replace("0x", "")
     )
 
-    finalColor = [r, g, b, HEX]
+    finalColor = {"id": colorID, "r": r, "g": g, "b": b, "hex": HEX}
 
     return finalColor
 
@@ -112,11 +113,10 @@ file.write("[\n")
 for p in range(totalPallets):
     paletteName = "Palette {}".format(p + 1)
     paletteID = randomID()
-    colors = {}
+    colors = []
     for c in range(colorsPerPallet):
         color = randomColor()
-        colorID = randomID()
-        colors[colorID] = color
+        colors.append(color)
 
     palette = {
         "name": paletteName,
@@ -130,26 +130,25 @@ size = len(palettes)
 current = 1
 
 for p in palettes:
-    file.write("""{{\n\t"name": "{}",\n\t"id": "{}",\n\t"colors": {{\n""".format(p["name"], p["id"])
+    file.write("""{{\n\t"name": "{}",\n\t"id": "{}",\n\t"colors": [\n""".format(p["name"], p["id"])
     )
 
     colorSize = len(p['colors'])
     currentColor = 1
     
-    for i, c in p['colors'].items():
-        print("i -> {}; c -> {}".format(i, c))
+    for c in p['colors']:
         
         if (currentColor == colorSize):
-            file.write("""\t\t"{}": [{}, {}, {}, "{}"]\n""".format(i, c[0], c[1], c[2], c[3]))
+            file.write("""\t\t{{"id": "{}", "r": {}, "g": {}, "b": {}, "hex": "{}"}}\n""".format(c["id"], c["r"], c["g"], c["b"], c["hex"]))
         else:
-            file.write("""\t\t"{}": [{}, {}, {}, "{}"],\n""".format(i, c[0], c[1], c[2], c[3]))
+            file.write("""\t\t{{"id": "{}", "r": {}, "g": {}, "b": {}, "hex": "{}"}},\n""".format(c["id"], c["r"], c["g"], c["b"], c["hex"]))
         
         currentColor += 1
     
     if (current == size):
-        file.write("}\n}")
+        file.write("]\n}")
     else:
-        file.write("}\n},")
+        file.write("]\n},")
     
     current += 1
 

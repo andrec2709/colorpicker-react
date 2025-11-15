@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import ToolTip from './components/ToolTip';
 import Field from './components/Field';
 import ColorRange from './components/ColorRange';
@@ -53,18 +53,17 @@ function randomId(size = 12) {
 }
 
 export default function ColorPickerApp() {
-  const { selectedPalette, selectedPaletteName, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData } = usePalette();
+  const { selectedPalette, selectedPaletteId, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData } = usePalette();
   const { showMessage } = useToolTip();
+  
 
   const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
 
   const colorItems = [];
 
-  for (const key in selectedPalette?.colors) {
-    if (selectedPalette.colors.hasOwnProperty(key)) {
-      colorItems.push(<ColorItem previewColor={selectedPalette.colors[key]} key={key} colorId={key} onClick={handleSelectColor} />);
-    }
-  }
+  selectedPalette?.colors.forEach(color => {
+    colorItems.push(<ColorItem previewColor={color} key={color.id} colorId={color.id} onClick={handleSelectColor} />);
+  });
 
   const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
 
@@ -92,10 +91,10 @@ export default function ColorPickerApp() {
   const options = useRef([optGrayscaleRef, optLockRef]);
 
   function handleSelectColor(color) {
-    setRed(color[0]);
-    setGreen(color[1]);
-    setBlue(color[2]);
-    setHex(color[3]);
+    setRed(color.r);
+    setGreen(color.g);
+    setBlue(color.b);
+    setHex(color.hex);
   }
 
 
@@ -132,12 +131,28 @@ export default function ColorPickerApp() {
       return;
     }
 
-    const colorToAdd = [red, green, blue, hex];
+    // const colorToAdd = [red, green, blue, hex];
     const colorId = randomId(12);
+    const colorToAdd = {
+      id: colorId,
+      r: red,
+      g: green,
+      b: blue,
+      hex: hex
+    };
 
-    selectedPalette.colors[colorId] = colorToAdd;
+    // selectedPalette.colors.push(colorToAdd);
 
     const updatedPalettes = palettesData.map(palette => {
+      if (palette.id === selectedPaletteId) {
+        const colors = palette.colors.slice();
+        colors.push(colorToAdd);
+
+        return {
+          ...palette,
+          colors
+        }
+      }
       return palette;
     });
 
@@ -150,11 +165,11 @@ export default function ColorPickerApp() {
     const newPalette = {
       name: `Palette ${Object.keys(palettesData).length + 1}`,
       id: randomId(),
-      colors: {}
+      colors: []
     };
 
     palettesData.push(newPalette)
-    const newPalettesData = palettesData;
+    const newPalettesData = palettesData.slice();
 
     selectPalette(newPalette);
     updatePalettesData(newPalettesData);
@@ -178,7 +193,6 @@ export default function ColorPickerApp() {
   function handleNameChange(e) {
 
     if (e.target.value.length < 30) {
-      setSelectedPaletteName(e.target.value);
 
       const updatedPalettes = palettesData.map(palette => {
         if (palette.id === selectedPalette.id) {
@@ -345,7 +359,7 @@ export default function ColorPickerApp() {
           <input
             type='text'
             id='palette-title'
-            value={selectedPaletteName}
+            value={selectedPalette?.name ?? 'Palettes'}
             onChange={(e) => handleNameChange(e)}
             disabled={selectedPalette === null ? true : false}
             aria-label='palette title'
