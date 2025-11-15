@@ -314,6 +314,7 @@ button {
   display: flex;
   justify-content: space-between;
   padding: .1rem;
+  border: 1px solid transparent
 }
 
 .color-item.highlighted {
