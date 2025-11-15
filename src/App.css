@@ -316,6 +316,10 @@ button {
   padding: .1rem;
 }
 
+.color-item.highlighted {
+  border-right: 2px solid red;
+}
+
 #palette-detail {
   display: grid;
   grid-template-columns: repeat(auto-fit, clamp(5rem, 20%, 6rem));

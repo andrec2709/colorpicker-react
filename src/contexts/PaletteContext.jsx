@@ -16,6 +16,8 @@ export const PaletteProvider = ({ children }) => {
         [palettesData, selectedPaletteId]
     );
 
+    const [isHoldingItem, setIsHoldingItem] = useState(false);
+
     function selectPalette(paletteData) {
         setSelectedPaletteId(paletteData?.id ?? null);
     }
@@ -26,7 +28,7 @@ export const PaletteProvider = ({ children }) => {
     }
 
     return (
-        <PaletteContext.Provider value={{ selectedPalette, selectedPaletteId, palettesData, selectPalette, setSelectedPaletteId, updatePalettesData }}>
+        <PaletteContext.Provider value={{ selectedPalette, selectedPaletteId, palettesData, selectPalette, setSelectedPaletteId, updatePalettesData, isHoldingItem, setIsHoldingItem }}>
             {children}
         </PaletteContext.Provider>
     );
