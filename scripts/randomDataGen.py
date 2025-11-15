@@ -2,8 +2,8 @@ from random import randint
 
 # Generates random palettes data in order to test app's performance
 
-totalPallets = 1
-colorsPerPallet = 10
+totalPalettes = 20
+colorsPerPalette = 30
 palettes = []
 
 file = open("./scripts/test.json", "w+")
@@ -110,11 +110,11 @@ def randomColor() -> dict:
 
 file.write("[\n")
 
-for p in range(totalPallets):
+for p in range(totalPalettes):
     paletteName = "Palette {}".format(p + 1)
     paletteID = randomID()
     colors = []
-    for c in range(colorsPerPallet):
+    for c in range(colorsPerPalette):
         color = randomColor()
         colors.append(color)
 

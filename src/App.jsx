@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import ToolTip from './components/ToolTip';
 import Field from './components/Field';
 import ColorRange from './components/ColorRange';
@@ -131,7 +131,6 @@ export default function ColorPickerApp() {
       return;
     }
 
-    // const colorToAdd = [red, green, blue, hex];
     const colorId = randomId(12);
     const colorToAdd = {
       id: colorId,
@@ -140,8 +139,6 @@ export default function ColorPickerApp() {
       b: blue,
       hex: hex
     };
-
-    // selectedPalette.colors.push(colorToAdd);
 
     const updatedPalettes = palettesData.map(palette => {
       if (palette.id === selectedPaletteId) {
