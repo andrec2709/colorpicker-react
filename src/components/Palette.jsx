@@ -1,6 +1,5 @@
 import ColorPreview from "./ColorPreview";
 import { usePalette } from "../contexts/PaletteContext";
-import { useEffect, useState } from "react";
 
 export const Palette = ({ paletteData }) => {
 
