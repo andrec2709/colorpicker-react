@@ -45,9 +45,17 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 
     function handlePointerUp(e) {
+        
         setIsPressing(false);
         setIsHolding(false);
         setIsHoldingItem(false);
+        
+        console.log(`
+            this is from Element's handlePointerUp...
+            isHolding: ${isHolding},
+            isHoldingItem: ${isHoldingItem},
+            isPressing: ${isPressing},
+            `);
     }
 
     const handleMoveItem = useCallback(e => {
@@ -108,7 +116,12 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         setIsHolding(false)
         setIsHoldingItem(false);
         setIsPressing(false);
-
+        console.log(`
+            This is from document listener, "handleMoveItemUp".
+            isHolding: ${isHolding},
+            isHoldingItem: ${isHoldingItem},
+            isPressing: ${isPressing},
+            `);
         if (colorItem.current) {
             colorItem.current.classList.remove('highlighted');
             colorItem.current.style.position = 'relative';
@@ -141,14 +154,16 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
         }
 
-        return() => {
+        return () => {
             clearTimeout(longPressTimer.current);
         };
     }, [isPressing]);
 
     useEffect(() => {
-        document.addEventListener('pointermove', handleMoveItem);
-        document.addEventListener('pointerup', handleMoveItemUp);
+        if (isHolding) {
+            document.addEventListener('pointermove', handleMoveItem);
+            document.addEventListener('pointerup', handleMoveItemUp, { once: true });
+        }
 
         return () => {
             document.removeEventListener('pointermove', handleMoveItem);
