@@ -45,28 +45,25 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 
     function handlePointerUp(e) {
-        
+        handleMoveItemUp(e);
         setIsPressing(false);
         setIsHolding(false);
         setIsHoldingItem(false);
         
-        console.log(`
-            this is from Element's handlePointerUp...
-            isHolding: ${isHolding},
-            isHoldingItem: ${isHoldingItem},
-            isPressing: ${isPressing},
-            `);
     }
 
     const handleMoveItem = useCallback(e => {
-        e.preventDefault();
         if (colorItem.current && isHolding) {
-            // console.log('Inside moveItem');
+            console.log(`Inside moveItem.\nisHolding: ${isHolding}`);
 
-            const x = e.clientX;
-            const y = e.clientY;
+            const rect = colorItem.current.getBoundingClientRect();
+
+
+            const x = e.clientX - rect.width / 2;
+            const y = e.clientY - rect.height / 2;
 
             colorItem.current.style.position = 'absolute';
+            colorItem.current.style.pointerEvents = 'none';
             colorItem.current.style.zIndex = '999';
             colorItem.current.style.left = `${x}px`;
             colorItem.current.style.top = `${y}px`;
@@ -84,7 +81,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
             elements.forEach(el => {
                 if (el.classList.contains('color-item') && el !== colorItem.current) {
-
+                    console.log(el)
                     const updatedPalettes = palettesData.map(palette => {
                         if (palette.id === selectedPaletteId) {
                             const colors = palette.colors.slice();
@@ -116,21 +113,17 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         setIsHolding(false)
         setIsHoldingItem(false);
         setIsPressing(false);
-        console.log(`
-            This is from document listener, "handleMoveItemUp".
-            isHolding: ${isHolding},
-            isHoldingItem: ${isHoldingItem},
-            isPressing: ${isPressing},
-            `);
+
         if (colorItem.current) {
             colorItem.current.classList.remove('highlighted');
             colorItem.current.style.position = 'relative';
+            colorItem.current.style.pointerEvents = 'auto';
             colorItem.current.style.zIndex = 'unset';
             colorItem.current.style.left = 'unset';
             colorItem.current.style.top = 'unset';
 
         }
-    }, [isHolding]);
+    }, [isHolding, palettesData, selectedPaletteId, colorId]);
 
     function handlePointerLeave(e) {
         colorItem.current.classList.remove('highlighted');
@@ -141,6 +134,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 
     function handlePointerDown(e) {
+        e.preventDefault();
         setIsPressing(true)
     }
 
@@ -161,12 +155,12 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     useEffect(() => {
         if (isHolding) {
-            document.addEventListener('pointermove', handleMoveItem);
-            document.addEventListener('pointerup', handleMoveItemUp, { once: true });
+            document.addEventListener('pointermove', handleMoveItem, { passive: false });
+            document.addEventListener('pointerup', handleMoveItemUp);
         }
 
         return () => {
-            document.removeEventListener('pointermove', handleMoveItem);
+            document.removeEventListener('pointermove', handleMoveItem, { passive: false });
             document.removeEventListener('pointerup', handleMoveItemUp);
         }
     }, [isHolding, handleMoveItem, handleMoveItemUp]);
