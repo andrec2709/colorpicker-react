@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useEffectEvent, useRef, useState } from "react";
 import { useToolTip } from "../contexts/ToolTipContext";
 import { usePalette } from "../contexts/PaletteContext";
 import CopyIcon from '../assets/copy.svg';
@@ -13,12 +13,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const [isHolding, setIsHolding] = useState(false);
     const [isPressing, setIsPressing] = useState(false);
-    const delta = useRef(0);
-    const t0 = useRef(0);
-    const t1 = useRef(0);
+
     const colorItem = useRef(null);
     const LONG_PRESS_DURATION = 250; // ms
-
+    const longPressTimer = useRef(null);
 
     function handleCopy(e) {
         e.stopPropagation();
@@ -47,31 +45,15 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 
     function handlePointerUp(e) {
-        t0.current = 0;
-        t1.current = 0;
-        delta.current = 0;
-    }
-
-    function handlePointerMove(e) {
-        e.preventDefault();
-        if (isPressing && !isHolding) {
-            t1.current = performance.now();
-            delta.current = t1.current - t0.current;
-            if (delta.current >= LONG_PRESS_DURATION) {
-                setIsHoldingItem(true);
-                setIsHolding(true);
-            }
-        }
+        setIsPressing(false);
+        setIsHolding(false);
+        setIsHoldingItem(false);
     }
 
     const handleMoveItem = useCallback(e => {
         e.preventDefault();
         if (colorItem.current && isHolding) {
-            console.log('Inside moveItem');
-            const rect = colorItem.current.getBoundingClientRect();
-
-            const width = rect.width;
-            const height = rect.height;
+            // console.log('Inside moveItem');
 
             const x = e.clientX;
             const y = e.clientY;
@@ -86,7 +68,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const handleMoveItemUp = useCallback(e => {
         if (isHolding) {
-            console.log('Inside moveItemUp');
+            // console.log('Inside moveItemUp');
             const x = e.clientX;
             const y = e.clientY;
 
@@ -145,25 +127,34 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         if (isHoldingItem) colorItem.current.classList.add('highlighted');
     }
 
+    function handlePointerDown(e) {
+        setIsPressing(true)
+    }
+
     useEffect(() => {
-        if (isHolding) {
-            document.addEventListener('pointermove', handleMoveItem);
-            document.addEventListener('pointerup', handleMoveItemUp);
+        if (isPressing) {
+
+            longPressTimer.current = setTimeout(() => {
+                setIsHolding(true);
+                setIsHoldingItem(true);
+            }, LONG_PRESS_DURATION);
+
         }
+
+        return() => {
+            clearTimeout(longPressTimer.current);
+        };
+    }, [isPressing]);
+
+    useEffect(() => {
+        document.addEventListener('pointermove', handleMoveItem);
+        document.addEventListener('pointerup', handleMoveItemUp);
 
         return () => {
             document.removeEventListener('pointermove', handleMoveItem);
             document.removeEventListener('pointerup', handleMoveItemUp);
         }
     }, [isHolding, handleMoveItem, handleMoveItemUp]);
-
-    function handlePointerDown(e) {
-
-        setIsPressing(true)
-
-        t0.current = performance.now();
-
-    }
 
 
     return (
@@ -174,7 +165,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             style={{ backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})` }}
             onClick={() => onClick(previewColor)}
             onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerLeave}
             onPointerEnter={handlePointerEnter}
