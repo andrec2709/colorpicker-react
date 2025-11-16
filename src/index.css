@@ -21,4 +21,6 @@ body {
   min-width: 320px;
   height: fit-content;
   margin-top: 2rem;
+  overscroll-behavior-y: contain;
+  overscroll-behavior-x: none;
 }

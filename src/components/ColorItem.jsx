@@ -17,6 +17,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     const t0 = useRef(0);
     const t1 = useRef(0);
     const colorItem = useRef(null);
+    const LONG_PRESS_DURATION = 250; // ms
 
 
     function handleCopy(e) {
@@ -56,7 +57,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         if (isPressing && !isHolding) {
             t1.current = performance.now();
             delta.current = t1.current - t0.current;
-            if (delta.current >= 250) {
+            if (delta.current >= LONG_PRESS_DURATION) {
                 setIsHoldingItem(true);
                 setIsHolding(true);
             }
@@ -66,7 +67,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     const handleMoveItem = useCallback(e => {
         e.preventDefault();
         if (colorItem.current && isHolding) {
-
+            console.log('Inside moveItem');
             const rect = colorItem.current.getBoundingClientRect();
 
             const width = rect.width;
@@ -84,26 +85,27 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }, [isHolding]);
 
     const handleMoveItemUp = useCallback(e => {
-        if (isHoldingItem) {
+        if (isHolding) {
+            console.log('Inside moveItemUp');
             const x = e.clientX;
             const y = e.clientY;
 
             const elements = document.elementsFromPoint(x, y);
-            
+
             elements.forEach(el => {
                 if (el.classList.contains('color-item') && el !== colorItem.current) {
-                    
+
                     const updatedPalettes = palettesData.map(palette => {
                         if (palette.id === selectedPaletteId) {
                             const colors = palette.colors.slice();
 
                             const selfIndex = colors.findIndex(color => color.id === colorId);
-                            
+
                             let moveTo = colors.findIndex(color => color.id === el.dataset.colorId);
                             moveTo += selfIndex > moveTo ? 1 : 0;
-                            
+
                             const spliced = colors.splice(selfIndex, 1);
-                            
+
                             colors.splice(moveTo, 0, ...spliced);
 
                             return {
@@ -119,7 +121,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
                 }
             });
-            
+
         }
         setIsHolding(false)
         setIsHoldingItem(false);
@@ -144,8 +146,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 
     useEffect(() => {
-        document.addEventListener('pointermove', handleMoveItem);
-        document.addEventListener('pointerup', handleMoveItemUp);
+        if (isHolding) {
+            document.addEventListener('pointermove', handleMoveItem);
+            document.addEventListener('pointerup', handleMoveItemUp);
+        }
 
         return () => {
             document.removeEventListener('pointermove', handleMoveItem);
@@ -154,7 +158,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }, [isHolding, handleMoveItem, handleMoveItemUp]);
 
     function handlePointerDown(e) {
-        
+
         setIsPressing(true)
 
         t0.current = performance.now();
