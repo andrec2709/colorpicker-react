@@ -3,7 +3,7 @@ This is a React study project, this simple colorpicker is supposed to be part of
 
 ## Try It
 
-This app is hosted on Netlify, you can [try it out here](https://colorpicker-react-project.netlify.app/).
+This app is hosted on Github Pages, you can [try it out here](https://andrec2709.github.io/colorpicker-react/).
 
 ## How to run locally
 
