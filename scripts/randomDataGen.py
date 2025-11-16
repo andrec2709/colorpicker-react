@@ -2,7 +2,7 @@ from random import randint
 
 # Generates random palettes data in order to test app's performance
 
-totalPalettes = 20
+totalPalettes = 100
 colorsPerPalette = 30
 palettes = []
 

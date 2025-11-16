@@ -314,11 +314,12 @@ button {
   display: flex;
   justify-content: space-between;
   padding: .1rem;
-  border: 1px solid transparent
+  /* border: 1px solid transparent; */
+  user-select: none;
 }
 
 .color-item.highlighted {
-  border-right: 2px solid red;
+  border-right: 4px solid rgba(240, 240, 240, 0.507);
 }
 
 #palette-detail {

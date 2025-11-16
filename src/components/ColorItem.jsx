@@ -52,7 +52,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 
     function handlePointerMove(e) {
-        if (isPressing) {
+        e.preventDefault();
+        if (isPressing && !isHolding) {
             t1.current = performance.now();
             delta.current = t1.current - t0.current;
             if (delta.current >= 250) {
@@ -88,15 +89,13 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             const y = e.clientY;
 
             const elements = document.elementsFromPoint(x, y);
-            console.log('<----------------------------->');
+            
             elements.forEach(el => {
                 if (el.classList.contains('color-item') && el !== colorItem.current) {
-                    console.log(el);
+                    
                     const updatedPalettes = palettesData.map(palette => {
                         if (palette.id === selectedPaletteId) {
                             const colors = palette.colors.slice();
-                            console.log('Colors before:');
-                            console.log(colors);
 
                             const selfIndex = colors.findIndex(color => color.id === colorId);
                             
@@ -106,10 +105,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                             const spliced = colors.splice(selfIndex, 1);
                             
                             colors.splice(moveTo, 0, ...spliced);
-
-
-                            console.log('Colors after:');
-                            console.log(colors);
 
                             return {
                                 ...palette,
@@ -124,7 +119,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
                 }
             });
-            console.log('<----------------------------->');
+            
         }
         setIsHolding(false)
         setIsHoldingItem(false);
@@ -156,9 +151,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             document.removeEventListener('pointermove', handleMoveItem);
             document.removeEventListener('pointerup', handleMoveItemUp);
         }
-    }, [handleMoveItem, handleMoveItemUp]);
+    }, [isHolding, handleMoveItem, handleMoveItemUp]);
 
     function handlePointerDown(e) {
+        
         setIsPressing(true)
 
         t0.current = performance.now();
