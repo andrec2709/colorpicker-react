@@ -22,6 +22,7 @@ import RandomIcon from './assets/random.svg';
 import PlusIcon from './assets/plus.svg';
 import ArrowIcon from './assets/arrow.svg';
 import DeleteIcon from './assets/delete.svg';
+import ViewList from './assets/view-list.png';
 
 import './App.css'
 
@@ -53,9 +54,9 @@ function randomId(size = 12) {
 }
 
 export default function ColorPickerApp() {
-  const { selectedPalette, selectedPaletteId, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData } = usePalette();
+  const { selectedPalette, selectedPaletteId, viewLayout, setViewLayout, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData } = usePalette();
   const { showMessage } = useToolTip();
-  
+
 
   const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
 
@@ -187,13 +188,17 @@ export default function ColorPickerApp() {
 
   }
 
-  function handleNameChange(e) {
+  function handleNameChange(e, type) {
 
     if (e.target.value.length < 30) {
 
       const updatedPalettes = palettesData.map(palette => {
         if (palette.id === selectedPalette.id) {
+
+
+
           const name = e.target.value;
+
 
           return {
             ...palette,
@@ -234,7 +239,7 @@ export default function ColorPickerApp() {
       const valueGreen = Math.max(0, Math.min(255, value - greenLeadDiff.current));
       const valueBlue = Math.max(0, Math.min(255, value - blueLeadDiff.current));
 
-      
+
       setRed(valueRed);
       setGreen(valueGreen);
       setBlue(valueBlue);
@@ -356,11 +361,13 @@ export default function ColorPickerApp() {
           <input
             type='text'
             id='palette-title'
+            className='name'
             value={selectedPalette?.name ?? 'Palettes'}
-            onChange={(e) => handleNameChange(e)}
+            onChange={(e) => handleNameChange(e, 'palette')}
             disabled={selectedPalette === null ? true : false}
             aria-label='palette title'
           />
+          <button id='view-btn' onClick={e => setViewLayout(viewLayout === 'grid' ? 'block' : 'grid')}><img src={ViewList} alt={viewLayout === 'grid' ? 'change to list view' : 'change to grid view'} /></button>
           <button id="palette-add" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
             <img src={PlusIcon} alt="new palette" />
           </button>
@@ -369,12 +376,12 @@ export default function ColorPickerApp() {
           </button>
         </Header>
         <PalettesListView
-          style={{ display: `${selectedPalette === null ? 'grid' : 'none'}` }}
+          style={{ display: `${selectedPalette === null ? viewLayout : 'none'}` }}
         >
           {palettes}
         </PalettesListView>
         <PaletteDetailView
-          style={{ display: `${selectedPalette === null ? 'none' : 'grid'}` }}
+          style={{ display: `${selectedPalette === null ? 'none' : viewLayout}` }}
         >
           {colorItems}
         </PaletteDetailView>

@@ -17,6 +17,7 @@ export const PaletteProvider = ({ children }) => {
     );
 
     const [isHoldingItem, setIsHoldingItem] = useState(false);
+    const [viewLayout, setViewLayout] = useState('grid');
 
     function selectPalette(paletteData) {
         setSelectedPaletteId(paletteData?.id ?? null);
@@ -28,7 +29,7 @@ export const PaletteProvider = ({ children }) => {
     }
 
     return (
-        <PaletteContext.Provider value={{ selectedPalette, selectedPaletteId, palettesData, selectPalette, setSelectedPaletteId, updatePalettesData, isHoldingItem, setIsHoldingItem }}>
+        <PaletteContext.Provider value={{ selectedPalette, selectedPaletteId, viewLayout, setViewLayout, palettesData, selectPalette, setSelectedPaletteId, updatePalettesData, isHoldingItem, setIsHoldingItem }}>
             {children}
         </PaletteContext.Provider>
     );

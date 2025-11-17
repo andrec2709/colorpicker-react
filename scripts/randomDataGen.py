@@ -2,7 +2,7 @@ from random import randint
 
 # Generates random palettes data in order to test app's performance
 
-totalPalettes = 100
+totalPalettes = 80
 colorsPerPalette = 30
 palettes = []
 
@@ -116,6 +116,7 @@ for p in range(totalPalettes):
     colors = []
     for c in range(colorsPerPalette):
         color = randomColor()
+        color['name'] = 'Color {}'.format(c + 1)
         colors.append(color)
 
     palette = {
@@ -139,9 +140,9 @@ for p in palettes:
     for c in p['colors']:
         
         if (currentColor == colorSize):
-            file.write("""\t\t{{"id": "{}", "r": {}, "g": {}, "b": {}, "hex": "{}"}}\n""".format(c["id"], c["r"], c["g"], c["b"], c["hex"]))
+            file.write("""\t\t{{"id": "{}", "r": {}, "g": {}, "b": {}, "hex": "{}", "name": "{}"}}\n""".format(c["id"], c["r"], c["g"], c["b"], c["hex"], c["name"]))
         else:
-            file.write("""\t\t{{"id": "{}", "r": {}, "g": {}, "b": {}, "hex": "{}"}},\n""".format(c["id"], c["r"], c["g"], c["b"], c["hex"]))
+            file.write("""\t\t{{"id": "{}", "r": {}, "g": {}, "b": {}, "hex": "{}", "name":"{}"}},\n""".format(c["id"], c["r"], c["g"], c["b"], c["hex"], c["name"]))
         
         currentColor += 1
     

@@ -7,7 +7,7 @@ import DeleteIcon from '../assets/delete.svg';
 export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const { showMessage } = useToolTip();
-    const { selectedPaletteId, selectedPalette, palettesData, updatePalettesData, isHoldingItem, setIsHoldingItem } = usePalette();
+    const { selectedPaletteId, selectedPalette, viewLayout, palettesData, updatePalettesData, isHoldingItem, setIsHoldingItem } = usePalette();
 
     const datasetColor = JSON.stringify(previewColor);
 
@@ -49,7 +49,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         setIsPressing(false);
         setIsHolding(false);
         setIsHoldingItem(false);
-        
+
     }
 
     const handleMoveItem = useCallback(e => {
@@ -64,6 +64,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
             colorItem.current.style.position = 'absolute';
             colorItem.current.style.pointerEvents = 'none';
+            colorItem.current.parentElement.style.touchAction = 'none';
             colorItem.current.style.zIndex = '999';
             colorItem.current.style.left = `${x}px`;
             colorItem.current.style.top = `${y}px`;
@@ -117,11 +118,13 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         if (colorItem.current) {
             colorItem.current.classList.remove('highlighted');
             colorItem.current.style.position = 'relative';
+            colorItem.current.parentElement.style.touchAction = '';
             colorItem.current.style.pointerEvents = 'auto';
             colorItem.current.style.zIndex = 'unset';
             colorItem.current.style.left = 'unset';
             colorItem.current.style.top = 'unset';
-
+            colorItem.current.parentElement.style.touchAction = '';
+            colorItem.current.parentElement.style.overflow = '';
         }
     }, [isHolding, palettesData, selectedPaletteId, colorId]);
 
@@ -135,13 +138,61 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     function handlePointerDown(e) {
         e.preventDefault();
-        setIsPressing(true)
+        colorItem.current.parentElement.style.touchAction = 'none';
+        colorItem.current.parentElement.style.overflow = 'hidden';
+        setIsPressing(true);
     }
 
+    function handleColorNameChange(e) {
+        const updatedPalettes = palettesData.map(palette => {
+            if (palette.id === selectedPaletteId) {
+                const colors = palette.colors.slice();
+
+                colors.forEach(color => {
+                    if (color.id === colorId) {
+                        color.name = e.target.value;
+                    }
+                });
+
+                return {
+                    ...palette,
+                    colors
+                };
+            }
+
+            return palette;
+        });
+
+        updatePalettesData(updatedPalettes);
+    }
+
+    const checkBounds = useCallback(e => {
+        const rect = colorItem.current.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const startX = rect.x;
+        const startY = rect.y;
+        const endX = startX + width;
+        const endY = startY + height;
+
+        const cX = e.clientX;
+        const cY = e.clientY;
+
+        const isXOut = cX < startX || cX > endX;
+        const isYOut = cY < startY || cY > endY;
+
+        if (isXOut || isYOut) {
+            handleMoveItemUp(e);
+        }
+    }, [isPressing]);
+
     useEffect(() => {
+        // const element = colorItem.current.parentElement;
         if (isPressing) {
+            document.addEventListener('pointermove', checkBounds);
 
             longPressTimer.current = setTimeout(() => {
+                // element.style.overflow = 'hidden';
                 setIsHolding(true);
                 setIsHoldingItem(true);
             }, LONG_PRESS_DURATION);
@@ -150,6 +201,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
         return () => {
             clearTimeout(longPressTimer.current);
+            // element.style.touchAction = '';
+            document.removeEventListener('pointermove', checkBounds);
         };
     }, [isPressing]);
 
@@ -165,30 +218,67 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         }
     }, [isHolding, handleMoveItem, handleMoveItemUp]);
 
+    if (viewLayout == 'grid') {
+        return (
+            <div
+                className="color-item"
+                data-color={datasetColor}
+                data-color-id={previewColor.id}
+                style={{ backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})` }}
+                onClick={() => onClick(previewColor)}
+                onPointerDown={handlePointerDown}
+                onPointerUp={handlePointerUp}
+                onPointerLeave={handlePointerLeave}
+                onPointerEnter={handlePointerEnter}
+                ref={colorItem}
+                tabIndex="0"
+                role="button"
+            >
+                <button className="color-copy" onClick={handleCopy}>
+                    <img src={CopyIcon} alt="copy color" />
+                </button>
+                <button className="color-delete" onClick={handleRemoveColor}>
+                    <img src={DeleteIcon} alt="delete color" />
+                </button>
+            </div>
+        );
+    } else {
+        return (
+            <div
+                className="color-item-container"
+            >
+                <div
+                    className="color-item"
+                    style={{
+                        backgroundColor: `rgb(${previewColor.r}, ${previewColor.g}, ${previewColor.b})`,
+                        gridArea: 'a'
+                    }}
 
-    return (
-        <div
-            className="color-item"
-            data-color={datasetColor}
-            data-color-id={previewColor.id}
-            style={{ backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})` }}
-            onClick={() => onClick(previewColor)}
-            onPointerDown={handlePointerDown}
-            onPointerUp={handlePointerUp}
-            onPointerLeave={handlePointerLeave}
-            onPointerEnter={handlePointerEnter}
-            ref={colorItem}
-            tabIndex="0"
-            role="button"
-        >
-            <button className="color-copy" onClick={handleCopy}>
-                <img src={CopyIcon} alt="copy color" />
-            </button>
-            <button className="color-delete" onClick={handleRemoveColor}>
-                <img src={DeleteIcon} alt="delete color" />
-            </button>
-        </div>
-    );
+                >
+                    <button
+                        className="color-copy"
+                        onClick={handleCopy}
+                    >
+                        <img src={CopyIcon} alt="copy color" /></button>
+                    <button
+                        className="color-delete"
+                        onClick={handleRemoveColor}
+                    >
+                        <img src={DeleteIcon} alt="delete color" /></button>
+
+                </div>
+                <input
+                    className="name"
+                    type="text"
+                    value={previewColor.name}
+                    onChange={handleColorNameChange}
+                    style={{
+                        gridArea: 'b',
+                    }}
+                />
+            </div>
+        );
+    }
 };
 
 export default ColorItem;
