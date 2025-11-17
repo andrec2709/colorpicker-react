@@ -338,9 +338,7 @@ button {
   display: flex;
   justify-content: space-between;
   padding: .1rem;
-  /* border: 1px solid transparent; */
   user-select: none;
-  /* touch-action: none; */
 }
 
 .color-item.highlighted {
@@ -356,6 +354,7 @@ button {
   justify-content: center;
   overflow-y: scroll;
   height: 20rem;
+  user-select: none;
   scrollbar-width: none;
 }
 

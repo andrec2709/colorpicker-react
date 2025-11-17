@@ -54,7 +54,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const handleMoveItem = useCallback(e => {
         if (colorItem.current && isHolding) {
-            console.log(`Inside moveItem.\nisHolding: ${isHolding}`);
 
             const rect = colorItem.current.getBoundingClientRect();
 
@@ -74,7 +73,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const handleMoveItemUp = useCallback(e => {
         if (isHolding) {
-            // console.log('Inside moveItemUp');
             const x = e.clientX;
             const y = e.clientY;
 
@@ -82,7 +80,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
             elements.forEach(el => {
                 if (el.classList.contains('color-item') && el !== colorItem.current) {
-                    console.log(el)
                     const updatedPalettes = palettesData.map(palette => {
                         if (palette.id === selectedPaletteId) {
                             const colors = palette.colors.slice();
@@ -118,13 +115,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         if (colorItem.current) {
             colorItem.current.classList.remove('highlighted');
             colorItem.current.style.position = 'relative';
-            colorItem.current.parentElement.style.touchAction = '';
             colorItem.current.style.pointerEvents = 'auto';
             colorItem.current.style.zIndex = 'unset';
             colorItem.current.style.left = 'unset';
             colorItem.current.style.top = 'unset';
-            colorItem.current.parentElement.style.touchAction = '';
-            colorItem.current.parentElement.style.overflow = '';
         }
     }, [isHolding, palettesData, selectedPaletteId, colorId]);
 
@@ -138,8 +132,9 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     function handlePointerDown(e) {
         e.preventDefault();
-        colorItem.current.parentElement.style.touchAction = 'none';
-        colorItem.current.parentElement.style.overflow = 'hidden';
+
+        if (e.pointerType === 'touch') return; // disabling drag on mobile, for now.
+
         setIsPressing(true);
     }
 
@@ -166,33 +161,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         updatePalettesData(updatedPalettes);
     }
 
-    const checkBounds = useCallback(e => {
-        const rect = colorItem.current.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const startX = rect.x;
-        const startY = rect.y;
-        const endX = startX + width;
-        const endY = startY + height;
-
-        const cX = e.clientX;
-        const cY = e.clientY;
-
-        const isXOut = cX < startX || cX > endX;
-        const isYOut = cY < startY || cY > endY;
-
-        if (isXOut || isYOut) {
-            handleMoveItemUp(e);
-        }
-    }, [isPressing]);
-
     useEffect(() => {
-        // const element = colorItem.current.parentElement;
         if (isPressing) {
-            document.addEventListener('pointermove', checkBounds);
 
             longPressTimer.current = setTimeout(() => {
-                // element.style.overflow = 'hidden';
                 setIsHolding(true);
                 setIsHoldingItem(true);
             }, LONG_PRESS_DURATION);
@@ -201,8 +173,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
         return () => {
             clearTimeout(longPressTimer.current);
-            // element.style.touchAction = '';
-            document.removeEventListener('pointermove', checkBounds);
         };
     }, [isPressing]);
 
