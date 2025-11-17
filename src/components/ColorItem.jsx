@@ -15,7 +15,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     const [isPressing, setIsPressing] = useState(false);
 
     const colorItem = useRef(null);
-    const LONG_PRESS_DURATION = 250; // ms
+    const LONG_PRESS_DURATION = 300; // ms
     const longPressTimer = useRef(null);
 
     function handleCopy(e) {
@@ -59,12 +59,12 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
 
             const x = e.clientX - rect.width / 2;
-            const y = e.clientY - rect.height / 2;
+            const y = e.clientY - rect.height / 1.2;
 
             colorItem.current.style.position = 'absolute';
             colorItem.current.style.pointerEvents = 'none';
-            colorItem.current.parentElement.style.touchAction = 'none';
             colorItem.current.style.zIndex = '999';
+            colorItem.current.style.scale = '.8';
             colorItem.current.style.left = `${x}px`;
             colorItem.current.style.top = `${y}px`;
 
@@ -77,9 +77,9 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             const y = e.clientY;
 
             const elements = document.elementsFromPoint(x, y);
-
+            const lookForClass = viewLayout === 'block' ? 'color-item-container' : 'color-item';
             elements.forEach(el => {
-                if (el.classList.contains('color-item') && el !== colorItem.current) {
+                if (el.classList.contains(lookForClass) && el !== colorItem.current) {
                     const updatedPalettes = palettesData.map(palette => {
                         if (palette.id === selectedPaletteId) {
                             const colors = palette.colors.slice();
@@ -116,6 +116,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             colorItem.current.classList.remove('highlighted');
             colorItem.current.style.position = 'relative';
             colorItem.current.style.pointerEvents = 'auto';
+            colorItem.current.style.scale = '';
             colorItem.current.style.zIndex = 'unset';
             colorItem.current.style.left = 'unset';
             colorItem.current.style.top = 'unset';
@@ -131,8 +132,11 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 
     function handlePointerDown(e) {
-        e.preventDefault();
 
+        if (e.target.tagName === 'INPUT') return;
+        
+        e.preventDefault();
+        
         if (e.pointerType === 'touch') return; // disabling drag on mobile, for now.
 
         setIsPressing(true);
@@ -215,10 +219,20 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     } else {
         return (
             <div
+                data-color={datasetColor}
+                data-color-id={previewColor.id}
                 className="color-item-container"
+                onPointerDown={handlePointerDown}
+                onPointerUp={handlePointerUp}
+                onPointerLeave={handlePointerLeave}
+                onPointerEnter={handlePointerEnter}
+                ref={colorItem}
+                tabIndex="0"
+                role="button"
             >
                 <div
                     className="color-item"
+                    onClick={() => onClick(previewColor)}
                     style={{
                         backgroundColor: `rgb(${previewColor.r}, ${previewColor.g}, ${previewColor.b})`,
                         gridArea: 'a'

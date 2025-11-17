@@ -286,6 +286,7 @@ button {
 }
 
 #palettes-list {
+  scroll-snap-type: y mandatory;
   height: clamp(15rem, 35vh, 20rem);
   overflow-y: scroll;
   scrollbar-width: none;
@@ -297,6 +298,7 @@ button {
 }
 
 .palette {
+  scroll-snap-align: start;
   display: flex;
   width: 5rem;
   height: 5rem;
@@ -327,12 +329,13 @@ button {
   background-color: #1d2025;
   margin-top: .5rem;
   border-radius: 10px;
-  border: 2px solid #343942;
+  border: 1px solid #343942;
   padding: .5rem;
+  scroll-snap-align: start;
 }
 
 .color-item {
-
+  /* scroll-snap-align: start; */
   height: 4rem;
   border-radius: 2px;
   display: flex;
@@ -345,6 +348,9 @@ button {
   border-right: 4px solid rgba(240, 240, 240, 0.507);
 }
 
+.color-item-container.highlighted {
+  border-bottom: 4px solid rgba(240, 240, 240, 0.507);
+}
 
 #palette-detail {
   display: grid;
@@ -356,6 +362,7 @@ button {
   height: 20rem;
   user-select: none;
   scrollbar-width: none;
+  scroll-snap-type: y mandatory;
 }
 
 .color-copy,

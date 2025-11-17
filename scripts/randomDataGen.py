@@ -3,7 +3,7 @@ from random import randint
 # Generates random palettes data in order to test app's performance
 
 totalPalettes = 80
-colorsPerPalette = 30
+colorsPerPalette = 100
 palettes = []
 
 file = open("./scripts/test.json", "w+")

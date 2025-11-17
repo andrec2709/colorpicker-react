@@ -10,6 +10,8 @@ import Palette from './components/Palette';
 import PaletteDetailView from './components/PaletteDetailView';
 import ColorItem from './components/ColorItem';
 import Options from './components/Options';
+import { colornames } from 'color-name-list';
+import nearestColor from 'nearest-color';
 
 import { usePalette } from './contexts/PaletteContext';
 import { useToolTip } from './contexts/ToolTipContext';
@@ -133,12 +135,19 @@ export default function ColorPickerApp() {
     }
 
     const colorId = randomId(12);
+
+    const colors = colornames.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
+    const nearest = nearestColor.from(colors);
+
+    const colorName = nearest(hex).name;
+
     const colorToAdd = {
       id: colorId,
       r: red,
       g: green,
       b: blue,
-      hex: hex
+      hex: hex,
+      name: colorName,
     };
 
     const updatedPalettes = palettesData.map(palette => {
@@ -376,7 +385,7 @@ export default function ColorPickerApp() {
           </button>
         </Header>
         <PalettesListView
-          style={{ display: `${selectedPalette === null ? viewLayout : 'none'}` }}
+          style={{ display: `${selectedPalette === null ? 'grid' : 'none'}` }}
         >
           {palettes}
         </PalettesListView>
