@@ -1,6 +1,14 @@
 import { useToolTip } from "../contexts/ToolTipContext";
 
-export default function ToolTip({ className = ['tooltip'], id }) {
+/**
+ * A tooltip component.
+ * @function
+ * @param {string} [className = "tooltip"] - the classes for the tooltip.
+ * @param {string} id - Unique ID for the tooltip.
+ * @returns {JSX.Element}
+ * @alias Components/ToolTip
+ */
+export const ToolTip = ({ className = ['tooltip'], id }) => {
   const { message, visible, type } = useToolTip();
 
   if (!visible) {
@@ -21,4 +29,6 @@ export default function ToolTip({ className = ['tooltip'], id }) {
       {message}
     </div>
   );
-}
+};
+
+export default ToolTip;

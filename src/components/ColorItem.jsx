@@ -4,6 +4,16 @@ import { usePalette } from "../contexts/PaletteContext";
 import CopyIcon from '../assets/copy.svg';
 import DeleteIcon from '../assets/delete.svg';
 
+/**
+ * This component represents a single color of a palette. Not to be confused with the {@link Components/ColorPreview | ColorPreview} component.
+ * @function
+ * @param {Object} previewColor - an Object containing the properties id, r, g, b, hex and name, representing the color's unique ID, colors channel values, hex value and the color's name. 
+ * @param {string} colorId - the color's unique ID. Same as previewColor.id
+ * @param {function} onClick - callback function.
+ * @returns {JSX.Element} A component that represents a single color inside a palette.
+ * 
+ * @alias Components/ColorItem
+ */
 export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const { showMessage } = useToolTip();

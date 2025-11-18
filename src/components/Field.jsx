@@ -1,7 +1,28 @@
 import { useToolTip } from "../contexts/ToolTipContext";
 import CopyIcon from '../assets/copy.svg';
 
-export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabel = 'label--hidden field-container__label' }) => {
+/**
+ * This component is a wrapper for the input 'text' of a specific color, preceded by a label.
+ * @function
+ * @param {string} id - ID for the input 'text' element. 
+ * @param {string} mainId - ID for the wrapper div element.
+ * @param {number|string} value - value for the input element. 
+ * @param {function} onChange - callback function.
+ * @param {string} textLabel - text content of the label. 
+ * @param {string} color - the color this input represents (red, green blue).
+ * @param {string} [classLabel] - classes for the label element.
+ * @returns {JSX.Element} A wrapper of an input field preceded by a label.
+ * @alias Components/Field
+*/
+export const Field = ({
+  id,
+  mainId,
+  value,
+  onChange,
+  textLabel,
+  color,
+  classLabel = 'label--hidden field-container__label'
+}) => {
   const { showMessage } = useToolTip();
 
   async function handleCopy() {
@@ -22,9 +43,9 @@ export const Field = ({ id, mainId, value, onChange, textLabel, color, classLabe
     await navigator.clipboard
       .readText()
       .then((clipText) => {
-        
+
         onChange(clipText, color);
-        
+
       });
   }
   return (

@@ -360,7 +360,7 @@ export default function ColorPickerApp() {
         <ToolTip id='tooltip' />
         <ColorRange
           value={red}
-          id='red-slider'
+          sliderId='red-slider'
           mainId='red-slider-container'
           labelId="red-slider-label"
           textLabel='R'
@@ -377,7 +377,7 @@ export default function ColorPickerApp() {
         />
         <ColorRange
           value={green}
-          id='green-slider'
+          sliderId='green-slider'
           mainId='green-slider-container'
           textLabel='G'
           labelId="green-slider-label"
@@ -394,7 +394,7 @@ export default function ColorPickerApp() {
         />
         <ColorRange
           value={blue}
-          id='blue-slider'
+          sliderId='blue-slider'
           mainId='blue-slider-container'
           textLabel='B'
           labelId="blue-slider-label"

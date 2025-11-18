@@ -1,16 +1,32 @@
 import { useCallback, useRef } from "react";
 import { useEffect, useState } from "react";
 
+/** 
+ * Slider component, similar to HTML native's input 'range'.
+ * @function
+ * @param {string} id - ID for the Slider.
+ * @param {string} labelledBy - ID for the Slider's label. Check {@link Components/ColorRange | ColorRange}
+ * @param {number|string} value - value for the sliders.
+ * @param {string} color - define the color this slider represents.
+ * @param {number} [handleSize = 20] - size of the slider's thumb.
+ * @param {function} onChange - callback function.
+ * @param {number} [min = 0] - minimum value for the slider.
+ * @param {number} [max = 255] - minimum value for the slider.
+ * 
+ * @returns {JSX.Element} A slider component.
+ * 
+ * @alias Components/Slider
+*/
 export const Slider = (
     {
-        min = 0,
-        max = 255,
+        id,
+        labelledBy,
+        value,
+        color,
         handleSize = 20,
         onChange,
-        value,
-        id,
-        color,
-        labelledBy,
+        min = 0,
+        max = 255,
     }
 ) => {
     const [sliderTrackFill, setSliderTrackFill] = useState(0);
