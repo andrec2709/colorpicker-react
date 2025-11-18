@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import { useEffect, useState } from "react";
+import { debounce } from "../utils";
 
 /** 
  * Slider component, similar to HTML native's input 'range'.
@@ -34,14 +35,19 @@ export const Slider = (
     const [isPressed, setIsPressed] = useState(false);
 
     const [isDragging, setIsDragging] = useState(false);
+    
     const startXRef = useRef(0);
     const movedRef = useRef(false);
     const MOVE_THRESHOLD = 3; // px
 
     const elementRef = useRef(null);
 
-    const calcThumbPos = (target) => {
-        const rect = target.getBoundingClientRect();
+
+    const calcThumbPos = () => {
+
+        if (!elementRef.current) return;
+
+        const rect = elementRef.current.getBoundingClientRect();
 
         const width = rect.width;
 
@@ -54,10 +60,12 @@ export const Slider = (
         setSliderTrackFill(`${pos}px`)
     }
 
+    const debouncedCalcThumbPos = debounce(calcThumbPos, 100);
+
     const handlePointerMove = useCallback((e, { initial = false } = {}) => {
 
         e.preventDefault();
-        
+
         const rect = elementRef.current.getBoundingClientRect();
 
         const x1 = rect.left;
@@ -113,7 +121,7 @@ export const Slider = (
         if (keys.includes(e.key)) e.preventDefault();
 
         let newValue = value;
-        
+
         let modifier = 1;
 
         if (e.repeat) {
@@ -140,7 +148,13 @@ export const Slider = (
 
     useEffect(() => {
         if (elementRef.current) {
-            calcThumbPos(elementRef.current);
+            calcThumbPos();
+        }
+
+        window.addEventListener('resize', debouncedCalcThumbPos);
+
+        return () => {
+            window.removeEventListener('resize', debouncedCalcThumbPos);
         }
     }, [value]);
 
@@ -148,7 +162,7 @@ export const Slider = (
 
         if (isPressed) {
             document.addEventListener('pointermove', handlePointerMove);
-            document.addEventListener('pointerup', handlePointerUp, {once: true});
+            document.addEventListener('pointerup', handlePointerUp, { once: true });
         }
 
         return () => {
