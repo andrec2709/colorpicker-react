@@ -10,7 +10,7 @@ export const Slider = (
         value,
         id,
         color,
-        labelledBy
+        labelledBy,
     }
 ) => {
     const [sliderTrackFill, setSliderTrackFill] = useState(0);
@@ -145,7 +145,7 @@ export const Slider = (
     return (
         <div
             id={id}
-            className="slider"
+            className='slider'
             data-value={value}
             data-color={color}
             data-pressed={isPressed}

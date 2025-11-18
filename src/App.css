@@ -8,6 +8,10 @@
   outline: 1px solid rgba(204, 204, 204, 0.425);
 }
 
+*::selection {
+  background-color: #165deb;
+}
+
 button {
   transition: opacity .1s ease;
 }
@@ -18,6 +22,8 @@ button {
   display: flex;
   flex-direction: column;
 }
+
+/* <---- Colorpicker Sliders and Fields Layout ----> */
 
 #colorpicker {
   background-color: rgb(35, 39, 47);
@@ -69,7 +75,20 @@ button {
   grid-area: f;
 }
 
-#add-color {
+#hex-field-container {
+  justify-self: end;
+  width: fit-content;
+  grid-area: h;
+}
+
+
+/* ----> Colorpicker Sliders and Fields Layout <---- */
+
+
+/* <---- Colorpicker Elements ----> */
+
+
+.colorpicker__btn {
   width: fit-content;
   justify-self: start;
   grid-area: g;
@@ -78,46 +97,20 @@ button {
   background-color: rgb(90, 97, 112);
   border-radius: 5px;
   justify-content: start;
-
-  &:disabled {
-    background-color: rgb(57, 61, 68);
-    color: rgb(185, 185, 185);
-  }
-
-  &:hover {
-    opacity: 80%;
-  }
-
-  &:active {
-    opacity: 50%;
-  }
+  cursor: pointer;
 }
 
-#hex-field-container {
-  justify-self: end;
-  width: fit-content;
-  grid-area: h;
-
+.colorpicker__btn:disabled {
+  background-color: rgb(57, 61, 68);
+  color: rgb(185, 185, 185);
 }
 
-#hex-color {
-  margin-top: 1rem;
-  justify-content: end;
+.colorpicker__btn:hover {
+  opacity: 80%;
 }
 
-#red-slider,
-#green-slider,
-#blue-slider {
-  width: clamp(6rem, 30vw, 12rem);
-}
-
-.color-container {
-  display: flex;
-  align-items: center;
-}
-
-.color-container>.slider-container {
-  margin-right: 1rem;
+.colorpicker__btn:active {
+  opacity: 50%;
 }
 
 .slider-container {
@@ -125,12 +118,28 @@ button {
   align-items: center;
 }
 
-.slider-container>label {
+.slider-container__label {
   margin-right: 1rem;
   font-weight: 500;
 }
 
+
+/* ----> Colorpicker Elements <---- */
+
+
+/* <---- Field section ----> */
+
+
 .field-container {
+  display: flex;
+  align-items: center;
+}
+
+.field-container__label {
+  margin-right: 1rem;
+}
+
+.field {
   display: flex;
   align-items: center;
   height: 2rem;
@@ -139,61 +148,48 @@ button {
   border-radius: 5px;
 }
 
-.field-container>input {
+.field__input {
   color: rgb(247, 247, 247);
   border: none;
   width: 4rem;
   height: 100%;
   background-color: unset;
   padding: .3rem;
-
-  &:focus {
-    outline: none;
-  }
-
 }
 
-.copy-btn {
+.field__input:focus {
+  outline: none;
+}
+
+.field__btn {
   height: 100%;
   border: none;
   background-color: unset;
-
-  &>img {
-    width: 20px;
-    filter: invert();
-  }
-
-  &:hover {
-    opacity: 80%;
-  }
-
-  &:active {
-    opacity: 50%;
-  }
+  cursor: pointer;
 }
 
-.visually-hidden {
+.field__btn:hover {
+  opacity: 80%;
+}
+
+.field__btn:active {
+  opacity: 50%;
+}
+
+.field__icon {
+  width: 20px;
+  filter: invert();
+}
+
+.label--hidden {
   clip-path: inset(50%);
   position: absolute;
   margin: 0;
   padding: 0;
 }
 
-.field-wrapper-label {
-  display: flex;
-  align-items: center;
-}
 
-.field-wrapper-label>label {
-  margin-right: 1rem;
-}
-
-#hex-field-container>label {
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  clip-path: inset(50%);
-}
+/* ----> Field section <---- */
 
 #palette-title-label {
   margin: 0;
@@ -202,25 +198,6 @@ button {
   clip-path: inset(50%);
 }
 
-.tooltip {
-  width: fit-content;
-  height: fit-content;
-  min-width: 6rem;
-  min-height: 3rem;
-  padding: .5rem;
-  border-radius: 5px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  justify-self: center;
-  font-weight: 500;
-  transform: translateY(-3rem);
-  bottom: 0;
-  transition: transform .3s ease;
-  z-index: 999;
-}
 
 #editor {
   height: fit-content;
@@ -235,6 +212,7 @@ button {
 #editor-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
@@ -256,6 +234,7 @@ button {
   background-color: unset;
   height: 100%;
   display: flex;
+  cursor: pointer;
 
   &:hover {
     opacity: 60%;
@@ -320,18 +299,18 @@ button {
 }
 
 .color-item-container {
-
+  width: 100%;
   display: grid;
   grid-template:
     "a . ." auto
-    "a . b" auto 
-    "a . ." auto / 6rem 1rem minmax(1rem, 10rem);
+    "a . b" auto "a . ." auto / 6rem 1rem minmax(1rem, 80%);
   background-color: #1d2025;
   margin-top: .5rem;
   border-radius: 10px;
   border: 1px solid #343942;
   padding: .5rem;
   scroll-snap-align: start;
+  overflow: hidden;
 }
 
 .color-item {
@@ -342,6 +321,7 @@ button {
   justify-content: space-between;
   padding: .1rem;
   user-select: none;
+  cursor: pointer;
 }
 
 .color-item.highlighted {
@@ -376,6 +356,7 @@ button {
   border: none;
   background-color: rgba(10, 10, 10, 0.76);
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .color-copy img,
@@ -409,6 +390,10 @@ button {
 
 }
 
+
+/* <---- Slider Section ----> */
+
+
 .slider {
   position: relative;
   display: flex;
@@ -416,6 +401,7 @@ button {
   height: .4rem;
   user-select: none;
   touch-action: none;
+  width: clamp(6rem, 30vw, 12rem);
 
 }
 
@@ -464,7 +450,13 @@ button {
 }
 
 
-.options-container {
+/* <---- Slider Section ----> */
+
+
+/* <---- Modifiers section ----> */
+
+/* Modifiers container */
+.modifiers {
   width: 100%;
   height: fit-content;
   padding: .5rem;
@@ -476,9 +468,7 @@ button {
   justify-content: space-evenly;
 }
 
-
-.randomizer,
-.lock {
+.modifier__btn {
   border: none;
   padding: .5rem;
   background-color: rgb(90, 97, 112);
@@ -490,60 +480,68 @@ button {
   justify-content: center;
 }
 
-.randomizer:hover,
-.lock:hover {
+.modifier__btn:hover {
   opacity: 80%;
 }
 
-.randomizer:active,
-.lock:active {
+.modifier__btn:active {
   opacity: 50%;
 }
 
-.randomizer>img,
-.lock>img {
+.modifier__icon {
   width: 30px;
   filter: invert();
 }
 
-.options-button {
-  border: none;
-  padding: .5rem;
-  background-color: rgb(90, 97, 112);
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid transparent;
-}
-
-.options-button:hover {
-  opacity: 80%;
-}
-
-.options-button:active {
-  opacity: 50%;
-}
-
-.selected {
+.modifier__btn--active {
   background-color: rgb(5, 187, 5);
   color: rgb(29, 29, 29);
 }
 
-.selected>img {
+.modifier__icon--active {
   filter: none;
 }
 
-.tooltip-success {
+
+/* ----> Modifiers section <---- */
+
+
+/* <---- Tooltip section ----> */
+
+
+.tooltip {
+  width: fit-content;
+  height: fit-content;
+  min-width: 6rem;
+  min-height: 3rem;
+  padding: .5rem;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  justify-self: center;
+  font-weight: 500;
+  transform: translateY(-3rem);
+  bottom: 0;
+  transition: transform .3s ease;
+  z-index: 999;
+}
+
+.tooltip--success {
   background-color: rgb(42, 207, 111);
   color: rgb(2, 2, 2);
 }
 
-.tooltip-fail {
+.tooltip--fail {
   background-color: rgb(212, 25, 25);
   color: rgb(0, 0, 0);
 }
 
-.tooltip-hidden {
+.tooltip--hidden {
   transform: translateY(3rem);
 }
+
+
+/* ----> Tooltip section <---- */

@@ -15,7 +15,7 @@
      id="layer1"
      transform="translate(-53.233902,-90.959939)">
     <circle
-       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:square;stroke-dasharray:none;paint-order:markers fill stroke"
+       style="display:none;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:square;stroke-dasharray:none;paint-order:markers fill stroke"
        id="path1"
        cx="102.45206"
        cy="140.17809"
@@ -28,38 +28,42 @@
        x="53.283905"
        y="91.009933" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:5.1464;stroke-linecap:square;stroke-dasharray:none;paint-order:markers fill stroke"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:square;stroke-dasharray:none;paint-order:markers fill stroke"
        id="rect3"
        width="77.263847"
        height="51.125492"
-       x="63.820129"
-       y="135.69754"
+       x="63.820126"
+       y="135.27074"
        ry="4.751298" />
     <path
-       id="path3"
-       style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;paint-order:markers fill stroke;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-       d="m 102.45111,90.958789 c -13.303104,0 -24.142712,10.841671 -24.142712,24.144781 v 2.65048 H 83.6073 v -2.65048 c 0,-10.43878 8.405038,-18.843813 18.84381,-18.843813 10.43878,0 18.84587,8.405033 18.84588,18.843813 v 2.65048 2.04484 15.89877 2.04587 h 5.2989 v -2.04587 -15.89877 -2.04484 -2.65048 c 0,-13.30311 -10.84167,-24.144781 -24.14478,-24.144781 z" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:5.3;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
-       d="M 99.852056,153.25813 H 149.02019"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="M 99.502059,153.25813 H 148.67019"
        id="path6" />
     <ellipse
-       style="fill:#000000;stroke:none;stroke-width:5.3;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       style="fill:#000000;stroke:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
        id="path7"
-       cx="108.73973"
+       cx="108.38973"
        cy="153.25813"
        rx="5.6513681"
        ry="5.5980344" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:5.3;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
-       d="M 99.852056,169.16224 H 149.02019"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="M 99.502059,169.16224 H 148.67019"
        id="path8" />
     <ellipse
-       style="fill:#000000;stroke:none;stroke-width:5.3;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       style="fill:#000000;stroke:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
        id="ellipse8"
-       cx="124.43613"
+       cx="124.08613"
        cy="169.16225"
        rx="5.6513681"
        ry="5.5980344" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:6.00001;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       id="path2"
+       d="M 80.630133,115.78185 A 21.821917,21.821917 0 0 1 102.45205,93.959936 21.821917,21.821917 0 0 1 124.27397,115.78185" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:6.00001;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="m 124.27396,115.78185 v 19.48889"
+       id="path3" />
   </g>
 </svg>

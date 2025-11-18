@@ -9,7 +9,7 @@ import PalettesListView from './components/PalettesListView';
 import Palette from './components/Palette';
 import PaletteDetailView from './components/PaletteDetailView';
 import ColorItem from './components/ColorItem';
-import Options from './components/Options';
+import Modifiers from './components/Modifiers';
 import { colornames } from 'color-name-list';
 import nearestColor from 'nearest-color';
 
@@ -24,7 +24,9 @@ import RandomIcon from './assets/random.svg';
 import PlusIcon from './assets/plus.svg';
 import ArrowIcon from './assets/arrow.svg';
 import DeleteIcon from './assets/delete.svg';
-import ViewList from './assets/view-list.png';
+import ViewList from './assets/view-list.svg';
+import ViewGrid from './assets/view-grid.svg';
+import GrayScaleIcon from './assets/grayscale.svg';
 
 import './App.css'
 
@@ -152,8 +154,8 @@ export default function ColorPickerApp() {
 
     const updatedPalettes = palettesData.map(palette => {
       if (palette.id === selectedPaletteId) {
-        const colors = palette.colors.slice();
-        colors.push(colorToAdd);
+
+        const colors = [colorToAdd].concat(palette.colors.slice());
 
         return {
           ...palette,
@@ -296,9 +298,11 @@ export default function ColorPickerApp() {
       options.current.forEach(option => {
 
         if (option.current.dataset.opt === optClicked) {
-          option.current.classList.toggle('selected');
+          option.current.classList.toggle('modifier__btn--active');
+          option.current.children.item(0).classList.toggle('modifier__icon--active');
         } else {
-          option.current.classList.remove('selected');
+          option.current.classList.remove('modifier__btn--active');
+          option.current.children.item(0).classList.remove('modifier__icon--active');
         }
       });
 
@@ -341,11 +345,17 @@ export default function ColorPickerApp() {
 
   return (
     <>
-      <Options>
-        <button id='grayscale' ref={optGrayscaleRef} onClick={handleOptions} data-opt='grayscale' className='options-button'>Grayscale</button>
-        <button id='randomizer' className='randomizer' onClick={handlePickRandom} ><img src={RandomIcon} alt="Pick a random color" /></button>
-        <button id='lock' className='lock' ref={optLockRef} onClick={handleOptions} data-opt='lock'><img src={isLocked ? LockIcon : UnlockIcon} alt="Lock distance between colors" title='lock distance between colors.&#10;You must move using the slider with the highest value.' /></button>
-      </Options>
+      <Modifiers className='modifiers'>
+        <button id='randomizer' className='modifier__btn' onClick={handlePickRandom} >
+          <img className='modifier__icon' src={RandomIcon} alt="Pick a random color" />
+        </button>
+        <button id='grayscale' className='modifier__btn' ref={optGrayscaleRef} onClick={handleOptions} data-opt='grayscale'>
+          <img className='modifier__icon' src={GrayScaleIcon} alt="grayscale mode" />
+        </button>
+        <button id='lock' className='modifier__btn' ref={optLockRef} onClick={handleOptions} data-opt='lock'>
+          <img className='modifier__icon' src={isLocked ? LockIcon : UnlockIcon} alt="Lock distance between colors" title='lock distance between colors.&#10;You must move using the slider with the highest value.' />
+        </button>
+      </Modifiers>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
         <ColorRange value={red} id='red-slider' mainId='red-slider-container' textLabel='R' labelId="red-slider-label" onChange={handleChange} color='red' />
@@ -354,8 +364,8 @@ export default function ColorPickerApp() {
         <Field value={green} id='green-field' mainId='green-field-container' textLabel='G' onChange={handleChange} color='green' />
         <ColorRange value={blue} id='blue-slider' mainId='blue-slider-container' textLabel='B' labelId="blue-slider-label" onChange={handleChange} color='blue' />
         <Field value={blue} id='blue-field' mainId='blue-field-container' textLabel='B' onChange={handleChange} color='blue' />
-        <Field value={hex} id='hex-field' mainId='hex-field-container' textLabel='HEX' onChange={handleHexChange} color='hex' classLabel='' />
-        <button id='add-color' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
+        <Field value={hex} id='hex-field' mainId='hex-field-container' textLabel='HEX' onChange={handleHexChange} color='hex' />
+        <button id='add-color' className='colorpicker__btn' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
       </Colorpicker>
       <Editor>
         <Header>
@@ -376,7 +386,7 @@ export default function ColorPickerApp() {
             disabled={selectedPalette === null ? true : false}
             aria-label='palette title'
           />
-          <button id='view-btn' onClick={e => setViewLayout(viewLayout === 'grid' ? 'block' : 'grid')}><img src={ViewList} alt={viewLayout === 'grid' ? 'change to list view' : 'change to grid view'} /></button>
+          <button id='view-btn' onClick={e => setViewLayout(viewLayout === 'grid' ? 'block' : 'grid')}><img src={viewLayout === 'grid' ? ViewGrid : ViewList} alt={viewLayout === 'grid' ? 'change to list view' : 'change to grid view'} /></button>
           <button id="palette-add" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
             <img src={PlusIcon} alt="new palette" />
           </button>

@@ -136,7 +136,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         if (e.target.tagName === 'INPUT') return;
         
         e.preventDefault();
-        
+
         if (e.pointerType === 'touch') return; // disabling drag on mobile, for now.
 
         setIsPressing(true);
@@ -163,6 +163,12 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         });
 
         updatePalettesData(updatedPalettes);
+    }
+
+    function handleFocusName(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.target.select();
     }
 
     useEffect(() => {
@@ -256,6 +262,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                     type="text"
                     value={previewColor.name}
                     onChange={handleColorNameChange}
+                    onFocus={handleFocusName}
                     style={{
                         gridArea: 'b',
                     }}

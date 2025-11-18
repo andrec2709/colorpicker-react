@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="21.663803mm"
-   height="23.928095mm"
-   viewBox="0 0 21.663803 23.928095"
+   width="121.77749mm"
+   height="135.99063mm"
+   viewBox="0 0 121.77749 135.99063"
    version="1.1"
    id="svg1"
    xmlns="http://www.w3.org/2000/svg"
@@ -13,42 +13,42 @@
      id="defs1" />
   <g
      id="layer1"
-     transform="translate(-88.389706,-101.62638)">
+     transform="translate(-38.332855,-45.696427)">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1.16321;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
        id="rect1"
-       width="16.959251"
-       height="14.214998"
-       x="90.741982"
-       y="110.75786"
-       ry="0.011962626" />
+       width="97.709496"
+       height="81.898682"
+       x="50.366867"
+       y="96.788376"
+       ry="0.068921804" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.14636;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
-       d="m 94.63593,113.7471 v 9.16118"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="m 72.801569,114.01068 v 52.78147"
        id="path1" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.14636;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
-       d="m 99.221612,113.7471 v 9.16118"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="m 99.221644,114.01068 v 52.78147"
        id="path3" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.14636;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
-       d="m 103.80729,113.7471 v 9.16118"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="m 125.6417,114.01068 v 52.78147"
        id="path4" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1.56852;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
        id="rect5"
-       width="20.09528"
-       height="5.2219062"
-       x="89.173965"
-       y="105.53595"
-       ry="0.032114189" />
+       width="115.7775"
+       height="30.085634"
+       x="41.332855"
+       y="66.702728"
+       ry="0.18502358" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1.56852;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+       style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
        id="rect6"
-       width="7.2765503"
-       height="3.1253223"
-       x="95.583328"
-       y="102.41063"
-       ry="0.032114189" />
+       width="41.923317"
+       height="18.006319"
+       x="78.259933"
+       y="48.696423"
+       ry="0.18502358" />
   </g>
 </svg>
