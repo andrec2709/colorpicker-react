@@ -9,7 +9,12 @@
 export const PaletteDetailView = ({ children, style }) => {
 
     return (
-        <div id="palette-detail" className="palette-detail" style={style}>
+        <div
+            id="palette-detail"
+            className="palette-detail"
+            style={style}
+            onClick={e => e.target.focus()}
+        >
             {children}
         </div>
     );

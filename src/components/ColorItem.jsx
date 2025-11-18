@@ -71,6 +71,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             const x = e.clientX - rect.width / 2;
             const y = e.clientY - rect.height / 1.2;
 
+            colorItem.current.classList.add('dragging');
             colorItem.current.style.position = 'absolute';
             colorItem.current.style.pointerEvents = 'none';
             colorItem.current.style.zIndex = '999';
@@ -123,6 +124,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         setIsPressing(false);
 
         if (colorItem.current) {
+            colorItem.current.classList.remove('dragging');
             colorItem.current.classList.remove('highlighted');
             colorItem.current.style.position = 'relative';
             colorItem.current.style.pointerEvents = 'auto';
@@ -145,7 +147,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
         if (e.target.tagName === 'INPUT') return;
         
-        e.preventDefault();
+        // e.preventDefault();
 
         if (e.pointerType === 'touch') return; // disabling drag on mobile, for now.
 

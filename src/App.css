@@ -1,4 +1,3 @@
-
 #root {
   align-self: center;
   width: clamp(17rem, 80vw, 30rem);
@@ -312,8 +311,7 @@ button {
 
 /* [start] -------- Palette Detail view --------> */
 
-.color{
-  width: 100%;
+.color {
   display: grid;
   grid-template:
     "a . ." auto
@@ -325,6 +323,12 @@ button {
   padding: .5rem;
   scroll-snap-align: start;
   overflow: hidden;
+  cursor: pointer;
+  transition: background-color .1s ease;
+}
+
+.color:hover {
+  background-color: #14161a;
 }
 
 .color-item {
@@ -343,6 +347,12 @@ button {
 
 .color.highlighted {
   border-bottom: 4px solid rgba(240, 240, 240, 0.507);
+}
+
+.color.dragging,
+.color-item.dragging {
+  opacity: 70%;
+  border: 1px solid #165deb;
 }
 
 .palette-detail {
