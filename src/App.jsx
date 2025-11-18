@@ -358,14 +358,72 @@ export default function ColorPickerApp() {
       </Modifiers>
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
-        <ColorRange value={red} id='red-slider' mainId='red-slider-container' textLabel='R' labelId="red-slider-label" onChange={handleChange} color='red' />
-        <Field value={red} id='red-field' mainId='red-field-container' textLabel='R' onChange={handleChange} color='red' />
-        <ColorRange value={green} id='green-slider' mainId='green-slider-container' textLabel='G' labelId="green-slider-label" onChange={handleChange} color='green' />
-        <Field value={green} id='green-field' mainId='green-field-container' textLabel='G' onChange={handleChange} color='green' />
-        <ColorRange value={blue} id='blue-slider' mainId='blue-slider-container' textLabel='B' labelId="blue-slider-label" onChange={handleChange} color='blue' />
-        <Field value={blue} id='blue-field' mainId='blue-field-container' textLabel='B' onChange={handleChange} color='blue' />
-        <Field value={hex} id='hex-field' mainId='hex-field-container' textLabel='HEX' onChange={handleHexChange} color='hex' />
-        <button id='add-color' className='colorpicker__btn' disabled={selectedPalette === null} onClick={handleAddColor}>Add to Palette</button>
+        <ColorRange
+          value={red}
+          id='red-slider'
+          mainId='red-slider-container'
+          labelId="red-slider-label"
+          textLabel='R'
+          onChange={handleChange}
+          color='red'
+        />
+        <Field
+          value={red}
+          id='red-field'
+          mainId='red-field-container'
+          textLabel='R'
+          onChange={handleChange}
+          color='red'
+        />
+        <ColorRange
+          value={green}
+          id='green-slider'
+          mainId='green-slider-container'
+          textLabel='G'
+          labelId="green-slider-label"
+          onChange={handleChange}
+          color='green'
+        />
+        <Field
+          value={green}
+          id='green-field'
+          mainId='green-field-container'
+          textLabel='G'
+          onChange={handleChange}
+          color='green'
+        />
+        <ColorRange
+          value={blue}
+          id='blue-slider'
+          mainId='blue-slider-container'
+          textLabel='B'
+          labelId="blue-slider-label"
+          onChange={handleChange}
+          color='blue'
+        />
+        <Field
+          value={blue}
+          id='blue-field'
+          mainId='blue-field-container'
+          textLabel='B'
+          onChange={handleChange}
+          color='blue'
+        />
+        <Field
+          value={hex}
+          id='hex-field'
+          mainId='hex-field-container'
+          textLabel='HEX'
+          onChange={handleHexChange}
+          color='hex'
+        />
+        <button
+          id='add-color'
+          className='colorpicker__btn'
+          disabled={selectedPalette === null}
+          onClick={handleAddColor}
+        >Add to Palette
+        </button>
       </Colorpicker>
       <Editor>
         <Header>

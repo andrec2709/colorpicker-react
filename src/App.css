@@ -1,3 +1,14 @@
+
+#root {
+  align-self: center;
+  width: clamp(17rem, 80vw, 30rem);
+  display: flex;
+  flex-direction: column;
+}
+
+/* [start] -------- Universal styling --------> */
+
+
 * {
   box-sizing: border-box;
 }
@@ -13,16 +24,6 @@
 button {
   transition: opacity .1s ease;
 }
-
-#root {
-  align-self: center;
-  width: clamp(17rem, 80vw, 30rem);
-  display: flex;
-  flex-direction: column;
-}
-
-/* [start] -------- Universal styling --------> */
-
 
 .label--hidden {
   clip-path: inset(50%);
