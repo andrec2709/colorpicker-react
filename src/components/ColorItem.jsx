@@ -77,7 +77,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             const y = e.clientY;
 
             const elements = document.elementsFromPoint(x, y);
-            const lookForClass = viewLayout === 'block' ? 'color-item-container' : 'color-item';
+            const lookForClass = viewLayout === 'block' ? 'color' : 'color-item';
             elements.forEach(el => {
                 if (el.classList.contains(lookForClass) && el !== colorItem.current) {
                     const updatedPalettes = palettesData.map(palette => {
@@ -204,7 +204,10 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                 className="color-item"
                 data-color={datasetColor}
                 data-color-id={previewColor.id}
-                style={{ backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})` }}
+                style={{ 
+                    backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})`,
+                    scrollSnapAlign: 'start'
+                }}
                 onClick={() => onClick(previewColor)}
                 onPointerDown={handlePointerDown}
                 onPointerUp={handlePointerUp}
@@ -214,11 +217,11 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                 tabIndex="0"
                 role="button"
             >
-                <button className="color-copy" onClick={handleCopy}>
-                    <img src={CopyIcon} alt="copy color" />
+                <button className="color-item__btn" onClick={handleCopy}>
+                    <img className="color-item__icon" src={CopyIcon} alt="copy color" />
                 </button>
-                <button className="color-delete" onClick={handleRemoveColor}>
-                    <img src={DeleteIcon} alt="delete color" />
+                <button className="color-item__btn" onClick={handleRemoveColor}>
+                    <img className="color-item__icon" src={DeleteIcon} alt="delete color" />
                 </button>
             </div>
         );
@@ -227,7 +230,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             <div
                 data-color={datasetColor}
                 data-color-id={previewColor.id}
-                className="color-item-container"
+                className="color"
                 onPointerDown={handlePointerDown}
                 onPointerUp={handlePointerUp}
                 onPointerLeave={handlePointerLeave}
@@ -246,15 +249,15 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
                 >
                     <button
-                        className="color-copy"
+                        className="color-item__btn"
                         onClick={handleCopy}
                     >
-                        <img src={CopyIcon} alt="copy color" /></button>
+                        <img className="color-item__icon" src={CopyIcon} alt="copy color" /></button>
                     <button
-                        className="color-delete"
+                        className="color-item__btn"
                         onClick={handleRemoveColor}
                     >
-                        <img src={DeleteIcon} alt="delete color" /></button>
+                        <img className="color-item__icon" src={DeleteIcon} alt="delete color" /></button>
 
                 </div>
                 <input

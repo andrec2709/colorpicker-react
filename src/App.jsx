@@ -371,12 +371,17 @@ export default function ColorPickerApp() {
         <Header>
           <button
             id="back-btn"
+            className='editor-header__btn'
             style={{ visibility: `${selectedPalette === null ? 'hidden' : 'visible'}` }}
             onClick={() => selectPalette(null)}
           >
-            <img src={ArrowIcon} alt="go back" />
+            <img
+              src={ArrowIcon}
+              className='editor-header__icon'
+              alt="go back"
+            />
           </button>
-          <label htmlFor="palette-title" id='palette-title-label'>Palette title</label>
+          <label htmlFor="palette-title" id='palette-title-label' className='label--hidden'>Palette title</label>
           <input
             type='text'
             id='palette-title'
@@ -386,12 +391,40 @@ export default function ColorPickerApp() {
             disabled={selectedPalette === null ? true : false}
             aria-label='palette title'
           />
-          <button id='view-btn' onClick={e => setViewLayout(viewLayout === 'grid' ? 'block' : 'grid')}><img src={viewLayout === 'grid' ? ViewGrid : ViewList} alt={viewLayout === 'grid' ? 'change to list view' : 'change to grid view'} /></button>
-          <button id="palette-add" style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }} onClick={handleAddPalette}>
-            <img src={PlusIcon} alt="new palette" />
+          <button
+            id='view-btn'
+            className='editor-header__btn'
+            onClick={e => setViewLayout(viewLayout === 'grid' ? 'block' : 'grid')}
+          >
+            <img
+              src={viewLayout === 'grid' ? ViewGrid : ViewList}
+              className='editor-header__icon'
+              alt={viewLayout === 'grid' ? 'change to list view' : 'change to grid view'}
+            />
           </button>
-          <button id='palette-delete' style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }} onClick={handleDeletePalette}>
-            <img src={DeleteIcon} alt="delete palette" />
+          <button
+            id="palette-add"
+            className='editor-header__btn'
+            style={{ display: `${selectedPalette === null ? 'flex' : 'none'}` }}
+            onClick={handleAddPalette}
+          >
+            <img
+              src={PlusIcon}
+              className='editor-header__icon'
+              alt="new palette"
+            />
+          </button>
+          <button
+            id='palette-delete'
+            className='editor-header__btn'
+            style={{ display: `${selectedPalette === null ? 'none' : 'flex'}` }}
+            onClick={handleDeletePalette}
+          >
+            <img
+              src={DeleteIcon}
+              className='editor-header__icon'
+              alt="delete palette"
+            />
           </button>
         </Header>
         <PalettesListView

@@ -1,7 +1,5 @@
 * {
   box-sizing: border-box;
-  /* touch-action: none; */
-  /* shape-rendering: crispEdges; */
 }
 
 *:focus-visible {
@@ -23,7 +21,36 @@ button {
   flex-direction: column;
 }
 
-/* <---- Colorpicker Sliders and Fields Layout ----> */
+/* [start] -------- Universal styling --------> */
+
+
+.label--hidden {
+  clip-path: inset(50%);
+  position: absolute;
+  margin: 0;
+  padding: 0;
+}
+
+.name {
+  padding: 0;
+  font-size: 1.2rem;
+  border: none;
+  background-color: unset;
+  height: 100%;
+
+  &:disabled {
+    color: unset;
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom: 1px solid #363b44;
+  }
+}
+
+/* [end] -------- Universal styling --------> */
+
+/* [start] -------- Colorpicker Sliders and Fields Layout --------> */
 
 #colorpicker {
   background-color: rgb(35, 39, 47);
@@ -82,10 +109,10 @@ button {
 }
 
 
-/* ----> Colorpicker Sliders and Fields Layout <---- */
+/* [end] -------- Colorpicker Sliders and Fields Layout --------> */
 
 
-/* <---- Colorpicker Elements ----> */
+/* [start] -------- Colorpicker Elements --------> */
 
 
 .colorpicker__btn {
@@ -124,10 +151,10 @@ button {
 }
 
 
-/* ----> Colorpicker Elements <---- */
+/* [end] -------- Colorpicker Elements --------> */
 
 
-/* <---- Field section ----> */
+/* [start] -------- Field section --------> */
 
 
 .field-container {
@@ -181,53 +208,30 @@ button {
   filter: invert();
 }
 
-.label--hidden {
-  clip-path: inset(50%);
-  position: absolute;
-  margin: 0;
-  padding: 0;
-}
+
+/* [end] -------- Field section --------> */
 
 
-/* ----> Field section <---- */
-
-#palette-title-label {
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  clip-path: inset(50%);
-}
+/* [start] -------- Editor section --------> */
 
 
-#editor {
+.editor {
   height: fit-content;
   background-color: rgb(35, 39, 47);
   border-radius: 10px;
   padding: .5rem 1rem;
   display: flex;
   flex-direction: column;
-  /* max-width: 25rem; */
 }
 
-#editor-header {
+.editor-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-#editor-header>p {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  margin-left: auto;
-}
-
-
-#palette-add,
-#back-btn,
-#palette-delete,
-#view-btn {
+.editor-header__btn {
   margin: 0;
   padding: 0;
   border: none;
@@ -235,14 +239,26 @@ button {
   height: 100%;
   display: flex;
   cursor: pointer;
+}
 
-  &:hover {
-    opacity: 60%;
-  }
+.editor-header__btn:hover {
+  opacity: 60%;
+}
 
-  &:active {
-    opacity: 40%;
-  }
+.editor-header__btn:active {
+  opacity: 40%;
+}
+
+.editor-header__icon {
+  width: 20px;
+  filter: invert();
+}
+
+.editor-header .name {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  text-align: center;
 }
 
 #back-btn {
@@ -254,17 +270,7 @@ button {
   margin-right: 2rem;
 }
 
-
-
-#palette-add>img,
-#back-btn>img,
-#palette-delete>img,
-#view-btn>img {
-  width: 20px;
-  filter: invert();
-}
-
-#palettes-list {
+.palettes-container {
   scroll-snap-type: y mandatory;
   height: clamp(15rem, 35vh, 20rem);
   overflow-y: scroll;
@@ -275,6 +281,9 @@ button {
   align-content: flex-start;
   gap: .5rem;
 }
+
+
+/* [start] -------- Palettes view --------> */
 
 .palette {
   scroll-snap-align: start;
@@ -292,13 +301,17 @@ button {
   overflow: hidden;
 }
 
-.color-preview {
+.palette__color-preview {
   border-radius: 2px;
   width: 1rem;
   height: 1rem;
 }
 
-.color-item-container {
+/* [end] -------- Palettes view --------> */
+
+/* [start] -------- Palette Detail view --------> */
+
+.color{
   width: 100%;
   display: grid;
   grid-template:
@@ -314,7 +327,6 @@ button {
 }
 
 .color-item {
-  /* scroll-snap-align: start; */
   height: 4rem;
   border-radius: 2px;
   display: flex;
@@ -328,11 +340,11 @@ button {
   border-right: 4px solid rgba(240, 240, 240, 0.507);
 }
 
-.color-item-container.highlighted {
+.color.highlighted {
   border-bottom: 4px solid rgba(240, 240, 240, 0.507);
 }
 
-#palette-detail {
+.palette-detail {
   display: grid;
   grid-template-columns: repeat(auto-fit, clamp(5rem, 20%, 6rem));
   align-content: flex-start;
@@ -345,8 +357,7 @@ button {
   scroll-snap-type: y mandatory;
 }
 
-.color-copy,
-.color-delete {
+.color-item__btn {
   height: fit-content;
   width: fit-content;
   aspect-ratio: 1 / 1;
@@ -359,39 +370,18 @@ button {
   cursor: pointer;
 }
 
-.color-copy img,
-.color-delete img {
+.color-item__icon {
   width: 15px;
   filter: invert();
 }
 
-.name {
-  padding: 0;
-  font-size: 1.2rem;
-  border: none;
-  background-color: unset;
-  height: 100%;
-
-  &:disabled {
-    color: unset;
-  }
-
-  &:focus {
-    outline: none;
-    border-bottom: 1px solid #363b44;
-  }
-}
-
-#palette-title {
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  text-align: center;
-
-}
+/* [end] -------- Palette Detail view --------> */
 
 
-/* <---- Slider Section ----> */
+/* [end] -------- Editor section --------> */
+
+
+/* [start] -------- Slider Section --------> */
 
 
 .slider {
@@ -405,7 +395,7 @@ button {
 
 }
 
-.slider-thumb {
+.slider__thumb {
   aspect-ratio: 1 / 1;
   background-color: rgb(93, 0, 168);
   border: 3px solid rgb(187, 187, 187);
@@ -418,7 +408,7 @@ button {
 
 }
 
-.slider-track {
+.slider__track {
   user-select: none;
   width: 100%;
   height: 25%;
@@ -428,10 +418,11 @@ button {
 
 }
 
-.slider-track-filled {
+
+.slider__track--filled {
   user-select: none;
   background-color: rgb(120, 25, 209);
-  border: .5px solid rgba(180, 180, 180, 0.5);
+  /* border: .5px solid rgba(180, 180, 180, 0.5); */
   height: 25%;
   border-radius: 10px;
   position: absolute;
@@ -439,21 +430,21 @@ button {
 
 }
 
-.slider-thumb,
-.slider-track-filled {
+.slider__thumb,
+.slider__track--filled {
   transition: left .1s cubic-bezier(0, .5, .3, .5);
 }
 
-.slider[data-dragging="true"] .slider-thumb,
-.slider[data-dragging="true"] .slider-track-filled {
+.slider[data-dragging="true"] .slider__thumb,
+.slider[data-dragging="true"] .slider__track--filled {
   transition: none;
 }
 
 
-/* <---- Slider Section ----> */
+/* [end] -------- Slider Section --------> */
 
 
-/* <---- Modifiers section ----> */
+/* [start] -------- Modifiers section --------> */
 
 /* Modifiers container */
 .modifiers {
@@ -503,10 +494,10 @@ button {
 }
 
 
-/* ----> Modifiers section <---- */
+/* [end] -------- Modifiers section --------> */
 
 
-/* <---- Tooltip section ----> */
+/* [start] -------- Tooltip section --------> */
 
 
 .tooltip {
@@ -544,4 +535,4 @@ button {
 }
 
 
-/* ----> Tooltip section <---- */
+/* [end] -------- Tooltip section --------> */

@@ -1,7 +1,7 @@
 
 export const Editor = ({ children }) => {
     return (
-        <div id="editor">
+        <div id="editor" className="editor">
             {children}
         </div>
     );

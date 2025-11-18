@@ -164,19 +164,19 @@ export const Slider = (
             }}
         >
             <div
-                className="slider-track-filled"
+                className="slider__track--filled"
                 style={{
                     width: sliderTrackFill
                 }}
             ></div>
             <div
-                className="slider-thumb"
+                className="slider__thumb"
                 style={{
                     width: handleSize,
                     left: thumbPos
                 }}
             ></div>
-            <div className="slider-track"></div>
+            <div className="slider__track"></div>
 
         </div>
     );
