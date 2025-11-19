@@ -114,6 +114,12 @@ button {
   grid-area: f;
 }
 
+#color-options {
+  grid-area: g;
+  display: flex;
+  column-gap: .5rem;
+}
+
 #hex-field-container {
   justify-self: end;
   width: fit-content;
@@ -129,19 +135,31 @@ button {
 
 .colorpicker__btn {
   width: fit-content;
-  justify-self: start;
-  grid-area: g;
-  width: 6rem;
+  display: flex;
+  aspect-ratio: 1 / 1;
+  align-items: center;
+  justify-content: center;  
   border: none;
   background-color: rgb(90, 97, 112);
-  border-radius: 5px;
+  border-radius: 50%;
+  padding: .5rem;
   justify-content: start;
   cursor: pointer;
+}
+
+.colorpicker__icon {
+  width: 24px;
+  filter: invert();
 }
 
 .colorpicker__btn:disabled {
   background-color: rgb(57, 61, 68);
   color: rgb(185, 185, 185);
+
+}
+
+.colorpicker__btn:disabled .colorpicker__icon {
+  filter: none;
 }
 
 .colorpicker__btn:hover {
@@ -327,7 +345,8 @@ button {
   display: grid;
   grid-template:
     "a . ." auto
-    "a . b" auto "a . ." auto / 6rem 1rem minmax(1rem, 80%);
+    "a . b" auto 
+    "a . c" auto / 6rem 1rem minmax(1rem, 80%);
   background-color: #1d2025;
   margin-top: .5rem;
   border-radius: 10px;
@@ -341,6 +360,15 @@ button {
 
 .color:hover {
   background-color: #14161a;
+}
+
+.color__input--readonly {
+  background-color: unset;
+  border: none;
+
+  &:disabled {
+    color: inherit;
+  }
 }
 
 .color-item {
@@ -559,3 +587,33 @@ button {
 
 
 /* [end] -------- Tooltip section --------> */
+
+/* [start] -------- Preview --------> */
+
+.preview-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 8rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+
+.preview__textarea {
+  background-color: unset;
+  border: none;
+  color: black;
+  text-align: center;
+  width: 80%;
+  font-size: 1.5rem;
+  resize: none;
+  height: 100%;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* [end] -------- Preview --------> */

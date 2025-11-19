@@ -12,6 +12,7 @@ import ColorItem from './components/ColorItem';
 import Modifiers from './components/Modifiers';
 import { colornames } from 'color-name-list';
 import nearestColor from 'nearest-color';
+import { randomID } from './utils';
 
 import { usePalette } from './contexts/PaletteContext';
 import { useToolTip } from './contexts/ToolTipContext';
@@ -27,48 +28,37 @@ import DeleteIcon from './assets/delete.svg';
 import ViewList from './assets/view-list.svg';
 import ViewGrid from './assets/view-grid.svg';
 import GrayScaleIcon from './assets/grayscale.svg';
+import BackgroundIcon from './assets/background.png';
+import TextIcon from './assets/text.png';
 
 import './App.css'
+import Preview from './components/Preview';
 
 
 // Exercise:
 // Make a simple colorpicker app.
 // Read draft.md
 
-/**
- * Generates a unique identifier string.
- * @param {number} [size = 12] - the length of the ID to be generated 
- * @returns {string} a unique identifier string.
- * @alias functions/randomId
- */
-function randomId(size = 12) {
-  const chars = [
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-    's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '@', '!',
-    '#', '$', '%', '&', '*', '?', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-  ];
-
-  let number;
-  let finalId = '';
-  const max = chars.length - 1;
-  const min = 0;
-
-  for (let index = 0; index < size; index++) {
-    number = Math.floor(Math.random() * (max - min + 1) + min);
-    finalId += chars[number];
-  }
-
-  return finalId;
-
-}
 
 /**
  * Main function for the colorpicker application.
  * 
  */
 export default function ColorPickerApp() {
-  const { selectedPalette, selectedPaletteId, viewLayout, setViewLayout, palettesData, selectPalette, setSelectedPaletteName, updatePalettesData } = usePalette();
+  const {
+    selectedPalette,
+    selectedPaletteId,
+    viewLayout,
+    setViewLayout,
+    palettesData,
+    selectPalette,
+    updatePalettesData,
+    red, setRed,
+    green, setGreen,
+    blue, setBlue,
+    hex, setHex,
+    selection, setSelection
+  } = usePalette();
   const { showMessage } = useToolTip();
 
 
@@ -80,16 +70,8 @@ export default function ColorPickerApp() {
     colorItems.push(<ColorItem previewColor={color} key={color.id} colorId={color.id} onClick={handleSelectColor} />);
   });
 
-  const lastColor = localStorage.getItem('last-color')?.split(',') || [0, 0, 0];
-
-
-  const [red, setRed] = useState(parseInt(lastColor[0]));
-  const [green, setGreen] = useState(parseInt(lastColor[1]));
-  const [blue, setBlue] = useState(parseInt(lastColor[2]));
-  const [hex, setHex] = useState(`#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`);
-
-  const root = document.documentElement;
-  root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+  // const root = document.documentElement;
+  // root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
 
   // Options
   const [useGrayscale, setUseGrayscale] = useState(false);
@@ -104,6 +86,9 @@ export default function ColorPickerApp() {
   const blueLeadDiff = useRef(null);
 
   const options = useRef([optGrayscaleRef, optLockRef]);
+
+  const bgButtonRef = useRef(null);
+  const txtButtonRef = useRef(null);
 
   /**
    * Function used to select a color from the palette's color list. This is generally called by {@link Components/ColorItem | ColorItem} as a callback.
@@ -163,7 +148,7 @@ export default function ColorPickerApp() {
       return;
     }
 
-    const colorId = randomId(12);
+    const colorId = randomID(12);
 
     const colors = colornames.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
     const nearest = nearestColor.from(colors);
@@ -204,7 +189,7 @@ export default function ColorPickerApp() {
 
     const newPalette = {
       name: `Palette ${Object.keys(palettesData).length + 1}`,
-      id: randomId(),
+      id: randomID(),
       colors: []
     };
 
@@ -377,6 +362,25 @@ export default function ColorPickerApp() {
 
   }
 
+  function handleSelectionType(e) {
+    if (e.currentTarget.dataset.opt === 'background') {
+      setSelection('background');
+      bgButtonRef.current.classList.add('modifier__btn--active');
+      bgButtonRef.current.children.item(0).classList.add('modifier__icon--active');
+      
+      txtButtonRef.current.classList.remove('modifier__btn--active');
+      txtButtonRef.current.children.item(0).classList.remove('modifier__icon--active');
+    } else {
+      setSelection('text');
+
+      txtButtonRef.current.classList.add('modifier__btn--active');
+      txtButtonRef.current.children.item(0).classList.add('modifier__icon--active');
+      
+      bgButtonRef.current.classList.remove('modifier__btn--active');
+      bgButtonRef.current.children.item(0).classList.remove('modifier__icon--active');
+    }
+  }
+
   /**
    * Handler function for the "lock sliders" modifier.
    * This function determines the lead color and calculates the difference from the other sliders.
@@ -419,6 +423,7 @@ export default function ColorPickerApp() {
           <img className='modifier__icon' src={isLocked ? LockIcon : UnlockIcon} alt="Lock distance between colors" title='lock distance between colors.&#10;You must move using the slider with the highest value.' />
         </button>
       </Modifiers>
+      <Preview />
       <Colorpicker id='colorpicker'>
         <ToolTip id='tooltip' />
         <ColorRange
@@ -480,13 +485,21 @@ export default function ColorPickerApp() {
           onChange={handleHexChange}
           color='hex'
         />
-        <button
-          id='add-color'
-          className='colorpicker__btn'
-          disabled={selectedPalette === null}
-          onClick={handleAddColor}
-        >Add to Palette
-        </button>
+        <div id='color-options'>
+          <button
+            id='add-color'
+            className='colorpicker__btn'
+            disabled={selectedPalette === null}
+            onClick={handleAddColor}
+          ><img src={PlusIcon} className='colorpicker__icon' alt="add to palette" />
+          </button>
+          <button ref={bgButtonRef} className='colorpicker__btn modifier__btn--active' onClick={handleSelectionType} data-opt='background'>
+            <img src={BackgroundIcon} className='colorpicker__icon modifier__icon--active' alt="set background color" />
+          </button>
+          <button ref={txtButtonRef} className='colorpicker__btn' onClick={handleSelectionType} data-opt='text'>
+            <img src={TextIcon} className='colorpicker__icon' alt="set background color" />
+          </button>
+        </div>
       </Colorpicker>
       <Editor>
         <Header>
@@ -555,7 +568,7 @@ export default function ColorPickerApp() {
         </PalettesListView>
         <PaletteDetailView
           style={{ display: `${selectedPalette === null ? 'none' : viewLayout}` }}
-          
+
         >
           {colorItems}
         </PaletteDetailView>

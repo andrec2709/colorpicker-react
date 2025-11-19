@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useEffectEvent, useRef, useState } from "react";
+import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { useToolTip } from "../contexts/ToolTipContext";
 import { usePalette } from "../contexts/PaletteContext";
 import CopyIcon from '../assets/copy.svg';
 import DeleteIcon from '../assets/delete.svg';
+import { debounce } from "../utils";
 
 /**
  * This component represents a single color of a palette. Not to be confused with the {@link Components/ColorPreview | ColorPreview} component.
@@ -17,16 +18,43 @@ import DeleteIcon from '../assets/delete.svg';
 export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const { showMessage } = useToolTip();
-    const { selectedPaletteId, selectedPalette, viewLayout, palettesData, updatePalettesData, isHoldingItem, setIsHoldingItem } = usePalette();
+    const {
+        selectedPaletteId,
+        viewLayout,
+        palettesData,
+        updatePalettesData,
+        isHoldingItem,
+        setIsHoldingItem,
+        red,
+        green,
+        blue
+    } = usePalette();
 
     const datasetColor = JSON.stringify(previewColor);
 
     const [isHolding, setIsHolding] = useState(false);
     const [isPressing, setIsPressing] = useState(false);
+    const [contrastRatio, setContrastRatio] = useState(0);
 
     const colorItem = useRef(null);
     const LONG_PRESS_DURATION = 300; // ms
     const longPressTimer = useRef(null);
+
+    const rgbRef = useRef({ r: red, g: green, b: blue })
+
+    const textColor = () => {
+        switch (true) {
+            case contrastRatio < 4.5:
+                return 'red';
+                
+            case contrastRatio >= 4.5 && contrastRatio < 7.5:
+                return 'yellow';
+            
+            case contrastRatio >= 7.5:
+                return 'green';
+                
+        }
+    };
 
     function handleCopy(e) {
         e.stopPropagation();
@@ -146,7 +174,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     function handlePointerDown(e) {
 
         if (e.target.tagName === 'INPUT') return;
-        
+
         // e.preventDefault();
 
         if (e.pointerType === 'touch') return; // disabling drag on mobile, for now.
@@ -183,6 +211,50 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         e.target.select();
     }
 
+    const handleCalcContrast = useCallback(() => {
+
+        const { r, g, b } = rgbRef.current;
+
+        // luminance for the slider's selected color
+        let linearRed = parseInt(r) / 255;
+        let linearGreen = parseInt(g) / 255;
+        let linearBlue = parseInt(b) / 255;
+
+        linearRed = linearRed <= 0.03928 ? linearRed / 12.92 : ((linearRed + 0.055)/1.055)**2.4;
+        linearGreen = linearGreen <= 0.03928 ? linearGreen / 12.92 : ((linearGreen + 0.055)/1.055)**2.4;
+        linearBlue = linearBlue <= 0.03928 ? linearBlue / 12.92 : ((linearBlue + 0.055)/1.055)**2.4;
+
+        let luminanceSlider = (0.2126*linearRed + 0.7152*linearGreen + 0.0722*linearBlue) + 0.05;
+
+        // luminance for **this** ColorItem's color
+        linearRed = parseInt(previewColor.r) / 255;
+        linearGreen = parseInt(previewColor.g) / 255;
+        linearBlue = parseInt(previewColor.b) / 255;
+
+        linearRed = linearRed <= 0.03928 ? linearRed / 12.92 : ((linearRed + 0.055)/1.055)**2.4;
+        linearGreen = linearGreen <= 0.03928 ? linearGreen / 12.92 : ((linearGreen + 0.055)/1.055)**2.4;
+        linearBlue = linearBlue <= 0.03928 ? linearBlue / 12.92 : ((linearBlue + 0.055)/1.055)**2.4;
+
+        let luminanceThis = (0.2126*linearRed + 0.7152*linearGreen + 0.0722*linearBlue) + 0.05;
+
+        let ratio;
+
+        if (luminanceThis > luminanceSlider) {
+            ratio = luminanceThis / luminanceSlider;
+        } else {
+            ratio = luminanceSlider / luminanceThis;
+        }
+
+        setContrastRatio(ratio.toFixed(2))
+    }, []);
+
+    const debouncedHandleCalcContrast = useMemo(() => debounce(handleCalcContrast, 100), []);
+
+    useEffect(() => {
+        rgbRef.current = { r: red, g: green, b: blue }
+        debouncedHandleCalcContrast();
+    }, [red, green, blue]);
+
     useEffect(() => {
         if (isPressing) {
 
@@ -216,7 +288,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                 className="color-item"
                 data-color={datasetColor}
                 data-color-id={previewColor.id}
-                style={{ 
+                style={{
                     backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})`,
                     scrollSnapAlign: 'start'
                 }}
@@ -280,6 +352,17 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                     onFocus={handleFocusName}
                     style={{
                         gridArea: 'b',
+                    }}
+                />
+                <input
+                    type="text"
+                    className="color__input--readonly"
+                    readOnly
+                    disabled
+                    value={`Contrast ratio: ${contrastRatio}`}
+                    style={{
+                        gridArea: 'c',
+                        color: textColor()
                     }}
                 />
             </div>

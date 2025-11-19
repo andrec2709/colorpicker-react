@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { useEffect, useState } from "react";
 import { debounce } from "../utils";
 
@@ -35,6 +35,7 @@ export const Slider = (
     const [isPressed, setIsPressed] = useState(false);
 
     const [isDragging, setIsDragging] = useState(false);
+    const valueRef = useRef(value);
     
     const startXRef = useRef(0);
     const movedRef = useRef(false);
@@ -43,7 +44,7 @@ export const Slider = (
     const elementRef = useRef(null);
 
 
-    const calcThumbPos = () => {
+    const calcThumbPos = useCallback(() => {
 
         if (!elementRef.current) return;
 
@@ -51,16 +52,16 @@ export const Slider = (
 
         const width = rect.width;
 
-        let pos = value * width / max;
+        let pos = valueRef.current * width / max;
 
         pos = Math.max(0, Math.min(width, pos));
 
 
         setThumbPos(`${pos - handleSize / 2}px`);
         setSliderTrackFill(`${pos}px`)
-    }
+    }, []);
 
-    const debouncedCalcThumbPos = debounce(calcThumbPos, 100);
+    const debouncedCalcThumbPos = useMemo(() => debounce(calcThumbPos, 100), [value]);
 
     const handlePointerMove = useCallback((e, { initial = false } = {}) => {
 
@@ -147,6 +148,7 @@ export const Slider = (
     };
 
     useEffect(() => {
+        valueRef.current = value;
         if (elementRef.current) {
             calcThumbPos();
         }
