@@ -92,6 +92,23 @@ export default function ColorPickerApp() {
   const bgButtonRef = useRef(null);
   const txtButtonRef = useRef(null);
 
+  const [contrastRatio, setContrastRatio] = useState(0);
+
+  const textColor = () => {
+    switch (true) {
+      case contrastRatio < 4.5:
+        return '#e90000';
+
+      case contrastRatio >= 4.5 && contrastRatio < 7:
+        return '#d5e500';
+
+      case contrastRatio >= 7:
+        return '#44ff4d';
+
+    }
+  };
+
+
   /**
    * Function used to select a color from the palette's color list. This is generally called by {@link Components/ColorItem | ColorItem} as a callback.
    * @param {Object} color - a color Object with at least properties r, g, b, hex.
@@ -259,12 +276,12 @@ export default function ColorPickerApp() {
    * @returns {void}
    * @alias functions/handleChange
    */
-  function handleChange(value, color) {
+  function handleChange(value, color, modifierAllowed = true) {
 
     value = isNaN(parseInt(value)) ? '' : parseInt(value, 10);
     value = Math.max(0, Math.min(value, 255));
 
-    if (useGrayscale) {
+    if (useGrayscale && modifierAllowed) {
       setRed(value);
       setGreen(value);
       setBlue(value);
@@ -272,7 +289,7 @@ export default function ColorPickerApp() {
       return;
     }
 
-    if (isLocked) {
+    if (isLocked && modifierAllowed) {
 
       if (color !== leadColor.current[0]) return showMessage('When in locked mode, drag by the slider with the highest value!', 'fail', 3000);
 
@@ -358,14 +375,14 @@ export default function ColorPickerApp() {
   function handleSelectionType(e) {
     if (e.currentTarget.dataset.opt === 'background') {
       setSelection('background');
-      handleChange(bgColor[0], 'red');
-      handleChange(bgColor[1], 'green');
-      handleChange(bgColor[2], 'blue');
+      handleChange(bgColor[0], 'red', false);
+      handleChange(bgColor[1], 'green', false);
+      handleChange(bgColor[2], 'blue', false);
     } else {
       setSelection('text');
-      handleChange(txtColor[0], 'red');
-      handleChange(txtColor[1], 'green');
-      handleChange(txtColor[2], 'blue');
+      handleChange(txtColor[0], 'red', false);
+      handleChange(txtColor[1], 'green', false);
+      handleChange(txtColor[2], 'blue', false);
     }
   }
 
@@ -419,6 +436,43 @@ export default function ColorPickerApp() {
 
 
   }, [red, green, blue]);
+
+
+  useEffect(() => {
+
+    // luminance for bgColor
+    let linearRed = parseInt(bgColor[0]) / 255;
+    let linearGreen = parseInt(bgColor[1]) / 255;
+    let linearBlue = parseInt(bgColor[2]) / 255;
+
+    linearRed = linearRed <= 0.03928 ? linearRed / 12.92 : ((linearRed + 0.055) / 1.055) ** 2.4;
+    linearGreen = linearGreen <= 0.03928 ? linearGreen / 12.92 : ((linearGreen + 0.055) / 1.055) ** 2.4;
+    linearBlue = linearBlue <= 0.03928 ? linearBlue / 12.92 : ((linearBlue + 0.055) / 1.055) ** 2.4;
+
+    let luminanceBgColor = (0.2126 * linearRed + 0.7152 * linearGreen + 0.0722 * linearBlue) + 0.05;
+
+    // luminance for txtColor
+    linearRed = parseInt(txtColor[0]) / 255;
+    linearGreen = parseInt(txtColor[1]) / 255;
+    linearBlue = parseInt(txtColor[2]) / 255;
+
+    linearRed = linearRed <= 0.03928 ? linearRed / 12.92 : ((linearRed + 0.055) / 1.055) ** 2.4;
+    linearGreen = linearGreen <= 0.03928 ? linearGreen / 12.92 : ((linearGreen + 0.055) / 1.055) ** 2.4;
+    linearBlue = linearBlue <= 0.03928 ? linearBlue / 12.92 : ((linearBlue + 0.055) / 1.055) ** 2.4;
+
+    let luminanceTxtColor = (0.2126 * linearRed + 0.7152 * linearGreen + 0.0722 * linearBlue) + 0.05;
+
+    let ratio;
+
+    if (luminanceTxtColor > luminanceBgColor) {
+      ratio = luminanceTxtColor / luminanceBgColor;
+    } else {
+      ratio = luminanceBgColor / luminanceTxtColor;
+    }
+
+    setContrastRatio(ratio.toFixed(2))
+
+  }, [bgColor, txtColor]);
 
   return (
     <>
@@ -510,6 +564,16 @@ export default function ColorPickerApp() {
             <img src={TextIcon} className={`colorpicker__icon ${selection === 'text' ? 'modifier__icon--active' : ''}`} alt="set background color" />
           </button>
         </div>
+        <input
+          type="text"
+          id='contrast__field'
+          value={`Contrast ratio: ${contrastRatio}`}
+          style={{
+            color: textColor()
+          }}
+          disabled
+          readOnly
+        />
       </Colorpicker>
       <Editor>
         <Header>

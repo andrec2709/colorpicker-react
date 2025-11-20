@@ -11,7 +11,7 @@
 
 #root {
   align-self: center;
-  width: clamp(17rem, 80vw, 30rem);
+  width: clamp(19rem, 80vw, 30rem);
   display: flex;
   flex-direction: column;
 }
@@ -72,7 +72,9 @@ button {
   grid-template:
     "a b" auto
     "c d" auto
-    "e f" auto "g h" auto / auto min-content;
+    "e f" auto 
+    "g h" auto 
+    "i ." auto / auto min-content;
   row-gap: .5rem;
   margin-bottom: 1rem;
   width: 100%;
@@ -124,6 +126,21 @@ button {
   justify-self: end;
   width: fit-content;
   grid-area: h;
+}
+
+#contrast__field {
+  grid-area: i;
+  width: 11rem;
+  padding: 0;
+  margin: 0;
+  background-color: unset;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+
+  &:disabled {
+    color: inherit;
+  }
 }
 
 
