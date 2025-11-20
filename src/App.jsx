@@ -33,6 +33,7 @@ import TextIcon from './assets/text.png';
 
 import './App.css'
 import Preview from './components/Preview';
+import { useColor } from './contexts/ColorContext';
 
 
 // Exercise:
@@ -53,6 +54,9 @@ export default function ColorPickerApp() {
     palettesData,
     selectPalette,
     updatePalettesData,
+  } = usePalette();
+  
+  const {
     red, setRed,
     green, setGreen,
     blue, setBlue,
@@ -60,7 +64,7 @@ export default function ColorPickerApp() {
     selection, setSelection,
     bgColor, setBgColor,
     txtColor, setTxtColor,
-  } = usePalette();
+  } = useColor();
   const { showMessage } = useToolTip();
 
 

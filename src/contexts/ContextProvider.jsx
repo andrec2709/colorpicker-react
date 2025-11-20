@@ -1,3 +1,4 @@
+import { ColorProvider } from "./ColorContext";
 import { PaletteProvider } from "./PaletteContext";
 import { ToolTipProvider } from "./ToolTipContext";
 
@@ -5,7 +6,9 @@ export const ContextProvider = ({ children }) => {
     return (
         <ToolTipProvider>
             <PaletteProvider>
-                {children}
+                <ColorProvider>
+                    {children}
+                </ColorProvider>
             </PaletteProvider>
         </ToolTipProvider>
     );

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { usePalette } from "../contexts/PaletteContext";
+import { useColor } from "../contexts/ColorContext";
 
 export const Preview = () => {
-    const { bgColor, txtColor } = usePalette();
+    const { bgColor, txtColor } = useColor();
     const defaultText = localStorage.getItem('default-text') || 'Click me to change the text\n:)';
     const textRef = useRef(null);
     const bgRef = useRef(null);

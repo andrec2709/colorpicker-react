@@ -24,19 +24,6 @@ export const PaletteProvider = ({ children }) => {
     // as a hint of where the item being dragged will be placed.
     const [isHoldingItem, setIsHoldingItem] = useState(false);
 
-
-    // Define color states
-    const lastColor = localStorage.getItem('bg-color')?.split(',') || [0, 0, 0];
-    const [red, setRed] = useState(parseInt(lastColor[0]));
-    const [green, setGreen] = useState(parseInt(lastColor[1]));
-    const [blue, setBlue] = useState(parseInt(lastColor[2]));
-    const [hex, setHex] = useState(`#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`);
-    
-    // Define preview states
-    const [bgColor, setBgColor] = useState(localStorage.getItem('bg-color')?.split(',') || [0, 0, 0]);
-    const [txtColor, setTxtColor] = useState(localStorage.getItem('txt-color')?.split(',') || [255, 255, 255]);
-    const [selection, setSelection] = useState('background');
-
     // Define how the color list of a palette is to be displayed ( grid / block (as a list) )
     const [viewLayout, setViewLayout] = useState('grid');
 
@@ -62,13 +49,6 @@ export const PaletteProvider = ({ children }) => {
                 updatePalettesData,
                 isHoldingItem,
                 setIsHoldingItem,
-                red, setRed,
-                green, setGreen,
-                blue, setBlue,
-                hex, setHex,
-                selection, setSelection,
-                bgColor, setBgColor,
-                txtColor, setTxtColor
             }}>
             {children}
         </PaletteContext.Provider>
