@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="127.13794mm"
+   height="127.13797mm"
+   viewBox="0 0 127.13794 127.13797"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-41.431017,-80.447455)">
+    <rect
+       style="fill:none;stroke:none;stroke-width:6.32657;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+       id="rect2"
+       width="127.13796"
+       height="127.13796"
+       x="41.431019"
+       y="80.447456" />
+    <g
+       id="g2"
+       transform="translate(13.491634,5.5568679)"
+       style="fill:#000000">
+      <text
+         xml:space="preserve"
+         style="font-size:96.1957px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;stroke:none;stroke-width:181.788;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+         x="32.692127"
+         y="157.7092"
+         id="text1"><tspan
+           id="tspan1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Fredoka;-inkscape-font-specification:Fredoka;fill:#000000;stroke:none;stroke-width:181.787"
+           x="32.692127"
+           y="157.7092">Aa</tspan></text>
+      <path
+         style="font-size:96.1957px;font-family:Fredoka;-inkscape-font-specification:Fredoka;fill:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+         d="m 37.5982,171.00825 c -0.769565,0 -1.442935,-0.0962 -2.02011,-0.28858 -0.577174,-0.12826 -1.026087,-0.48098 -1.346739,-1.05816 -0.256522,-0.57717 -0.384783,-1.41087 -0.384783,-2.50108 0,-1.15435 0.128261,-2.02012 0.384783,-2.59729 0.320652,-0.57717 0.7375,-0.96196 1.250544,-1.15435 0.577174,-0.19239 1.250544,-0.28858 2.020109,-0.28858 H 145.5149 c 0.76957,0 1.41087,0.0962 1.92391,0.28858 0.57718,0.19239 0.99403,0.57718 1.25055,1.15435 0.32066,0.57717 0.48098,1.44294 0.48098,2.59729 0,1.09021 -0.16032,1.92391 -0.48098,2.50108 -0.32065,0.57718 -0.76956,0.9299 -1.34674,1.05816 -0.57717,0.19239 -1.25054,0.28858 -2.02011,0.28858 z"
+         id="text2"
+         aria-label="_" />
+      <path
+         style="font-size:96.1957px;font-family:Fredoka;-inkscape-font-specification:Fredoka;fill:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+         d="m 37.5982,185.39255 c -0.769565,0 -1.442935,-0.0962 -2.02011,-0.28858 -0.577174,-0.12826 -1.026087,-0.48098 -1.346739,-1.05816 -0.256522,-0.57717 -0.384783,-1.41087 -0.384783,-2.50108 0,-1.15435 0.128261,-2.02012 0.384783,-2.59729 0.320652,-0.57717 0.7375,-0.96196 1.250544,-1.15435 0.577174,-0.19239 1.250544,-0.28858 2.020109,-0.28858 h 47.540293 c 0.76957,0 1.41087,0.0962 1.92391,0.28858 0.57718,0.19239 0.99403,0.57718 1.25055,1.15435 0.32066,0.57717 0.48098,1.44294 0.48098,2.59729 0,1.09021 -0.16032,1.92391 -0.48098,2.50108 -0.32065,0.57718 -0.76956,0.9299 -1.34674,1.05816 -0.57717,0.19239 -1.25054,0.28858 -2.02011,0.28858 z"
+         id="path2"
+         aria-label="_" />
+    </g>
+  </g>
+</svg>
