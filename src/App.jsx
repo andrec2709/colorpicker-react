@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import ToolTip from './components/ToolTip';
 import Field from './components/Field';
 import ColorRange from './components/ColorRange';
@@ -55,7 +55,7 @@ export default function ColorPickerApp() {
     selectPalette,
     updatePalettesData,
   } = usePalette();
-  
+
   const {
     red, setRed,
     green, setGreen,
@@ -68,16 +68,13 @@ export default function ColorPickerApp() {
   const { showMessage } = useToolTip();
 
 
-  const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
+  // const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
+  const palettes = useMemo(() => palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />), [palettesData]);
 
-  const colorItems = [];
+  const colorItems = useMemo(() => (
+    selectedPalette?.colors.map(color => <ColorItem previewColor={color} key={color.id} colorId={color.id} onClick={handleSelectColor} />)
+), [selectedPalette]);
 
-  selectedPalette?.colors.forEach(color => {
-    colorItems.push(<ColorItem previewColor={color} key={color.id} colorId={color.id} onClick={handleSelectColor} />);
-  });
-
-  // const root = document.documentElement;
-  // root.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
 
   // Options
   const [useGrayscale, setUseGrayscale] = useState(false);
