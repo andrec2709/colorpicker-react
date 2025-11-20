@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ToolTip from './components/ToolTip';
 import Field from './components/Field';
 import ColorRange from './components/ColorRange';
@@ -57,7 +57,9 @@ export default function ColorPickerApp() {
     green, setGreen,
     blue, setBlue,
     hex, setHex,
-    selection, setSelection
+    selection, setSelection,
+    bgColor, setBgColor,
+    txtColor, setTxtColor,
   } = usePalette();
   const { showMessage } = useToolTip();
 
@@ -262,54 +264,44 @@ export default function ColorPickerApp() {
     value = isNaN(parseInt(value)) ? '' : parseInt(value, 10);
     value = Math.max(0, Math.min(value, 255));
 
-    let nextRed = red;
-    let nextGreen = green;
-    let nextBlue = blue;
-
     if (useGrayscale) {
       setRed(value);
       setGreen(value);
       setBlue(value);
 
-      nextRed = value;
-      nextGreen = value;
-      nextBlue = value;
-    } else if (isLocked) {
-
-      if (color !== leadColor.current[0]) return;
-
-      // clamping values
-      const valueRed = Math.max(0, Math.min(255, value - redLeadDiff.current));
-      const valueGreen = Math.max(0, Math.min(255, value - greenLeadDiff.current));
-      const valueBlue = Math.max(0, Math.min(255, value - blueLeadDiff.current));
-
-
-      setRed(valueRed);
-      setGreen(valueGreen);
-      setBlue(valueBlue);
-
-      nextRed = valueRed;
-      nextGreen = valueGreen;
-      nextBlue = valueBlue;
-    } else {
-      switch (color) {
-        case 'red':
-          setRed(value);
-          nextRed = value;
-          break;
-        case 'green':
-          setGreen(value);
-          nextGreen = value;
-          break;
-        case 'blue':
-          setBlue(value);
-          nextBlue = value;
-          break;
-      }
+      return;
     }
 
-    setHex(`#${nextRed.toString(16).padStart(2, '0')}${nextGreen.toString(16).padStart(2, '0')}${nextBlue.toString(16).padStart(2, '0')}`);
-    localStorage.setItem('last-color', `${nextRed},${nextGreen},${nextBlue}`);
+    if (isLocked) {
+
+      if (color !== leadColor.current[0]) return showMessage('When in locked mode, drag by the slider with the highest value!', 'fail', 3000);
+
+      let clampRed = value - redLeadDiff.current;
+      let clampGreen = value - greenLeadDiff.current;
+      let clampBlue = value - blueLeadDiff.current;
+
+      clampRed = Math.max(0, Math.min(clampRed, 255));
+      clampGreen = Math.max(0, Math.min(clampGreen, 255));
+      clampBlue = Math.max(0, Math.min(clampBlue, 255));
+
+      setRed(clampRed);
+      setGreen(clampGreen);
+      setBlue(clampBlue);
+
+      return;
+    }
+
+    switch (color) {
+      case 'red':
+        setRed(value);
+        break;
+      case 'green':
+        setGreen(value);
+        break;
+      case 'blue':
+        setBlue(value);
+        break;
+    }
 
   }
 
@@ -326,6 +318,7 @@ export default function ColorPickerApp() {
     handleChange(r, 'red');
     handleChange(g, 'green');
     handleChange(b, 'blue');
+
   }
 
   /**
@@ -365,19 +358,14 @@ export default function ColorPickerApp() {
   function handleSelectionType(e) {
     if (e.currentTarget.dataset.opt === 'background') {
       setSelection('background');
-      bgButtonRef.current.classList.add('modifier__btn--active');
-      bgButtonRef.current.children.item(0).classList.add('modifier__icon--active');
-      
-      txtButtonRef.current.classList.remove('modifier__btn--active');
-      txtButtonRef.current.children.item(0).classList.remove('modifier__icon--active');
+      handleChange(bgColor[0], 'red');
+      handleChange(bgColor[1], 'green');
+      handleChange(bgColor[2], 'blue');
     } else {
       setSelection('text');
-
-      txtButtonRef.current.classList.add('modifier__btn--active');
-      txtButtonRef.current.children.item(0).classList.add('modifier__icon--active');
-      
-      bgButtonRef.current.classList.remove('modifier__btn--active');
-      bgButtonRef.current.children.item(0).classList.remove('modifier__icon--active');
+      handleChange(txtColor[0], 'red');
+      handleChange(txtColor[1], 'green');
+      handleChange(txtColor[2], 'blue');
     }
   }
 
@@ -409,6 +397,28 @@ export default function ColorPickerApp() {
     }
 
   }
+
+  useEffect(() => {
+
+    const nextColor = [red, green, blue];
+
+    if (selection === 'background') {
+      setBgColor([red, green, blue]);
+      localStorage.setItem('bg-color', nextColor);
+    }
+    else {
+      setTxtColor([red, green, blue])
+      localStorage.setItem('txt-color', nextColor);
+    };
+
+    const hexRed = red.toString(16).padStart(2, '0');
+    const hexGreen = green.toString(16).padStart(2, '0');
+    const hexBlue = blue.toString(16).padStart(2, '0');
+
+    setHex(`#${hexRed}${hexGreen}${hexBlue}`);
+
+
+  }, [red, green, blue]);
 
   return (
     <>
@@ -493,11 +503,11 @@ export default function ColorPickerApp() {
             onClick={handleAddColor}
           ><img src={PlusIcon} className='colorpicker__icon' alt="add to palette" />
           </button>
-          <button ref={bgButtonRef} className='colorpicker__btn modifier__btn--active' onClick={handleSelectionType} data-opt='background'>
-            <img src={BackgroundIcon} className='colorpicker__icon modifier__icon--active' alt="set background color" />
+          <button ref={bgButtonRef} className={`colorpicker__btn ${selection === 'background' ? 'modifier__btn--active' : ''}`} onClick={handleSelectionType} data-opt='background'>
+            <img src={BackgroundIcon} className={`colorpicker__icon ${selection === 'background' ? 'modifier__icon--active' : ''}`} alt="set background color" />
           </button>
-          <button ref={txtButtonRef} className='colorpicker__btn' onClick={handleSelectionType} data-opt='text'>
-            <img src={TextIcon} className='colorpicker__icon' alt="set background color" />
+          <button ref={txtButtonRef} className={`colorpicker__btn ${selection === 'text' ? 'modifier__btn--active' : ''}`} onClick={handleSelectionType} data-opt='text'>
+            <img src={TextIcon} className={`colorpicker__icon ${selection === 'text' ? 'modifier__icon--active' : ''}`} alt="set background color" />
           </button>
         </div>
       </Colorpicker>

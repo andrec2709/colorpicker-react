@@ -565,9 +565,12 @@ button {
   position: fixed;
   justify-self: center;
   font-weight: 500;
-  transform: translateY(-3rem);
+  /* transform: translateY(-4rem); */
+  /* display: none; */
+  visibility: hidden;
   bottom: 0;
-  transition: transform .3s ease;
+  opacity: 0;
+  transition: transform .3s ease, opacity .3s ease;
   z-index: 999;
 }
 
@@ -581,8 +584,8 @@ button {
   color: rgb(0, 0, 0);
 }
 
-.tooltip--hidden {
-  transform: translateY(3rem);
+.tooltip--visible {
+  opacity: 1;
 }
 
 
