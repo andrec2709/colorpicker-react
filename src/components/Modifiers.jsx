@@ -1,3 +1,4 @@
+import { memo } from "react";
 
 /**
  * Wrapper component for the 'modifiers' section of the application.
@@ -15,4 +16,4 @@ export const Modifiers = ({ children, ...props }) => {
     );
 };
 
-export default Modifiers;
+export default memo(Modifiers);

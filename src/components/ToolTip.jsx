@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { useToolTip } from "../contexts/ToolTipContext";
 
 /**
@@ -70,4 +70,4 @@ export const ToolTip = ({ className = ['tooltip'], id }) => {
   );
 };
 
-export default ToolTip;
+export default memo(ToolTip);

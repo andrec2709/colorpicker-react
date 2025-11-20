@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 /**
  * Wrapper component for the {@link Components/Palette | Palette} components. Represents all the user's stored palettes.
  * @function
@@ -15,4 +17,4 @@ export const PalettesListView = ({ children, style }) => {
     );
 };
 
-export default PalettesListView;
+export default memo(PalettesListView);

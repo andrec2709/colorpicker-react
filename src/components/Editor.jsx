@@ -1,3 +1,4 @@
+import { memo } from "react";
 
 /**
  * Wrapper component for {@link Components/PalettesListView | PalettesListView} and {@link Components/PaletteDetailView | PaletteDetailView} components.
@@ -15,4 +16,4 @@ export const Editor = ({ children }) => {
     );
 };
 
-export default Editor;
+export default memo(Editor);

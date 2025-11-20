@@ -1,5 +1,6 @@
 import ColorPreview from "./ColorPreview";
 import { usePalette } from "../contexts/PaletteContext";
+import { memo, useMemo } from "react";
 
 /**
  * Represents a single palette inside {@link Components/PalettesListView | PalettesListView}.
@@ -15,15 +16,17 @@ export const Palette = ({ paletteData }) => {
 
     const maxColorItems = 16;
 
-    const colorItems = paletteData.colors
-        .slice(0, maxColorItems)
-        .map(color => (
-            <ColorPreview
-                previewColor={color}
-                key={color.id}
-                colorId={color.id}
-            />
+    const colorItems = useMemo(() => (
+        paletteData.colors
+            .slice(0, maxColorItems)
+            .map(color => (
+                <ColorPreview 
+                    previewColor={color}
+                    key={color.id}
+                    colorId={color.id}
+                />
         ))
+    ))
 
     return (
         <div
@@ -39,4 +42,4 @@ export const Palette = ({ paletteData }) => {
     );
 };
 
-export default Palette;
+export default memo(Palette);

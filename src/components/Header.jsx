@@ -1,3 +1,4 @@
+import { memo } from "react";
 
 /**
  * Wrapper for the header items of the {@link Components/Editor | Editor} component.
@@ -14,4 +15,4 @@ export const Header = ({ children }) => {
     );
 };
 
-export default Header;
+export default memo(Header);

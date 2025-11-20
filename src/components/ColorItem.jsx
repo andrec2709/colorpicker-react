@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { useToolTip } from "../contexts/ToolTipContext";
 import { usePalette } from "../contexts/PaletteContext";
 import CopyIcon from '../assets/copy.svg';
@@ -299,4 +299,4 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     }
 };
 
-export default ColorItem;
+export default memo(ColorItem);

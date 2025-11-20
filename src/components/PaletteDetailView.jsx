@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 /**
  * Wrapper for the currently selected palette's colors, which are individually represented by {@link Components/ColorItem | ColorItem}.
  * @function
@@ -20,4 +22,4 @@ export const PaletteDetailView = ({ children, style }) => {
     );
 };
 
-export default PaletteDetailView;
+export default memo(PaletteDetailView);
