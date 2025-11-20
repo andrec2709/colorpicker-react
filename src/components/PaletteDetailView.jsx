@@ -8,7 +8,7 @@ import { memo } from "react";
  * @returns {JSX.Element} A component with wrapped ColorItem's.
  * @alias Components/PaletteDetailView
  */
-export const PaletteDetailView = ({ children, style }) => {
+export const PaletteDetailView = ({ children, style, ref }) => {
 
     return (
         <div
@@ -16,6 +16,7 @@ export const PaletteDetailView = ({ children, style }) => {
             className="palette-detail"
             style={style}
             onClick={e => e.target.focus()}
+            ref={ref}
         >
             {children}
         </div>
