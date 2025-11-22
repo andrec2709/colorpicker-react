@@ -1,14 +1,9 @@
-import ColorPreview from "./ColorPreview";
-import { usePalette } from "../contexts/PaletteContext";
+import ColorPreview from "./ColorPreview.jsx";
+import { usePalette } from "../contexts/PaletteContext.jsx";
 import { memo, useMemo } from "react";
 
-/**
- * Represents a single palette inside {@link Components/PalettesListView | PalettesListView}.
- * @function
- * @param {Object} paletteData - an Object containing the properties id, name, and colors. ID is a unique identifier for the palette, a name is a string, and colors is another Object described in {@link Components/ColorItem | ColorItem}, see the 'previewColor' description. 
- * @returns {JSX.Element} a component representing a single palette.
- * @alias Components/Palette
- */
+
+
 export const Palette = ({ paletteData }) => {
 
     const { selectPalette } = usePalette();
@@ -26,7 +21,7 @@ export const Palette = ({ paletteData }) => {
                     colorId={color.id}
                 />
         ))
-    ))
+    ), [paletteData])
 
     return (
         <div

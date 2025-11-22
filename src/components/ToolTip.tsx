@@ -1,28 +1,23 @@
 import { memo, useEffect, useRef } from "react";
-import { useToolTip } from "../contexts/ToolTipContext";
+import { useToolTip } from "../contexts/ToolTipContext.jsx";
 
-/**
- * A tooltip component.
- * @function
- * @param {string} [className = "tooltip"] - the classes for the tooltip.
- * @param {string} id - Unique ID for the tooltip.
- * @returns {JSX.Element}
- * @alias Components/ToolTip
- */
-export const ToolTip = ({ className = ['tooltip'], id }) => {
+
+type Props = {
+  className?: string[];
+  id: string;
+};
+
+export const ToolTip = ({ className = ['tooltip'], id }: Props) => {
   const { message, visible, type } = useToolTip();
-  const toolTipRef = useRef(null);
-
-  // if (visible) {
-  //   className.push('tooltip--visible');
-  // }
-
+  const toolTipRef = useRef<HTMLDivElement>(null);
+  const classes = [...className];
+  
   switch (type) {
     case 'ok':
-      className.push('tooltip--success');
+      classes.push('tooltip--success');
       break;
     case 'fail':
-      className.push('tooltip--fail');
+      classes.push('tooltip--fail');
       break;
   }
 
@@ -35,7 +30,7 @@ export const ToolTip = ({ className = ['tooltip'], id }) => {
 
     const height = rect.height;
 
-    let timeout;
+    let timeout: ReturnType<typeof setTimeout>;
 
     if (visible) {
       el.style.visibility = 'visible';
@@ -60,7 +55,7 @@ export const ToolTip = ({ className = ['tooltip'], id }) => {
 
   return (
     <div
-      className={className.join(' ')}
+      className={classes.join(' ')}
       id={id}
       ref={toolTipRef}
 

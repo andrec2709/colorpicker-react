@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export const ToggleSwitch = ({ id, labelId, labelText, onChange }) => {
+type Props = {
+    id: string;
+    labelId: string;
+    labelText: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const ToggleSwitch = ({ id, labelId, labelText, onChange }: Props) => {
 
     return (
         <label htmlFor={id} id={labelId} className="switch__container">
