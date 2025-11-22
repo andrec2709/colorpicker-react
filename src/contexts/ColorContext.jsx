@@ -11,7 +11,8 @@ export const ColorProvider = ({ children }) => {
     const [red, setRed] = useState(parseInt(lastColor[0]));
     const [green, setGreen] = useState(parseInt(lastColor[1]));
     const [blue, setBlue] = useState(parseInt(lastColor[2]));
-    const [hex, setHex] = useState(`#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`);
+    // const [hex, setHex] = useState(`#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`);
+    const [hex, setHex] = useState(``);
 
     // Define preview states
     const [bgColor, setBgColor] = useState(localStorage.getItem('bg-color')?.split(',') || [0, 0, 0]);

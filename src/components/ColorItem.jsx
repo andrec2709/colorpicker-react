@@ -4,6 +4,7 @@ import { usePalette } from "../contexts/PaletteContext";
 import CopyIcon from '../assets/copy.svg';
 import DeleteIcon from '../assets/delete.svg';
 import { debounce } from "../utils";
+import { useSettings } from "../contexts/SettingsContext";
 
 /**
  * This component represents a single color of a palette. Not to be confused with the {@link Components/ColorPreview | ColorPreview} component.
@@ -30,6 +31,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         blue
     } = usePalette();
 
+    const {copyHexWithoutHash} = useSettings();
+
     const datasetColor = JSON.stringify(previewColor);
 
     const [isHolding, setIsHolding] = useState(false);
@@ -42,7 +45,12 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     function handleCopy(e) {
         e.stopPropagation();
-        navigator.clipboard.writeText(previewColor.hex)
+        let copy;
+        
+        if (copyHexWithoutHash) copy = previewColor.hex.replace('#', '');
+        else copy = previewColor.hex;
+
+        navigator.clipboard.writeText(copy)
             .then(() => {
                 showMessage('Copied!', 'ok');
             }, () => {

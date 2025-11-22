@@ -638,3 +638,110 @@ button {
 }
 
 /* [end] -------- Preview --------> */
+
+/* [start] -------- Settings section --------> */
+
+.settings {
+  width: 90vw;
+  max-width: 40rem;
+  height: 80vh;
+  min-height: 20rem;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 5vw, 2rem);
+  align-self: center;
+  margin-top: 1rem;
+  background-color: #23272f;
+  box-shadow: 0 0 20px rgb(19, 19, 19);
+  /* background-color: #000000; */
+  border-radius: 10px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.settings__btn {
+  width: fit-content;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  background-color: unset;
+  align-self: flex-end;
+  margin-bottom: 1rem;
+  position: relative;
+  
+}
+
+.settings__btn:hover {
+  opacity: 80%;
+}
+
+.settings__btn:active {
+  opacity: 50%;
+}
+
+.settings__icon {
+  width: 28px;
+  filter: invert();
+}
+
+/* [end] -------- Settings section --------> */
+
+/* [start] -------- Toggle switch section --------> */
+
+.switch__container {
+  display: flex;
+  width: 100%;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  width: 60px;
+  height: 28px;
+  border-radius: 14px;
+  padding-left: 4px;
+  padding-right: 4px;
+  background-color: rgb(121, 121, 121);
+  position: relative;
+  margin-left: auto;
+  transition: background-color .11s ease-out;
+}
+
+.switch__slider {
+  height: 22px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  position: relative;
+  /* top: 0; */
+  transform: translateX(0);
+  background-color: rgb(197, 197, 197);
+  transition: transform .11s ease-out;
+
+}
+
+.switch__input {
+  margin: 0;
+  padding: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+  opacity: 0;
+  clip-path: inset(50%);
+}
+
+.switch__input:checked ~ .switch {
+  background-color: rgb(139, 14, 170);
+}
+
+.switch__input:checked ~ .switch > .switch__slider {
+  /* left: calc(60px - 22px - 8px); */
+  transform: translateX(calc(60px - 22px - 8px));
+}
+
+.switch__label {
+  width: 70%;
+  user-select: none;
+}
+
+/* [end] -------- Toggle switch section --------> */

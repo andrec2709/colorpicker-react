@@ -1,5 +1,6 @@
 import { useToolTip } from "../contexts/ToolTipContext";
 import CopyIcon from '../assets/copy.svg';
+import { useSettings } from "../contexts/SettingsContext";
 
 /**
  * This component is a wrapper for the input 'text' of a specific color, preceded by a label.
@@ -24,10 +25,15 @@ export const Field = ({
   classLabel = 'label--hidden field-container__label'
 }) => {
   const { showMessage } = useToolTip();
+  const { copyHexWithoutHash } = useSettings();
 
   async function handleCopy() {
+    let copy;
 
-    await navigator.clipboard.writeText(value)
+    if (copyHexWithoutHash) copy = value.toString().replace('#', '');
+    else copy = value;
+
+    await navigator.clipboard.writeText(copy)
       .then(
         () => {
           showMessage('Copied!', 'ok');

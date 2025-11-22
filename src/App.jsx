@@ -30,10 +30,15 @@ import ViewGrid from './assets/view-grid.svg';
 import GrayScaleIcon from './assets/grayscale.svg';
 import BackgroundIcon from './assets/background.png';
 import TextIcon from './assets/text.png';
+import GearIcon from './assets/gear.svg';
+import CloseIcon from './assets/close.svg';
 
 import './App.css'
 import Preview from './components/Preview';
 import { useColor } from './contexts/ColorContext';
+import { Settings } from './components/Settings';
+import { useSettings } from './contexts/SettingsContext';
+import ToggleSwitch from './components/ToggleSwitch';
 
 
 // Exercise:
@@ -65,6 +70,14 @@ export default function ColorPickerApp() {
     bgColor, setBgColor,
     txtColor, setTxtColor,
   } = useColor();
+
+  const {
+    isSettingsVisible,
+    setIsSettingsVisible,
+    copyHexWithoutHash,
+    setcopyHexWithoutHash
+  } = useSettings();
+
   const { showMessage } = useToolTip();
 
   const paletteDetailViewRef = useRef(null);
@@ -121,36 +134,6 @@ export default function ColorPickerApp() {
     setGreen(color.g);
     setBlue(color.b);
     setHex(color.hex);
-  }
-
-  /**
-   * Handler function for changes on the hex value. Generally called as a callback from a {@link Components/Field | Field}.
-   * For the moment, {@link functions/handleChange | handleChange} and this function are separate functions, but they might eventually be converted into one as they serve primarily the same purpose.
-   * @param {string} value - the new value to set hex to.
-   * @param {string} color - DEPRECATED: this parameter is not in use and will eventually be removed. It is supposed to be a string value indicating the color value to be modified, e.g. 'red', 'green', 'blue'. For this function it would be passed as 'hex', but it is not in use and unlikely will.
-   * @returns {void}
-   * @alias functions/handleHexChange
-   */
-  function handleHexChange(value, color) {
-    if (/^#[a-fA-F0-9]{0,6}$/.test(value)) {
-
-      setHex(value);
-
-      value = value.replace('#', '');
-
-      const nextRed = parseInt(value.slice(0, 2).padStart(2, '0'), 16);
-      const nextGreen = parseInt(value.slice(2, 4).padStart(2, '0'), 16);
-      const nextBlue = parseInt(value.slice(4, 6).padStart(2, '0'), 16);
-      console.log(`nextRed: ${nextRed}\nnextGreen: ${nextGreen}\nnextBlue: ${nextBlue}`);
-      setRed(nextRed);
-      setGreen(nextGreen);
-      setBlue(nextBlue);
-
-
-    } else {
-      return;
-    }
-
   }
 
   /**
@@ -291,13 +274,13 @@ export default function ColorPickerApp() {
    * @returns {void}
    * @alias functions/handleChange
    */
-  function handleChange(value, color, modifierAllowed = true) {
+  const handleChange = useCallback((value, color, modifierAllowed = true) => {
 
     value = isNaN(parseInt(value)) ? '' : parseInt(value, 10);
     value = Math.max(0, Math.min(value, 255));
 
     if (useGrayscale && modifierAllowed) {
-      
+
       setRed(value);
       setGreen(value);
       setBlue(value);
@@ -336,7 +319,52 @@ export default function ColorPickerApp() {
         break;
     }
 
-  }
+  }, [red, green, blue, hex]);
+
+  /**
+   * Handler function for changes on the hex value. Generally called as a callback from a {@link Components/Field | Field}.
+   * For the moment, {@link functions/handleChange | handleChange} and this function are separate functions, but they might eventually be converted into one as they serve primarily the same purpose.
+   * @param {string} value - the new value to set hex to.
+   * @param {string} color - DEPRECATED: this parameter is not in use and will eventually be removed. It is supposed to be a string value indicating the color value to be modified, e.g. 'red', 'green', 'blue'. For this function it would be passed as 'hex', but it is not in use and unlikely will.
+   * @returns {void}
+   * @alias functions/handleHexChange
+   */
+  const handleHexChange = useCallback((value, color) => {
+    if (/^#[a-fA-F0-9]{0,6}$/.test(value)) {
+
+      setHex(value);
+
+      value = value.replace('#', '');
+
+      // const nextRed = parseInt(value.slice(0, 2).padStart(2, '0'), 16);
+      // const nextGreen = parseInt(value.slice(2, 4).padStart(2, '0'), 16);
+      // const nextBlue = parseInt(value.slice(4, 6).padStart(2, '0'), 16);
+
+      let nextRed;
+      let nextGreen;
+      let nextBlue;
+
+      if (value.length === 6) {
+        nextRed = parseInt(value.slice(0, 2), 16);
+        nextGreen = parseInt(value.slice(2, 4), 16);
+        nextBlue = parseInt(value.slice(4, 6), 16);
+        handleChange(nextRed, 'red');
+        handleChange(nextGreen, 'green');
+        handleChange(nextBlue, 'blue');
+      }
+
+      console.log(`nextRed: ${nextRed}\nnextGreen: ${nextGreen}\nnextBlue: ${nextBlue}`);
+
+      // if (value.length === 6) {
+      // }
+
+
+
+    } else {
+      return;
+    }
+
+  }, [red, green, blue]);
 
   /**
    * @function
@@ -348,7 +376,7 @@ export default function ColorPickerApp() {
     const r = Math.round(Math.random() * 255);
     const g = Math.round(Math.random() * 255);
     const b = Math.round(Math.random() * 255);
-    
+
     handleChange(r, 'red');
     handleChange(g, 'green');
     handleChange(b, 'blue');
@@ -499,8 +527,26 @@ export default function ColorPickerApp() {
 
   }, [bgColor, txtColor]);
 
+  function handleSettings(e) {
+    switch (e.target.id) {
+      case 'hex-copy-opt':
+        setcopyHexWithoutHash(e.target.checked);
+        break;
+    }
+  }
+
   return (
     <>
+      <Settings style={{ display: isSettingsVisible ? 'flex' : 'none' }}>
+        <button id='close-settings' className='settings__btn' onClick={e => setIsSettingsVisible(false)}><img src={CloseIcon} className="settings__icon" alt="close settings" /></button>
+        <ToggleSwitch
+          id='hex-copy-opt'
+          labelId='hex-copy-opt-label'
+          onChange={handleSettings}
+          labelText='Copy hex values without the hash symbol.'
+        >
+        </ToggleSwitch>
+      </Settings>
       <Modifiers className='modifiers'>
         <button id='randomizer' className='modifier__btn' onClick={handlePickRandom} >
           <img className='modifier__icon' src={RandomIcon} alt="Pick a random color" />
@@ -510,6 +556,9 @@ export default function ColorPickerApp() {
         </button>
         <button id='lock' className='modifier__btn' ref={optLockRef} onClick={handleOptions} data-opt='lock'>
           <img className='modifier__icon' src={isLocked ? LockIcon : UnlockIcon} alt="Lock distance between colors" title='lock distance between colors.&#10;You must move using the slider with the highest value.' />
+        </button>
+        <button id='settings' className='modifier__btn' onClick={() => setIsSettingsVisible(true)}>
+          <img className='modifier__icon' src={GearIcon} alt="open settings menu" title='open settings menu' />
         </button>
       </Modifiers>
       <Preview />
