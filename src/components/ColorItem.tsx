@@ -1,22 +1,19 @@
 import { memo, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
-import { useToolTip } from "../contexts/ToolTipContext";
-import { usePalette } from "../contexts/PaletteContext";
+import { useToolTip } from "../contexts/ToolTipContext.jsx";
+import { usePalette } from "../contexts/PaletteContext.jsx";
 import CopyIcon from '../assets/copy.svg';
 import DeleteIcon from '../assets/delete.svg';
-import { debounce } from "../utils";
-import { useSettings } from "../contexts/SettingsContext";
+import { debounce } from "../utils/index.jsx";
+import { useSettings } from "../contexts/SettingsContext.jsx";
+import type { Color, PaletteData } from "../types/palette.ts";
 
-/**
- * This component represents a single color of a palette. Not to be confused with the {@link Components/ColorPreview | ColorPreview} component.
- * @function
- * @param {Object} previewColor - an Object containing the properties id, r, g, b, hex and name, representing the color's unique ID, colors channel values, hex value and the color's name. 
- * @param {string} colorId - the color's unique ID. Same as previewColor.id
- * @param {function} onClick - callback function.
- * @returns {JSX.Element} A component that represents a single color inside a palette.
- * 
- * @alias Components/ColorItem
- */
-export const ColorItem = ({ previewColor, colorId, onClick }) => {
+type Props = {
+    previewColor: Color;
+    colorId: string;
+    onClick: (color: Color) => void;
+};
+
+export const ColorItem = ({ previewColor, colorId, onClick }: Props) => {
 
     const { showMessage } = useToolTip();
     const {
@@ -33,22 +30,19 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     const {copyHexWithoutHash} = useSettings();
 
-    const datasetColor = JSON.stringify(previewColor);
-
     const [isHolding, setIsHolding] = useState(false);
     const [isPressing, setIsPressing] = useState(false);
     const [contrastRatio, setContrastRatio] = useState(0);
 
-    const colorItem = useRef(null);
+    const colorItem = useRef<HTMLDivElement>(null);
     const LONG_PRESS_DURATION = 300; // ms
-    const longPressTimer = useRef(null);
+    const longPressTimer = useRef<ReturnType<typeof setTimeout>>(null);
 
-    function handleCopy(e) {
+    function handleCopy(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
-        let copy;
+        let copy: string;
         
-        if (copyHexWithoutHash) copy = previewColor.hex.replace('#', '');
-        else copy = previewColor.hex;
+        copy = copyHexWithoutHash ? previewColor.hex.replace('#', '') : previewColor.hex;
 
         navigator.clipboard.writeText(copy)
             .then(() => {
@@ -58,9 +52,9 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
             });
     }
 
-    function handleRemoveColor(e) {
+    function handleRemoveColor(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
-        const updatedPalettes = palettesData.map(palette => {
+        const updatedPalettes = palettesData.map((palette: PaletteData) => {
             if (palette.id === selectedPaletteId) {
                 return {
                     ...palette,
@@ -74,7 +68,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     }
 
-    function handlePointerUp(e) {
+    function handlePointerUp(e: React.PointerEvent<HTMLDivElement>) {
         handleMoveItemUp(e);
         setIsPressing(false);
         setIsHolding(false);
@@ -82,36 +76,34 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     }
 
-    const handleMoveItem = useCallback(e => {
+    const handleMoveItem = useCallback((e: PointerEvent) => {
         if (colorItem.current && isHolding) {
 
             const rect = colorItem.current.getBoundingClientRect();
 
+            console.log(`e.clientX: ${e.clientX}\ne.clientY: ${e.clientY}`);
 
             const x = e.clientX - rect.width / 2;
-            const y = e.clientY - rect.height / 1.2;
+            const y = e.clientY - rect.height / 2;
 
             colorItem.current.classList.add('dragging');
-            colorItem.current.style.position = 'absolute';
-            colorItem.current.style.pointerEvents = 'none';
-            colorItem.current.style.zIndex = '999';
-            colorItem.current.style.scale = '.8';
             colorItem.current.style.left = `${x}px`;
             colorItem.current.style.top = `${y}px`;
 
         }
+
     }, [isHolding]);
 
-    const handleMoveItemUp = useCallback(e => {
+    const handleMoveItemUp = useCallback((e: PointerEvent | React.PointerEvent) => {
         if (isHolding) {
             const x = e.clientX;
             const y = e.clientY;
 
             const elements = document.elementsFromPoint(x, y);
             const lookForClass = viewLayout === 'block' ? 'color' : 'color-item';
-            elements.forEach(el => {
+            elements.forEach((el: HTMLElement) => {
                 if (el.classList.contains(lookForClass) && el !== colorItem.current) {
-                    const updatedPalettes = palettesData.map(palette => {
+                    const updatedPalettes = palettesData.map((palette: PaletteData) => {
                         if (palette.id === selectedPaletteId) {
                             const colors = palette.colors.slice();
 
@@ -146,26 +138,25 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         if (colorItem.current) {
             colorItem.current.classList.remove('dragging');
             colorItem.current.classList.remove('highlighted');
-            colorItem.current.style.position = 'relative';
-            colorItem.current.style.pointerEvents = 'auto';
-            colorItem.current.style.scale = '';
-            colorItem.current.style.zIndex = 'unset';
             colorItem.current.style.left = 'unset';
             colorItem.current.style.top = 'unset';
         }
     }, [isHolding, palettesData, selectedPaletteId, colorId]);
 
-    function handlePointerLeave(e) {
+    function handlePointerLeave(e: React.PointerEvent<HTMLDivElement>) {
         colorItem.current.classList.remove('highlighted');
     }
 
-    function handlePointerEnter(e) {
+    function handlePointerEnter(e: React.PointerEvent<HTMLDivElement>) {
         if (isHoldingItem) colorItem.current.classList.add('highlighted');
     }
 
-    function handlePointerDown(e) {
+    function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
+        const targetElement = e.target;
 
-        if (e.target.tagName === 'INPUT') return;
+        if (!(targetElement instanceof HTMLElement)) return;
+
+        if (targetElement.tagName === 'INPUT') return;
 
         // e.preventDefault();
 
@@ -174,8 +165,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         setIsPressing(true);
     }
 
-    function handleColorNameChange(e) {
-        const updatedPalettes = palettesData.map(palette => {
+    function handleColorNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const updatedPalettes = palettesData.map((palette: PaletteData) => {
             if (palette.id === selectedPaletteId) {
                 const colors = palette.colors.slice();
 
@@ -197,7 +188,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         updatePalettesData(updatedPalettes);
     }
 
-    function handleFocusName(e) {
+    function handleFocusName(e: React.FocusEvent<HTMLInputElement>) {
         e.preventDefault();
         e.stopPropagation();
         e.target.select();
@@ -220,12 +211,12 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
 
     useEffect(() => {
         if (isHolding) {
-            document.addEventListener('pointermove', handleMoveItem, { passive: false });
+            document.addEventListener('pointermove', handleMoveItem, {passive: false});
             document.addEventListener('pointerup', handleMoveItemUp);
         }
 
         return () => {
-            document.removeEventListener('pointermove', handleMoveItem, { passive: false });
+            document.removeEventListener('pointermove', handleMoveItem);
             document.removeEventListener('pointerup', handleMoveItemUp);
         }
     }, [isHolding, handleMoveItem, handleMoveItemUp]);
@@ -234,7 +225,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
         return (
             <div
                 className="color-item"
-                data-color={datasetColor}
                 data-color-id={previewColor.id}
                 style={{
                     backgroundColor: `rgb(${previewColor.r},${previewColor.g},${previewColor.b})`,
@@ -246,7 +236,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                 onPointerLeave={handlePointerLeave}
                 onPointerEnter={handlePointerEnter}
                 ref={colorItem}
-                tabIndex="0"
+                tabIndex={0}
                 role="button"
             >
                 <button className="color-item__btn" onClick={handleCopy}>
@@ -260,7 +250,6 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
     } else {
         return (
             <div
-                data-color={datasetColor}
                 data-color-id={previewColor.id}
                 className="color"
                 onPointerDown={handlePointerDown}
@@ -268,7 +257,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }) => {
                 onPointerLeave={handlePointerLeave}
                 onPointerEnter={handlePointerEnter}
                 ref={colorItem}
-                tabIndex="0"
+                tabIndex={0}
                 role="button"
             >
                 <div

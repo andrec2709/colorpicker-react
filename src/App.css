@@ -373,6 +373,7 @@ button {
   scroll-snap-align: start;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
   transition: background-color .1s ease;
 }
 
@@ -390,6 +391,7 @@ button {
 }
 
 .color-item {
+  position: relative;
   height: 4rem;
   border-radius: 2px;
   display: flex;
@@ -411,6 +413,11 @@ button {
 .color-item.dragging {
   opacity: 70%;
   border: 1px solid #165deb;
+
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  /* scale: .8; */
 }
 
 .palette-detail {

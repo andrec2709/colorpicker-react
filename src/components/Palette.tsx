@@ -1,10 +1,14 @@
 import ColorPreview from "./ColorPreview.jsx";
 import { usePalette } from "../contexts/PaletteContext.jsx";
 import { memo, useMemo } from "react";
+import type { PaletteData } from "../types/palette.ts";
 
 
+type Props = {
+    paletteData: PaletteData;
+};
 
-export const Palette = ({ paletteData }) => {
+export const Palette = ({ paletteData }: Props) => {
 
     const { selectPalette } = usePalette();
 
@@ -21,14 +25,14 @@ export const Palette = ({ paletteData }) => {
                     colorId={color.id}
                 />
         ))
-    ), [paletteData])
+    ), [paletteData.colors])
 
     return (
         <div
             className="palette"
             data-name={paletteData.name}
             onClick={() => selectPalette(paletteData)}
-            tabIndex="0"
+            tabIndex={0}
             role="button"
             aria-label="palette"
         >
