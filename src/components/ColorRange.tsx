@@ -8,8 +8,8 @@ type Props = {
   onChange: (value: string | number, color: string, modifierAllowed?: boolean) => void;
   color: string;
   textLabel: string;
-  min: number;
-  max: number;
+  min?: number;
+  max?: number;
 };
 
 export const ColorRange = ({

@@ -12,7 +12,7 @@ import ColorItem from './components/ColorItem';
 import Modifiers from './components/Modifiers';
 import { colornames } from 'color-name-list';
 import nearestColor from 'nearest-color';
-import { randomID } from './utils';
+import { randomID } from './utils/index';
 
 import { usePalette } from './contexts/PaletteContext';
 import { useToolTip } from './contexts/ToolTipContext';
@@ -39,6 +39,7 @@ import { useColor } from './contexts/ColorContext';
 import { Settings } from './components/Settings';
 import { useSettings } from './contexts/SettingsContext';
 import ToggleSwitch from './components/ToggleSwitch';
+import type { Color } from './types/palette';
 
 
 // Exercise:
@@ -75,12 +76,12 @@ export default function ColorPickerApp() {
     isSettingsVisible,
     setIsSettingsVisible,
     copyHexWithoutHash,
-    setcopyHexWithoutHash
+    setCopyHexWithoutHash
   } = useSettings();
 
   const { showMessage } = useToolTip();
 
-  const paletteDetailViewRef = useRef(null);
+  const paletteDetailViewRef = useRef<HTMLDivElement>(null);
 
   // const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
   const palettes = useMemo(() => palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />), [palettesData]);
@@ -92,22 +93,23 @@ export default function ColorPickerApp() {
 
   // Options
   const [useGrayscale, setUseGrayscale] = useState(false);
-  const optGrayscaleRef = useRef(null);
+  const optGrayscaleRef = useRef<HTMLButtonElement>(null);
 
   // Lock
   const [isLocked, setIsLocked] = useState(false);
-  const optLockRef = useRef(null);
-  const leadColor = useRef(null);
-  const redLeadDiff = useRef(null);
-  const greenLeadDiff = useRef(null);
-  const blueLeadDiff = useRef(null);
+  const optLockRef = useRef<HTMLButtonElement>(null);
+  const leadColor = useRef<[string, number]>(null);
+  const redLeadDiff = useRef<number>(0);
+  const greenLeadDiff = useRef<number>(0);
+  const blueLeadDiff = useRef<number>(0);
 
   const options = useRef([optGrayscaleRef, optLockRef]);
 
-  const bgButtonRef = useRef(null);
-  const txtButtonRef = useRef(null);
+  const bgButtonRef = useRef<HTMLButtonElement>(null);
+  const txtButtonRef = useRef<HTMLButtonElement>(null);
 
   const [contrastRatio, setContrastRatio] = useState(0);
+
 
   const textColor = () => {
     switch (true) {
@@ -124,30 +126,21 @@ export default function ColorPickerApp() {
   };
 
 
-  /**
-   * Function used to select a color from the palette's color list. This is generally called by {@link Components/ColorItem | ColorItem} as a callback.
-   * @param {Object} color - a color Object with at least properties r, g, b, hex.
-   * @alias functions/handleSelectColor 
-   */
-  function handleSelectColor(color) {
+  function handleSelectColor(color: Color) {
     setRed(color.r);
     setGreen(color.g);
     setBlue(color.b);
     setHex(color.hex);
   }
 
-  /**
-   * Handler function used to add colors to the currently selected palette.
-   * @returns {void}
-   * @alias functions/handleAddColor
-   */
+
   function handleAddColor() {
     if (selectedPalette === null) {
       showMessage('Please select a palette first', 'fail');
       return;
     }
 
-    if (isNaN(red) || isNaN(green) || isNaN(blue) || red === "" || green === "" || blue === "") {
+    if (isNaN(red) || isNaN(green) || isNaN(blue)) {
       showMessage('Not a valid color!', 'fail');
       return;
     }
@@ -155,7 +148,7 @@ export default function ColorPickerApp() {
 
     const colorId = randomID(12);
 
-    const colors = colornames.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
+    const colors = colornames.reduce((o: any, { name, hex }: {name: any, hex: any}) => Object.assign(o, { [name]: hex }), {});
     const nearest = nearestColor.from(colors);
 
     const colorName = nearest(hex).name;
@@ -198,10 +191,7 @@ export default function ColorPickerApp() {
     }
   }, [palettesData]);
 
-  /**
-   * Handler function used to create a new palette.
-   * @alias functions/handleAddPalette
-   */
+
   function handleAddPalette() {
 
     const newPalette = {
@@ -218,11 +208,7 @@ export default function ColorPickerApp() {
 
   }
 
-  /**
-   * Handler function used to delete the selected palette.
-   * @returns {void}
-   * @alias functions/handleDeletePalette
-   */
+
   function handleDeletePalette() {
 
     if (selectedPalette === null) {
@@ -237,17 +223,13 @@ export default function ColorPickerApp() {
 
   }
 
-  /**
-   * Function that handles the change to a palette's name.
-   * @param {Event} e - event created by the input where the name is being edited.
-   * @alias functions/handleNameChange
-   */
-  function handleNameChange(e, type) {
+
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
 
     if (e.target.value.length < 30) {
 
       const updatedPalettes = palettesData.map(palette => {
-        if (palette.id === selectedPalette.id) {
+        if (palette.id === selectedPalette?.id) {
 
 
 
@@ -267,15 +249,9 @@ export default function ColorPickerApp() {
     }
   }
 
-  /**
-   * Handler function that updates the values of red, green, and blue colors when they change.
-   * @param {number|string} value - the new value to update to.
-   * @param {string} color - the color to be updated. 
-   * @returns {void}
-   * @alias functions/handleChange
-   */
-  const handleChange = useCallback((value, color, modifierAllowed = true) => {
 
+  const handleChange = useCallback((value: any, color: string, modifierAllowed = true) => {
+    // TODO: value should not be any type
     value = isNaN(parseInt(value)) ? '' : parseInt(value, 10);
     value = Math.max(0, Math.min(value, 255));
 
@@ -290,7 +266,7 @@ export default function ColorPickerApp() {
 
     if (isLocked && modifierAllowed) {
 
-      if (color !== leadColor.current[0]) return showMessage('When in locked mode, drag by the slider with the highest value!', 'fail', 3000);
+      if (color !== leadColor.current![0]) return showMessage('When in locked mode, drag by the slider with the highest value!', 'fail', 3000);
 
       let clampRed = value - redLeadDiff.current;
       let clampGreen = value - greenLeadDiff.current;
@@ -321,16 +297,11 @@ export default function ColorPickerApp() {
 
   }, [red, green, blue, hex]);
 
-  /**
-   * Handler function for changes on the hex value. Generally called as a callback from a {@link Components/Field | Field}.
-   * For the moment, {@link functions/handleChange | handleChange} and this function are separate functions, but they might eventually be converted into one as they serve primarily the same purpose.
-   * @param {string} value - the new value to set hex to.
-   * @param {string} color - DEPRECATED: this parameter is not in use and will eventually be removed. It is supposed to be a string value indicating the color value to be modified, e.g. 'red', 'green', 'blue'. For this function it would be passed as 'hex', but it is not in use and unlikely will.
-   * @returns {void}
-   * @alias functions/handleHexChange
-   */
-  const handleHexChange = useCallback((value, color) => {
-    if (/^#[a-fA-F0-9]{0,6}$/.test(value)) {
+
+  const handleHexChange = useCallback((value: number | string, color: string) => {
+    value = value.toString();
+    
+    if (/^#?[a-fA-F0-9]{0,6}$/.test(value)) {
 
       setHex(value);
 
@@ -355,22 +326,13 @@ export default function ColorPickerApp() {
 
       console.log(`nextRed: ${nextRed}\nnextGreen: ${nextGreen}\nnextBlue: ${nextBlue}`);
 
-      // if (value.length === 6) {
-      // }
-
-
-
     } else {
       return;
     }
 
   }, [red, green, blue]);
 
-  /**
-   * @function
-   * Function used to randomly select a color.
-   * @alias functions/handlePickRandom
-   */
+
   const handlePickRandom = useCallback(() => {
 
     const r = Math.round(Math.random() * 255);
@@ -383,7 +345,7 @@ export default function ColorPickerApp() {
 
   }, [isLocked, useGrayscale]);
 
-  function handleSelectionType(e) {
+  function handleSelectionType(e: React.MouseEvent<HTMLButtonElement>) {
     if (e.currentTarget.dataset.opt === 'background') {
       setSelection('background');
       handleChange(bgColor[0], 'red', false);
@@ -397,12 +359,7 @@ export default function ColorPickerApp() {
     }
   }
 
-  /**
-   * Handler function for the "lock sliders" modifier.
-   * This function determines the lead color and calculates the difference from the other sliders.
-   * @returns {void}
-   * @alias functions/handleLockColors
-   */
+
   const handleLockColors = useCallback(() => {
     if (optLockRef.current) {
 
@@ -432,24 +389,21 @@ export default function ColorPickerApp() {
 
   }, [isLocked, optLockRef, red, green, blue]);
 
-  /**
-   * @function
-   * Function that handles modifiers like locking sliders, grayscale.
-   * @param {Event} e - Event generated by clicking the modifier button.
-   * @alias functions/handleOptions
-   */
-  const handleOptions = useCallback((e) => {
+
+  const handleOptions = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     const optClicked = e.currentTarget.dataset.opt;
 
     if (options.current) {
       options.current.forEach(option => {
+        
+        if (!option.current) return;
 
         if (option.current.dataset.opt === optClicked) {
           option.current.classList.toggle('modifier__btn--active');
-          option.current.children.item(0).classList.toggle('modifier__icon--active');
+          option.current.children.item(0)?.classList.toggle('modifier__icon--active');
         } else {
           option.current.classList.remove('modifier__btn--active');
-          option.current.children.item(0).classList.remove('modifier__icon--active');
+          option.current.children.item(0)?.classList.remove('modifier__icon--active');
         }
       });
 
@@ -470,7 +424,7 @@ export default function ColorPickerApp() {
 
   useEffect(() => {
 
-    const nextColor = [red, green, blue];
+    const nextColor = [red, green, blue].join(',');
 
     if (selection === 'background') {
       setBgColor([red, green, blue]);
@@ -494,9 +448,10 @@ export default function ColorPickerApp() {
   useEffect(() => {
 
     // luminance for bgColor
-    let linearRed = parseInt(bgColor[0]) / 255;
-    let linearGreen = parseInt(bgColor[1]) / 255;
-    let linearBlue = parseInt(bgColor[2]) / 255;
+
+    let linearRed = (bgColor[0] ?? 0) / 255;
+    let linearGreen = (bgColor[1] ?? 0) / 255;
+    let linearBlue = (bgColor[2] ?? 0) / 255;
 
     linearRed = linearRed <= 0.03928 ? linearRed / 12.92 : ((linearRed + 0.055) / 1.055) ** 2.4;
     linearGreen = linearGreen <= 0.03928 ? linearGreen / 12.92 : ((linearGreen + 0.055) / 1.055) ** 2.4;
@@ -505,9 +460,9 @@ export default function ColorPickerApp() {
     let luminanceBgColor = (0.2126 * linearRed + 0.7152 * linearGreen + 0.0722 * linearBlue) + 0.05;
 
     // luminance for txtColor
-    linearRed = parseInt(txtColor[0]) / 255;
-    linearGreen = parseInt(txtColor[1]) / 255;
-    linearBlue = parseInt(txtColor[2]) / 255;
+    linearRed = (txtColor[0] ?? 0 ) / 255;
+    linearGreen = (txtColor[1] ?? 0) / 255;
+    linearBlue = (txtColor[2] ?? 0)  / 255;
 
     linearRed = linearRed <= 0.03928 ? linearRed / 12.92 : ((linearRed + 0.055) / 1.055) ** 2.4;
     linearGreen = linearGreen <= 0.03928 ? linearGreen / 12.92 : ((linearGreen + 0.055) / 1.055) ** 2.4;
@@ -523,14 +478,14 @@ export default function ColorPickerApp() {
       ratio = luminanceBgColor / luminanceTxtColor;
     }
 
-    setContrastRatio(ratio.toFixed(2))
+    setContrastRatio(parseFloat(ratio.toFixed(2)))
 
   }, [bgColor, txtColor]);
 
-  function handleSettings(e) {
+  function handleSettings(e: React.ChangeEvent<HTMLInputElement>) {
     switch (e.target.id) {
       case 'hex-copy-opt':
-        setcopyHexWithoutHash(e.target.checked);
+        setCopyHexWithoutHash(e.target.checked);
         break;
     }
   }
@@ -544,6 +499,7 @@ export default function ColorPickerApp() {
           labelId='hex-copy-opt-label'
           onChange={handleSettings}
           labelText='Copy hex values without the hash symbol.'
+          checked={copyHexWithoutHash}
         >
         </ToggleSwitch>
       </Settings>
@@ -669,7 +625,7 @@ export default function ColorPickerApp() {
             id='palette-title'
             className='name'
             value={selectedPalette?.name ?? 'Palettes'}
-            onChange={(e) => handleNameChange(e, 'palette')}
+            onChange={(e) => handleNameChange(e)}
             disabled={selectedPalette === null ? true : false}
             aria-label='palette title'
           />

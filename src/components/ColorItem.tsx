@@ -3,7 +3,7 @@ import { useToolTip } from "../contexts/ToolTipContext.jsx";
 import { usePalette } from "../contexts/PaletteContext.jsx";
 import CopyIcon from '../assets/copy.svg';
 import DeleteIcon from '../assets/delete.svg';
-import { debounce } from "../utils/index.jsx";
+import { debounce } from "../utils/index.js";
 import { useSettings } from "../contexts/SettingsContext.jsx";
 import type { Color, PaletteData } from "../types/palette.ts";
 

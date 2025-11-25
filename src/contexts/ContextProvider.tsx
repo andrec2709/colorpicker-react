@@ -1,9 +1,13 @@
-import { ColorProvider } from "./ColorContext";
-import { PaletteProvider } from "./PaletteContext";
-import { SettingsProvider } from "./SettingsContext";
-import { ToolTipProvider } from "./ToolTipContext";
+import { ColorProvider } from "./ColorContext.jsx";
+import { PaletteProvider } from "./PaletteContext.js";
+import { SettingsProvider } from "./SettingsContext.jsx";
+import { ToolTipProvider } from "./ToolTipContext.jsx";
 
-export const ContextProvider = ({ children }) => {
+type Props = {
+    children: React.ReactNode;
+};
+
+export const ContextProvider = ({ children }: Props) => {
     return (
         <ToolTipProvider>
             <PaletteProvider>

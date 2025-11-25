@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
     id: string;
     labelId: string;
     labelText: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    checked: boolean;
 }
 
-export const ToggleSwitch = ({ id, labelId, labelText, onChange }: Props) => {
+export const ToggleSwitch = ({ id, labelId, labelText, onChange, checked }: Props) => {
 
     return (
         <label htmlFor={id} id={labelId} className="switch__container">
@@ -16,6 +17,7 @@ export const ToggleSwitch = ({ id, labelId, labelText, onChange }: Props) => {
                 className="switch__input"
                 name={id}
                 id={id}
+                checked={checked}
                 aria-labelledby={labelId}
                 onChange={onChange}
             />

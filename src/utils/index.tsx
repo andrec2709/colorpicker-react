@@ -1,14 +1,8 @@
-/**
- * @function
- * Utility used to delay a call to a function 'func'. This is useful for events that generate too many calls like window 'resize' event or 'scroll'.
- * @param {function} func - function to be delayed. 
- * @param {number} delay - the delay in milliseconds.
- * @alias utils/debounce
- */
-export const debounce = (func, delay) => {
-    let timeout;
 
-    return function(...args) {
+export const debounce = (func: () => any, delay: number) => {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    return (...args: []) => {
         const context = this;
         clearTimeout(timeout);
 
@@ -18,10 +12,10 @@ export const debounce = (func, delay) => {
     };
 };
 
-export const throttle = (func, delay) => {
+export const throttle = (func: () => any, delay: number) => {
     let lastExec = 0;
 
-    return function(...args) {
+    return (...args: []) => {
         const now = Date.now();
 
         if (now >= lastExec + delay) {
@@ -32,12 +26,7 @@ export const throttle = (func, delay) => {
     };
 };
 
-/**
- * Generates a unique identifier string.
- * @param {number} [size = 12] - the length of the ID to be generated 
- * @returns {string} a unique identifier string.
- * @alias functions/randomId
- */
+
 export function randomID(size = 12) {
   const chars = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',

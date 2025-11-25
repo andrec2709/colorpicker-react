@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, type PointerEventHandler } from "react";
 import { useEffect, useState } from "react";
-import { debounce } from "../utils/index.jsx";
+import { debounce } from "../utils/index.js";
 
 type Props = {
     id: string;
