@@ -83,12 +83,7 @@ export default function ColorPickerApp() {
 
   const paletteDetailViewRef = useRef<HTMLDivElement>(null);
 
-  // const palettes = palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />);
   const palettes = useMemo(() => palettesData.map(palette => <Palette paletteData={palette} key={palette.id} />), [palettesData]);
-
-  const colorItems = useMemo(() => (
-    selectedPalette?.colors.map(color => <ColorItem previewColor={color} key={color.id} colorId={color.id} onClick={handleSelectColor} />)
-  ), [selectedPalette]);
 
 
   // Options
@@ -125,16 +120,24 @@ export default function ColorPickerApp() {
     }
   };
 
-
-  function handleSelectColor(color: Color) {
+  /**
+   * Loads the selected color to the sliders and fields.
+   * 
+   */
+  const handleSelectColor = (color: Color) => {
     setRed(color.r);
     setGreen(color.g);
     setBlue(color.b);
     setHex(color.hex);
   }
 
+  // Rendered color items when a palette is selected
+  const colorItems = useMemo(() => (
+    selectedPalette?.colors.map(color => <ColorItem previewColor={color} key={color.id} colorId={color.id} onClick={handleSelectColor} />)
+  ), [selectedPalette]);
 
-  function handleAddColor() {
+  
+  const handleAddColor = () => {
     if (selectedPalette === null) {
       showMessage('Please select a palette first', 'fail');
       return;
@@ -148,7 +151,7 @@ export default function ColorPickerApp() {
 
     const colorId = randomID(12);
 
-    const colors = colornames.reduce((o: any, { name, hex }: {name: any, hex: any}) => Object.assign(o, { [name]: hex }), {});
+    const colors = colornames.reduce((o: any, { name, hex }: { name: any, hex: any }) => Object.assign(o, { [name]: hex }), {});
     const nearest = nearestColor.from(colors);
 
     const colorName = nearest(hex).name;
@@ -179,20 +182,8 @@ export default function ColorPickerApp() {
 
   }
 
-  useEffect(() => {
-    const el = paletteDetailViewRef.current;
 
-    if (el) {
-      el.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
-    }
-  }, [palettesData]);
-
-
-  function handleAddPalette() {
+  const handleAddPalette = () => {
 
     const newPalette = {
       name: `Palette ${Object.keys(palettesData).length + 1}`,
@@ -209,7 +200,7 @@ export default function ColorPickerApp() {
   }
 
 
-  function handleDeletePalette() {
+  const handleDeletePalette = () => {
 
     if (selectedPalette === null) {
       return;
@@ -224,7 +215,7 @@ export default function ColorPickerApp() {
   }
 
 
-  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     if (e.target.value.length < 30) {
 
@@ -295,12 +286,12 @@ export default function ColorPickerApp() {
         break;
     }
 
-  }, [red, green, blue, hex]);
+  }, [red, green, blue, hex, isLocked, useGrayscale]);
 
 
   const handleHexChange = useCallback((value: number | string, color: string) => {
     value = value.toString();
-    
+
     if (/^#?[a-fA-F0-9]{0,6}$/.test(value)) {
 
       setHex(value);
@@ -343,9 +334,9 @@ export default function ColorPickerApp() {
     handleChange(g, 'green');
     handleChange(b, 'blue');
 
-  }, [isLocked, useGrayscale]);
+  }, [handleChange]);
 
-  function handleSelectionType(e: React.MouseEvent<HTMLButtonElement>) {
+  const handleSelectionType = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.dataset.opt === 'background') {
       setSelection('background');
       handleChange(bgColor[0], 'red', false);
@@ -395,7 +386,7 @@ export default function ColorPickerApp() {
 
     if (options.current) {
       options.current.forEach(option => {
-        
+
         if (!option.current) return;
 
         if (option.current.dataset.opt === optClicked) {
@@ -421,6 +412,26 @@ export default function ColorPickerApp() {
     }
 
   }, [isLocked, useGrayscale, handleLockColors]);
+
+  const handleSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
+    switch (e.target.id) {
+      case 'hex-copy-opt':
+        setCopyHexWithoutHash(e.target.checked);
+        break;
+    }
+  }
+
+  useEffect(() => {
+    const el = paletteDetailViewRef.current;
+
+    if (el) {
+      el.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, [palettesData]);
 
   useEffect(() => {
 
@@ -460,9 +471,9 @@ export default function ColorPickerApp() {
     let luminanceBgColor = (0.2126 * linearRed + 0.7152 * linearGreen + 0.0722 * linearBlue) + 0.05;
 
     // luminance for txtColor
-    linearRed = (txtColor[0] ?? 0 ) / 255;
+    linearRed = (txtColor[0] ?? 0) / 255;
     linearGreen = (txtColor[1] ?? 0) / 255;
-    linearBlue = (txtColor[2] ?? 0)  / 255;
+    linearBlue = (txtColor[2] ?? 0) / 255;
 
     linearRed = linearRed <= 0.03928 ? linearRed / 12.92 : ((linearRed + 0.055) / 1.055) ** 2.4;
     linearGreen = linearGreen <= 0.03928 ? linearGreen / 12.92 : ((linearGreen + 0.055) / 1.055) ** 2.4;
@@ -481,14 +492,6 @@ export default function ColorPickerApp() {
     setContrastRatio(parseFloat(ratio.toFixed(2)))
 
   }, [bgColor, txtColor]);
-
-  function handleSettings(e: React.ChangeEvent<HTMLInputElement>) {
-    switch (e.target.id) {
-      case 'hex-copy-opt':
-        setCopyHexWithoutHash(e.target.checked);
-        break;
-    }
-  }
 
   return (
     <>
