@@ -347,6 +347,7 @@ button {
   border-radius: 5px;
   padding: .4rem .2rem;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .palette__color-preview {
@@ -356,6 +357,28 @@ button {
 }
 
 /* [end] -------- Palettes view --------> */
+
+/* [start] -------- Palettes as List section --------> */
+
+.palette-container--list {
+  display: grid;
+  grid-template: 
+  "a . ." auto
+  "a . b" auto
+  "a . ." auto / 6rem 1rem minmax(1rem, 80%);
+  background-color: #1d2025;
+  margin-top: .5rem;
+  border-radius: 10px;
+  border: 1px solid #343942;
+  padding: .5rem;
+  scroll-snap-align: start;
+  overflow: hidden;
+  /* cursor: pointer; */
+  position: relative;
+  transition: background-color .1s ease;
+}
+
+/* [end] -------- Palettes as List section --------> */
 
 /* [start] -------- Palette Detail view --------> */
 

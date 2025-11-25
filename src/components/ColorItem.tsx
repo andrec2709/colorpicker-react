@@ -6,6 +6,7 @@ import DeleteIcon from '../assets/delete.svg';
 import { debounce } from "../utils/index.js";
 import { useSettings } from "../contexts/SettingsContext.jsx";
 import type { Color, PaletteData } from "../types/palette.ts";
+import { useColor } from "../contexts/ColorContext.js";
 
 type Props = {
     previewColor: Color;
@@ -23,10 +24,8 @@ export const ColorItem = ({ previewColor, colorId, onClick }: Props) => {
         updatePalettesData,
         isHoldingItem,
         setIsHoldingItem,
-        red,
-        green,
-        blue
     } = usePalette();
+    const {red, green, blue} = useColor();
 
     const {copyHexWithoutHash} = useSettings();
 
@@ -101,10 +100,13 @@ export const ColorItem = ({ previewColor, colorId, onClick }: Props) => {
 
             const elements = document.elementsFromPoint(x, y);
             const lookForClass = viewLayout === 'block' ? 'color' : 'color-item';
-            elements.forEach((el: HTMLElement) => {
+            elements.forEach((el: Element) => {
                 if (el.classList.contains(lookForClass) && el !== colorItem.current) {
                     const updatedPalettes = palettesData.map((palette: PaletteData) => {
                         if (palette.id === selectedPaletteId) {
+                            
+                            if (!(el instanceof HTMLElement)) return palette;
+                            
                             const colors = palette.colors.slice();
 
                             const selfIndex = colors.findIndex(color => color.id === colorId);
@@ -144,11 +146,11 @@ export const ColorItem = ({ previewColor, colorId, onClick }: Props) => {
     }, [isHolding, palettesData, selectedPaletteId, colorId]);
 
     function handlePointerLeave(e: React.PointerEvent<HTMLDivElement>) {
-        colorItem.current.classList.remove('highlighted');
+        colorItem.current?.classList.remove('highlighted');
     }
 
     function handlePointerEnter(e: React.PointerEvent<HTMLDivElement>) {
-        if (isHoldingItem) colorItem.current.classList.add('highlighted');
+        if (isHoldingItem) colorItem.current?.classList.add('highlighted');
     }
 
     function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
@@ -205,7 +207,7 @@ export const ColorItem = ({ previewColor, colorId, onClick }: Props) => {
         }
 
         return () => {
-            clearTimeout(longPressTimer.current);
+            if (longPressTimer.current !== null) clearTimeout(longPressTimer.current);
         };
     }, [isPressing]);
 

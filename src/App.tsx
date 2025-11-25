@@ -751,7 +751,7 @@ export default function ColorPickerApp() {
           </button>
         </Header>
         <PalettesListView
-          style={{ display: `${selectedPalette === null ? 'grid' : 'none'}` }}
+          style={{ display: `${selectedPalette === null ? viewLayout : 'none'}` }}
         >
           {palettes}
         </PalettesListView>
