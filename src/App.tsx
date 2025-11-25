@@ -79,7 +79,9 @@ export default function ColorPickerApp() {
     isSettingsVisible,
     setIsSettingsVisible,
     copyHexWithoutHash,
-    setCopyHexWithoutHash
+    setCopyHexWithoutHash,
+    addColorToEnd,
+    setAddColorToEnd
   } = useSettings();
 
   // Tooltip context provider
@@ -180,7 +182,12 @@ export default function ColorPickerApp() {
     const updatedPalettes = palettesData.map(palette => {
       if (palette.id === selectedPaletteId) {
 
-        const colors = [colorToAdd].concat(palette.colors.slice());
+        let colors;
+        if (addColorToEnd) {
+          colors = palette.colors.slice().concat(colorToAdd);
+        } else {
+          colors = [colorToAdd].concat(palette.colors.slice());
+        }
 
         return {
           ...palette,
@@ -429,7 +436,7 @@ export default function ColorPickerApp() {
    */
   const handleOptions = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO: This function should be called handleModifiers instead.
-    
+
     const optClicked = e.currentTarget.dataset.opt;
 
     if (options.current) {
@@ -470,6 +477,11 @@ export default function ColorPickerApp() {
     switch (e.target.id) {
       case 'hex-copy-opt':
         setCopyHexWithoutHash(e.target.checked);
+        localStorage.setItem('copy-hex-without-hash', e.target.checked.toString())
+        break;
+      case 'add-color-to-end-opt':
+        setAddColorToEnd(e.target.checked);
+        localStorage.setItem('add-color-to-end', e.target.checked.toString());
         break;
     }
   }
@@ -478,13 +490,21 @@ export default function ColorPickerApp() {
     const el = paletteDetailViewRef.current;
 
     if (el) {
-      el.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
+      if (addColorToEnd) {
+        el.scrollTo({
+          top: el.scrollHeight,
+          left: 0,
+          behavior: 'smooth',
+        });
+      } else {
+        el.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }
     }
-  }, [palettesData]);
+  }, [palettesData, addColorToEnd]);
 
   useEffect(() => {
 
@@ -557,6 +577,15 @@ export default function ColorPickerApp() {
           labelText='Copy hex values without the hash symbol.'
           checked={copyHexWithoutHash}
         >
+        </ToggleSwitch>
+        <ToggleSwitch
+          id='add-color-to-end-opt'
+          labelId='add-color-to-end-opt-label'
+          onChange={handleSettings}
+          labelText='Add colors to the end of the palette instead of the start.'
+          checked={addColorToEnd}
+        >
+          
         </ToggleSwitch>
       </Settings>
       <Modifiers className='modifiers'>

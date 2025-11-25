@@ -44,19 +44,17 @@ type Props = {
 }
 
 export const ColorProvider = ({ children }: Props) => {
-    // Define color states
-    const lastColor = localStorage.getItem('bg-color')?.split(',').map(n => parseInt(n)) || [0, 0, 0];
-    
-
-    const [red, setRed] = useState(lastColor[0] ?? 0);
-    const [green, setGreen] = useState(lastColor[1] ?? 0);
-    const [blue, setBlue] = useState(lastColor[2] ?? 0);
-    const [hex, setHex] = useState(``);
 
     // Define preview states
     const [bgColor, setBgColor] = useState(localStorage.getItem('bg-color')?.split(',').map(n => parseInt(n)) || [0, 0, 0]);
     const [txtColor, setTxtColor] = useState(localStorage.getItem('txt-color')?.split(',').map(n => parseInt(n)) || [255, 255, 255]);
     const [selection, setSelection] = useState<'background' | 'text'>('background');
+    
+    // Define color states
+    const [red, setRed] = useState(bgColor[0] ?? 0);
+    const [green, setGreen] = useState(bgColor[1] ?? 0);
+    const [blue, setBlue] = useState(bgColor[2] ?? 0);
+    const [hex, setHex] = useState(``);
 
     return (
         <ColorContext.Provider
