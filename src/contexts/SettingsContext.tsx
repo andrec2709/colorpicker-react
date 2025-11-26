@@ -29,7 +29,7 @@ type Props = {
 };
 
 export const SettingsProvider = ({ children }: Props) => {
-    const [isSettingsVisible, setIsSettingsVisible] = useState(true);
+    const [isSettingsVisible, setIsSettingsVisible] = useState(false);
     const [copyHexWithoutHash, setCopyHexWithoutHash] = useState(localStorage.getItem('copy-hex-without-hash') === 'true' ? true : false || false);
     const [addColorToEnd, setAddColorToEnd] = useState(localStorage.getItem('add-color-to-end') === 'true' ? true : false || false);
 

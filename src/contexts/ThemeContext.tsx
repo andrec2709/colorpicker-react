@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import type { Theme } from "../types/theme";
+import { isTheme, type Theme } from "../types/theme";
 
 type ThemeContextValue = {
     currentTheme: Theme;
@@ -25,11 +25,14 @@ type Props = {
 
 export const ThemeProvider = ({ children }: Props) => {
 
-    const [currentTheme, setCurrentTheme] = useState<Theme>('theme-dark');
+    const lastTheme = localStorage.getItem('theme') || 'theme-dark';
+
+    const [currentTheme, setCurrentTheme] = useState<Theme>(isTheme(lastTheme) ? lastTheme : 'theme-dark');
 
 
     const changeTheme = (newTheme: Theme) => {
         setCurrentTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
         document.documentElement.classList.replace(currentTheme, newTheme);
     };
 
