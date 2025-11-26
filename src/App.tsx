@@ -696,7 +696,9 @@ export default function ColorPickerApp() {
         <p
           id='contrast__field'
           className={`${textColor()}`}
-        >{`Contrast ratio: ${contrastRatio}`}</p>
+        >
+          {`Contrast ratio: ${contrastRatio}`}
+        </p>
       </Colorpicker>
       <Editor>
         <Header>
