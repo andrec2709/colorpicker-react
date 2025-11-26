@@ -16,8 +16,136 @@
   flex-direction: column;
 }
 
+/* [start] -------- Themes section --------> */
+
+:root.theme-dark {
+  --background: #23272f63;
+  --on-background: #fff;
+  --background-container: #23272f;
+  --on-background-container: #fff;
+
+  --color-button-bg: #5a6170;
+  --color-button-fg: #b9b9b9;
+  --color-button-active: #05bb05;
+  --color-button-active-fg: #000;
+  --color-button-disabled: #393d44;
+
+  --color-field-bg: #5a6170;
+  --color-field-fg: #f7f7f7;
+
+  --color-palette-bg: #181818;
+
+  --color-slider-track: #c4c4c4;
+  --color-slider-fill: #7819d1;
+  --color-slider-thumb: #5d00a8;
+  --color-slider-thumb-border: #bbbbbb;
+
+  --color-list-item-bg: #1d2025;
+  --color-list-item-fg: #fff;
+  --color-list-item-border: #343942;
+  --color-list-item--hover: #14161a;
+  --color-list-item--highlighted: #f0f0f081;
+  --color-list-item--dragging: #165deb;
+  --color-list-item-btn-bg: #0a0a0ac2;
+
+  --color-selection-bg: #165deb;
+  --color-selection-fg: #ffffffde;
+
+  --tooltip-success-bg: #2acf6f;
+  --tooltip-success-fg: #020202;
+  --tooltip-fail-bg: #d41919;
+  --tooltip-fail-fg: #000;
+
+  --switch: #797979;
+  --switch-slider: #c5c5c5;
+  --switch-checked: #8b0eaa;
+
+  --combobox-selection-bg: #393d44;
+  --combobox-selection-fg: #f7f7f7;
+  --combobox-selection-border: #5e6064;
+  --combobox-list-bg: #282b30;
+  --combobox-list-fg: #f7f7f7;
+  --combobox-list-border: #5e60645d;
+
+  /* icon filters */
+  --colorpicker-icon-invert: invert();
+  --colorpicker-icon--disabled-invert: none;
+  --colorpicker-icon--active-invert: none;
+  --field-icon-invert: invert();
+  --settings-icon-invert: invert();
+  --editor-header-icon-invert: invert();
+  --combobox-icon-invert: invert();
+
+}
+
+:root.theme-light {
+  --background: #e6e6e6cb;
+  --on-background: #000000;
+  --background-container: #e6e6e6;
+  --on-background-container: #000000;
+
+  --color-button-bg: #6200ff;
+  --color-button-fg: #b9b9b9;
+  --color-button-active: #05bb05;
+  --color-button-active-fg: #000;
+  --color-button-disabled: #a59fb4;
+
+  --color-field-bg: #c6bcf3;
+  --color-field-fg: #1a1a1a;
+
+  --color-palette-bg: #9c91aa;
+
+  --color-slider-track: #c4c4c4;
+  --color-slider-fill: #7819d1;
+  --color-slider-thumb: #5d00a8;
+  --color-slider-thumb-border: #bbbbbb;
+
+  --color-list-item-bg: #c4c4c4;
+  --color-list-item-fg: #000000;
+  --color-list-item-border: #a0a0a0;
+  --color-list-item--hover: #a3a3a3;
+  --color-list-item--highlighted: #55555581;
+  --color-list-item--dragging: #4416eb;
+  --color-list-item-btn-bg: #0a0a0ac2;
+
+  --color-selection-bg: #165deb;
+  --color-selection-fg: #ffffffde;
+
+  --tooltip-success-bg: #2acf6f;
+  --tooltip-success-fg: #020202;
+  --tooltip-fail-bg: #d41919;
+  --tooltip-fail-fg: #000;
+
+  --switch: #9c9c9c;
+  --switch-slider: #c5c5c5;
+  --switch-checked: #6207f3;
+
+  --combobox-selection-bg: #c5c5c5;
+  --combobox-selection-fg: #030303;
+  --combobox-selection-border: #525252;
+  --combobox-list-bg: #b9b9b9;
+  --combobox-list-fg: #070707;
+  --combobox-list-border: #5d5e5f5d;
+
+  /* icon filters */
+  --colorpicker-icon-invert: invert();
+  --colorpicker-icon--disabled-invert: none;
+  --colorpicker-icon--active-invert: none;
+  --field-icon-invert: none;
+  --settings-icon-invert: none;
+  --editor-header-icon-invert: none;
+  --combobox-icon-invert: none;
+
+}
+
+/* [end] -------- Themes section --------> */
+
 /* [start] -------- Universal styling --------> */
 
+body {
+  background-color: var(--background);
+
+}
 
 * {
   box-sizing: border-box;
@@ -29,8 +157,8 @@
 }
 
 *::selection {
-  background-color: #165deb;
-  color: #ffffffde;
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
 }
 
 button {
@@ -51,6 +179,8 @@ button {
   background-color: unset;
   height: 100%;
   font-weight: 300;
+  color: var(--color-list-item-fg);
+
   &:disabled {
     color: unset;
   }
@@ -66,16 +196,14 @@ button {
 /* [start] -------- Colorpicker Sliders and Fields Layout --------> */
 
 #colorpicker {
-  background-color: rgb(35, 39, 47);
+  background-color: var(--background-container);
   border-radius: 10px;
   padding: clamp(1rem, 5vw, 2rem);
   display: grid;
   grid-template:
     "a b" auto
     "c d" auto
-    "e f" auto 
-    "g h" auto 
-    "i ." auto / auto min-content;
+    "e f" auto "g h" auto "i ." auto / auto min-content;
   row-gap: .5rem;
   margin-bottom: 1rem;
   width: 100%;
@@ -156,9 +284,9 @@ button {
   display: flex;
   aspect-ratio: 1 / 1;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
   border: none;
-  background-color: rgb(90, 97, 112);
+  background-color: var(--color-button-bg);
   border-radius: 50%;
   padding: .5rem;
   justify-content: start;
@@ -167,17 +295,17 @@ button {
 
 .colorpicker__icon {
   width: 24px;
-  filter: invert();
+  filter: var(--colorpicker-icon-invert);
 }
 
 .colorpicker__btn:disabled {
-  background-color: rgb(57, 61, 68);
-  color: rgb(185, 185, 185);
+  background-color: var(--color-button-disabled);
+  color: var(--color-button-fg);
 
 }
 
 .colorpicker__btn:disabled .colorpicker__icon {
-  filter: none;
+  filter: var(--colorpicker-icon--disabled-invert);
 }
 
 .colorpicker__btn:hover {
@@ -194,6 +322,7 @@ button {
 }
 
 .slider-container__label {
+  color: var(--on-background-container);
   margin-right: 1rem;
   font-weight: 500;
 }
@@ -211,6 +340,7 @@ button {
 }
 
 .field-container__label {
+  color: var(--on-background-container);
   margin-right: 1rem;
 }
 
@@ -219,12 +349,12 @@ button {
   align-items: center;
   height: 2rem;
   width: fit-content;
-  background-color: rgb(90, 97, 112);
+  background-color: var(--color-field-bg);
   border-radius: 5px;
 }
 
 .field__input {
-  color: rgb(247, 247, 247);
+  color: var(--color-field-fg);
   border: none;
   width: 4rem;
   height: 100%;
@@ -253,7 +383,7 @@ button {
 
 .field__icon {
   width: 20px;
-  filter: invert();
+  filter: var(--field-icon-invert);
 }
 
 
@@ -265,7 +395,8 @@ button {
 
 .editor {
   height: fit-content;
-  background-color: rgb(35, 39, 47);
+  background-color: var(--background-container);
+  color: var(--on-background-container);
   border-radius: 10px;
   padding: 1rem;
   display: flex;
@@ -299,13 +430,14 @@ button {
 
 .editor-header__icon {
   width: 20px;
-  filter: invert();
+  filter: var(--editor-header-icon-invert);
 }
 
 .editor-header .name {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+  color: var(--on-background-container);
   text-align: center;
 }
 
@@ -343,7 +475,7 @@ button {
   justify-content: space-between;
   column-gap: .12rem;
   row-gap: .12rem;
-  background-color: rgb(24, 24, 24);
+  background-color: var(--color-palette-bg);
   border-radius: 5px;
   padding: .4rem .2rem;
   overflow: hidden;
@@ -362,20 +494,25 @@ button {
 
 .palette-container--list {
   display: grid;
-  grid-template: 
-  "a . ." auto
-  "a . b" auto
-  "a . ." auto / 6rem 1rem minmax(1rem, 80%);
-  background-color: #1d2025;
+  grid-template:
+    "a . ." auto
+    "a . b" auto
+    "a . ." auto / 6rem 1rem minmax(1rem, 80%);
+  background-color: var(--color-list-item-bg);
+  color: var(--color-list-item-fg);
   margin-top: .5rem;
   border-radius: 10px;
-  border: 1px solid #343942;
+  border: 1px solid var(--color-list-item-border);
   padding: .5rem;
   scroll-snap-align: start;
   overflow: hidden;
   /* cursor: pointer; */
   position: relative;
   transition: background-color .1s ease;
+}
+
+.palette-container--list:hover {
+  background-color: var(--color-list-item--hover);
 }
 
 /* [end] -------- Palettes as List section --------> */
@@ -386,12 +523,11 @@ button {
   display: grid;
   grid-template:
     "a . ." auto
-    "a . b" auto 
-    "a . c" auto / 6rem 1rem minmax(1rem, 80%);
-  background-color: #1d2025;
+    "a . b" auto "a . c" auto / 6rem 1rem minmax(1rem, 80%);
+  background-color: var(--color-list-item-bg);
   margin-top: .5rem;
   border-radius: 10px;
-  border: 1px solid #343942;
+  border: 1px solid var(--color-list-item-border);
   padding: .5rem;
   scroll-snap-align: start;
   overflow: hidden;
@@ -401,7 +537,7 @@ button {
 }
 
 .color:hover {
-  background-color: #14161a;
+  background-color: var(--color-list-item--hover);
 }
 
 .color__input--readonly {
@@ -425,17 +561,17 @@ button {
 }
 
 .color-item.highlighted {
-  border-right: 4px solid rgba(240, 240, 240, 0.507);
+  border-right: 4px solid var(--color-list-item--highlighted);
 }
 
 .color.highlighted {
-  border-bottom: 4px solid rgba(240, 240, 240, 0.507);
+  border-bottom: 4px solid var(--color-list-item--highlighted);
 }
 
 .color.dragging,
 .color-item.dragging {
   opacity: 70%;
-  border: 1px solid #165deb;
+  border: 1px solid var(--color-list-item--dragging);
 
   position: fixed;
   pointer-events: none;
@@ -464,7 +600,7 @@ button {
   align-items: center;
   justify-content: center;
   border: none;
-  background-color: rgba(10, 10, 10, 0.76);
+  background-color: var(--color-list-item-btn-bg);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -496,8 +632,8 @@ button {
 
 .slider__thumb {
   aspect-ratio: 1 / 1;
-  background-color: rgb(93, 0, 168);
-  border: 3px solid rgb(187, 187, 187);
+  background-color: var(--color-slider-thumb);
+  border: 3px solid var(--color-slider-thumb-border);
   border-radius: 50%;
   box-shadow: 0 0 2px rgb(0, 0, 0);
   position: absolute;
@@ -511,7 +647,7 @@ button {
   user-select: none;
   width: 100%;
   height: 25%;
-  background-color: rgb(196, 196, 196);
+  background-color: var(--color-slider-track);
   border-radius: 10px;
   touch-action: none;
 
@@ -520,7 +656,7 @@ button {
 
 .slider__track--filled {
   user-select: none;
-  background-color: rgb(120, 25, 209);
+  background-color: var(--color-slider-fill);
   /* border: .5px solid rgba(180, 180, 180, 0.5); */
   height: 25%;
   border-radius: 10px;
@@ -550,7 +686,7 @@ button {
   width: 100%;
   height: fit-content;
   padding: .5rem;
-  background-color: #23272f;
+  background-color: var(--background-container);
   border-radius: 10px;
   margin-bottom: 1rem;
   display: flex;
@@ -561,7 +697,7 @@ button {
 .modifier__btn {
   border: none;
   padding: .5rem;
-  background-color: rgb(90, 97, 112);
+  background-color: var(--color-button-bg);
   width: fit-content;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
@@ -580,16 +716,16 @@ button {
 
 .modifier__icon {
   width: 30px;
-  filter: invert();
+  filter: var(--colorpicker-icon-invert);
 }
 
 .modifier__btn--active {
-  background-color: rgb(5, 187, 5);
-  color: rgb(29, 29, 29);
+  background-color: var(--color-button-active);
+  color: var(--color-button-active-fg);
 }
 
 .modifier__icon--active {
-  filter: none;
+  filter: var(--colorpicker-icon--active-invert);
 }
 
 
@@ -623,13 +759,13 @@ button {
 }
 
 .tooltip--success {
-  background-color: rgb(42, 207, 111);
-  color: rgb(2, 2, 2);
+  background-color: var(--tooltip-success-bg);
+  color: var(--tooltip-success-fg);
 }
 
 .tooltip--fail {
-  background-color: rgb(212, 25, 25);
-  color: rgb(0, 0, 0);
+  background-color: var(--tooltip-fail-bg);
+  color: var(--tooltip-fail-fg);
 }
 
 .tooltip--visible {
@@ -681,9 +817,8 @@ button {
   padding: clamp(1rem, 5vw, 2rem);
   align-self: center;
   margin-top: 1rem;
-  background-color: #23272f;
+  background-color: var(--background-container);
   box-shadow: 0 0 20px rgb(19, 19, 19);
-  /* background-color: #000000; */
   border-radius: 10px;
   row-gap: 1rem;
   position: fixed;
@@ -699,7 +834,7 @@ button {
   align-self: flex-end;
   margin-bottom: 1rem;
   position: relative;
-  
+
 }
 
 .settings__btn:hover {
@@ -712,7 +847,7 @@ button {
 
 .settings__icon {
   width: 28px;
-  filter: invert();
+  filter: var(--settings-icon-invert);
 }
 
 /* [end] -------- Settings section --------> */
@@ -733,7 +868,7 @@ button {
   border-radius: 14px;
   padding-left: 4px;
   padding-right: 4px;
-  background-color: rgb(121, 121, 121);
+  background-color: var(--switch);
   position: relative;
   margin-left: auto;
   transition: background-color .11s ease-out;
@@ -746,7 +881,7 @@ button {
   position: relative;
   /* top: 0; */
   transform: translateX(0);
-  background-color: rgb(197, 197, 197);
+  background-color: var(--switch-slider);
   transition: transform .11s ease-out;
 
 }
@@ -761,11 +896,11 @@ button {
   clip-path: inset(50%);
 }
 
-.switch__input:checked ~ .switch {
-  background-color: rgb(139, 14, 170);
+.switch__input:checked~.switch {
+  background-color: var(--switch-checked);
 }
 
-.switch__input:checked ~ .switch > .switch__slider {
+.switch__input:checked~.switch>.switch__slider {
   /* left: calc(60px - 22px - 8px); */
   transform: translateX(calc(60px - 22px - 8px));
 }
@@ -773,6 +908,71 @@ button {
 .switch__label {
   width: 70%;
   user-select: none;
+  color: var(--on-background-container);
 }
 
 /* [end] -------- Toggle switch section --------> */
+
+/* [start] -------- ComboBox section --------> */
+
+.combobox {
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+  border-radius: 10px;
+  /* background-color: yellow; */
+  height: fit-content;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.combobox__selection {
+  background-color: var(--combobox-selection-bg);
+  color: var(--combobox-selection-fg);
+  border: 1px solid var(--combobox-selection-border);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  width: 100%;
+  padding: .3rem;
+  display: flex;
+  height: 2rem;
+}
+
+.combobox__icon {
+  width: 20px;
+  margin-left: auto;
+  filter: var(--combobox-icon-invert);
+  transform: rotateZ(0);
+  transition: transform .11s ease-out;
+}
+
+.combobox__icon.opened {
+  transform: rotateZ(-180deg);
+}
+
+.combobox__list {
+  background-color: var(--combobox-list-bg);
+  color: var(--combobox-list-fg);
+  border: 1px solid var(--combobox-list-border);
+  border-top: none;
+  width: 100%;
+  height: fit-content;
+  max-height: 5rem;
+  overflow: scroll;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  position: absolute;
+  top: 2rem;
+}
+
+.combobox__list-item {
+  width: 100%;
+  padding: .3rem;
+}
+
+.combobox__list-item:not(:last-of-type) {
+  border-bottom: 1px solid var(--combobox-list-border);
+}
+
+/* [end] -------- ComboBox section --------> */

@@ -40,6 +40,9 @@ import { Settings } from './components/Settings';
 import { useSettings } from './contexts/SettingsContext';
 import ToggleSwitch from './components/ToggleSwitch';
 import type { Color } from './types/palette';
+import ComboBox from './components/ComboBox';
+import { useTheme } from './contexts/ThemeContext';
+import { isTheme, themes, type Theme } from './types/theme';
 
 
 // Exercise:
@@ -83,6 +86,8 @@ export default function ColorPickerApp() {
     addColorToEnd,
     setAddColorToEnd
   } = useSettings();
+
+  const {currentTheme, changeTheme} = useTheme();
 
   // Tooltip context provider
   const { showMessage } = useToolTip();
@@ -486,6 +491,15 @@ export default function ColorPickerApp() {
     }
   }
 
+  const handleThemeChange = (e: React.MouseEvent<HTMLOptionElement>) => {
+    
+    if (!(e.target instanceof HTMLOptionElement)) return;
+
+    if (isTheme(e.target.value)) {
+      changeTheme(e.target.value);
+    }
+  };
+
   useEffect(() => {
     const el = paletteDetailViewRef.current;
 
@@ -585,8 +599,8 @@ export default function ColorPickerApp() {
           labelText='Add colors to the end of the palette instead of the start.'
           checked={addColorToEnd}
         >
-          
         </ToggleSwitch>
+        <ComboBox value={currentTheme} options={themes.slice()} onClick={handleThemeChange} id='theme-opt'></ComboBox>
       </Settings>
       <Modifiers className='modifiers'>
         <button id='randomizer' className='modifier__btn' onClick={handlePickRandom} >

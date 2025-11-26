@@ -1,6 +1,7 @@
 import { ColorProvider } from "./ColorContext.jsx";
 import { PaletteProvider } from "./PaletteContext.js";
 import { SettingsProvider } from "./SettingsContext.jsx";
+import { ThemeProvider } from "./ThemeContext.js";
 import { ToolTipProvider } from "./ToolTipContext.jsx";
 
 type Props = {
@@ -9,15 +10,17 @@ type Props = {
 
 export const ContextProvider = ({ children }: Props) => {
     return (
-        <ToolTipProvider>
-            <PaletteProvider>
-                <ColorProvider>
-                <SettingsProvider>
-                    {children}
-                </SettingsProvider>
-                </ColorProvider>
-            </PaletteProvider>
-        </ToolTipProvider>
+        <ThemeProvider>
+            <ToolTipProvider>
+                <PaletteProvider>
+                    <ColorProvider>
+                        <SettingsProvider>
+                            {children}
+                        </SettingsProvider>
+                    </ColorProvider>
+                </PaletteProvider>
+            </ToolTipProvider>
+        </ThemeProvider>
     );
 };
 
