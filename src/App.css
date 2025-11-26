@@ -76,6 +76,10 @@
   --editor-header-icon-invert: invert();
   --combobox-icon-invert: invert();
 
+  /* color contrast values */
+  --color-contrast--bad: #ff4f4f;
+  --color-contrast--warning: #ffd000;
+  --color-contrast--good: #05db05;
 }
 
 :root.theme-light {
@@ -136,6 +140,10 @@
   --editor-header-icon-invert: none;
   --combobox-icon-invert: none;
 
+  /* color contrast values */
+  --color-contrast--bad: #a50000;
+  --color-contrast--warning: #8f5600;
+  --color-contrast--good: #005c00;
 }
 
 /* [end] -------- Themes section --------> */
@@ -203,9 +211,12 @@ button {
   grid-template:
     "a b" auto
     "c d" auto
-    "e f" auto "g h" auto "i ." auto / auto min-content;
+    "e f" auto 
+    "g h" auto 
+    "i i" auto / auto min-content;
   row-gap: .5rem;
   margin-bottom: 1rem;
+  position: relative;
   width: 100%;
 }
 
@@ -259,17 +270,11 @@ button {
 
 #contrast__field {
   grid-area: i;
-  width: 11rem;
+  width: 100%;
   padding: 0;
   margin: 0;
-  background-color: unset;
-  border: none;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 500;
-
-  &:disabled {
-    color: inherit;
-  }
 }
 
 
@@ -915,6 +920,11 @@ button {
 
 /* [start] -------- ComboBox section --------> */
 
+.combobox__container {
+  display: flex;
+  width: 100%;
+}
+
 .combobox {
   display: flex;
   flex-direction: column;
@@ -923,6 +933,7 @@ button {
   /* background-color: yellow; */
   height: fit-content;
   position: relative;
+  margin-left: auto;
   cursor: pointer;
   user-select: none;
 }
@@ -975,4 +986,26 @@ button {
   border-bottom: 1px solid var(--combobox-list-border);
 }
 
+.combobox__label {
+  color: var(--on-background-container);
+  user-select: none;
+  width: 70%;
+}
+
 /* [end] -------- ComboBox section --------> */
+
+/* [start] -------- Color contrast field section --------> */
+
+.color-contrast--bad {
+  color: var(--color-contrast--bad);
+}
+
+.color-contrast--warning {
+  color: var(--color-contrast--warning);
+}
+
+.color-contrast--good {
+  color: var(--color-contrast--good);
+}
+
+/* [end] -------- Color contrast field section --------> */

@@ -123,13 +123,13 @@ export default function ColorPickerApp() {
   const textColor = () => {
     switch (true) {
       case contrastRatio < 4.5:
-        return '#e90000';
+        return 'color-contrast--bad';
 
       case contrastRatio >= 4.5 && contrastRatio < 7:
-        return '#d5e500';
+        return 'color-contrast--warning';
 
       case contrastRatio >= 7:
-        return '#44ff4d';
+        return 'color-contrast--good';
 
     }
   };
@@ -600,7 +600,7 @@ export default function ColorPickerApp() {
           checked={addColorToEnd}
         >
         </ToggleSwitch>
-        <ComboBox value={currentTheme} options={themes.slice()} onClick={handleThemeChange} id='theme-opt'></ComboBox>
+        <ComboBox value={currentTheme} options={themes.slice()} onClick={handleThemeChange} id='theme-opt' labelId='theme-opt-label' labelText='Select the application theme.'></ComboBox>
       </Settings>
       <Modifiers className='modifiers'>
         <button id='randomizer' className='modifier__btn' onClick={handlePickRandom} >
@@ -693,16 +693,10 @@ export default function ColorPickerApp() {
             <img src={TextIcon} className={`colorpicker__icon ${selection === 'text' ? 'modifier__icon--active' : ''}`} alt="set background color" />
           </button>
         </div>
-        <input
-          type="text"
+        <p
           id='contrast__field'
-          value={`Contrast ratio: ${contrastRatio}`}
-          style={{
-            color: textColor()
-          }}
-          disabled
-          readOnly
-        />
+          className={`${textColor()}`}
+        >{`Contrast ratio: ${contrastRatio}`}</p>
       </Colorpicker>
       <Editor>
         <Header>
