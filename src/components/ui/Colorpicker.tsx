@@ -6,13 +6,14 @@ import { useColor } from '../../contexts/ColorProvider';
 import TextIcon from '../icons/TextIcon';
 import AddIcon from '../icons/AddIcon';
 import i18n from '../../domain/i18n/translations';
+import CopyIcon from '../icons/CopyIcon';
 
 export default function Colorpicker() {
     const { selection, setSelection } = useColor();
 
     return (
-        <div>
-            <div className='flex gap-x-2'>
+        <div className='flex flex-col gap-y-5'>
+            <div className='flex gap-x-2 mt-2'>
                 <BackgroundIcon
                     color={selection === 'background' ? 'var(--icon-active)' : 'var(--icon-inactive)'}
                     className='cursor-pointer'
@@ -43,7 +44,28 @@ export default function Colorpicker() {
                 />
             </div>
 
-            
+            <div>
+                <div className='flex items-center'>
+                    <Slider
+                        valueLabelDisplay='auto'
+                        sx={{
+                            width: '60%',
+                            color: 'var(--slider-color)',
+                        }}
+                        min={0}
+                        max={255}
+                    />
+                    <label
+                        className='flex bg-field-background rounded-sm items-center p-2 w-[30%] ml-auto'
+                    >
+                        <input
+                            type="text"
+                            className='text-field-on-background w-full'
+                        />
+                        <CopyIcon color='var(--field-on-background)' />
+                    </label>
+                </div>
+            </div>
 
         </div >
     );
