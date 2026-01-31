@@ -1,0 +1,1 @@
+export type RGB = readonly [number, number, number];
