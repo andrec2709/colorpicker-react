@@ -70,8 +70,10 @@ export const ColorProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (selection === 'background') {
             setActiveColor(bgColor);
+            setHex(rgbToHex(bgColor));
         } else {
             setActiveColor(txtColor);
+            setHex(rgbToHex(txtColor));
         }
     }, [selection]);
 

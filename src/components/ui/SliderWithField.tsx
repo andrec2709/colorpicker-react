@@ -1,3 +1,4 @@
+// import { Slider } from 'antd';
 import Slider from '@mui/material/Slider';
 import CopyIcon from '../icons/CopyIcon';
 import { useLanguage } from '../../contexts/LanguageProvider';
@@ -58,6 +59,23 @@ export default function SliderWithField({
                 disableSwap
                 onChange={(e, newValue) => onChange(channel, newValue)}
             />
+            {/* <Slider 
+                onChange={(newValue) => onChange(channel, newValue)}
+                value={value}
+                min={0}
+                max={255}
+                style={{width: '50%'}}
+            /> */}
+            {/* <input
+                type="range"
+                name={labelSlider}
+                aria-labelledby={idSlider}
+                className='slider'
+                value={value}
+                min={0}
+                max={255}
+                onChange={(e) => onChange(channel, e.currentTarget.valueAsNumber)}
+            /> */}
             <label className='sr-only text-on-background' htmlFor={idInput}>
                 {labelInput}
             </label>

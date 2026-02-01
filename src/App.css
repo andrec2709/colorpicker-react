@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root, :root.theme-light {
+:root,
+:root.theme-light {
     --background: #d1d1d1;
     --on-background: #1f1f1f;
     --slider-color: #1f1f1f;
@@ -8,6 +9,10 @@
     --icon-inactive: #495a5c;
     --field-background: #2e3341;
     --field-on-background: #e0e0e0;
+
+    --contrast-ratio-bad: #ff0000;
+    --contrast-ratio-warning: #ffff00;
+    --contrast-ratio-good: #00ff00;
 }
 
 :root.theme-dark {
@@ -18,6 +23,10 @@
     --icon-inactive: #495a5c;
     --field-background: #2e3341;
     --field-on-background: #e0e0e0;
+
+    --contrast-ratio-bad: #ff0000;
+    --contrast-ratio-warning: #ffff00;
+    --contrast-ratio-good: #00ff00;
 }
 
 * {
@@ -33,4 +42,8 @@
     --color-icon-inactive: var(--icon-inactive);
     --color-field-background: var(--field-background);
     --color-field-on-background: var(--field-on-background);
+
+    --color-contrast-ratio-bad: var(--contrast-ratio-bad);
+    --color-contrast-ratio-warning: var(--contrast-ratio-warning);
+    --color-contrast-ratio-good: var(--contrast-ratio-good);
 }

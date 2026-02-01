@@ -16,7 +16,7 @@ export default function HexField({
     const { i18n } = useLanguage();
 
     return (
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end ml-auto">
             <label htmlFor={idInput} className="text-on-background sr-only">{label}</label>
             <div className='flex bg-field-background rounded-sm items-center p-2 w-25'>
                 <input

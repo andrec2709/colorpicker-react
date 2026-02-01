@@ -13,6 +13,7 @@ import HexField from './HexField';
 import { hexToRgb, rgbToHex } from '../../domain/color/utils';
 import type { RGB } from '../../domain/color/types';
 import { useCallback } from 'react';
+import ContrastRatio from './ContrastRatio';
 
 export default function Colorpicker() {
     const { selection, setSelection, activeColor, setActiveColor, hex, setHex } = useColor();
@@ -124,14 +125,17 @@ export default function Colorpicker() {
                     labelInput='blue field'
                     onChange={handleRgbChange}
                 />
-                <HexField
-                    value={hex}
-                    idInput='hex-field'
-                    label='HEX'
-                    onChange={handleHexChange}
-                    onBlur={commitHex}
-                    onKeyDown={e => e.key === 'Enter' && commitHex()}
-                />
+                <div className='flex items-center'>
+                    <ContrastRatio />
+                    <HexField
+                        value={hex}
+                        idInput='hex-field'
+                        label='HEX'
+                        onChange={handleHexChange}
+                        onBlur={commitHex}
+                        onKeyDown={e => e.key === 'Enter' && commitHex()}
+                    />
+                </div>
             </div>
 
         </div >
