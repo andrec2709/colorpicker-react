@@ -1,10 +1,15 @@
-import type { Color, CreationColor, CreationPaletteData, PaletteData } from "../../types/palette";
+import type { Color, CreationColor } from "../../domain/color/types";
+import type { PaletteData, CreationPaletteData } from "../../domain/palette/types";
 import type PaletteRepository from "./PaletteRepository";
 import { v4 as uuidv4 } from 'uuid';
 
 
 export default class LocalStoragePaletteRepository implements PaletteRepository {
-    constructor(public key: string) { }
+    public key: string;
+    
+    constructor(key: string) { 
+        this.key = key
+    }
 
     getAll(): PaletteData[] {
         const palettes = localStorage.getItem(this.key) ?? '[]';

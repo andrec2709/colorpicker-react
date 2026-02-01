@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import { useColor } from "../../contexts/ColorProvider";
 import { useDefaultText } from "../../contexts/DefaultTextProvider";
 import TextPreview from "./TextPreview";
 
-export default function Preview() {
+export const Preview = memo(function () {
     const { bgColor, txtColor } = useColor();
     const { title, setTitle, body, setBody } = useDefaultText();
 
@@ -90,4 +90,6 @@ export default function Preview() {
             </TextPreview>
         </div>
     );
-}
+});
+
+export default Preview;

@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from "react";
+import { memo, type HTMLAttributes } from "react";
 
 type Props = Omit<React.InputHTMLAttributes<HTMLTextAreaElement>,
     'className' | 'maxLength' | 'spellCheck'> & {
@@ -7,7 +7,7 @@ type Props = Omit<React.InputHTMLAttributes<HTMLTextAreaElement>,
         label?: string;
     };
 
-export default function TextPreview({ ref, field, label, ...props }: Props) {
+export const TextPreview = memo(function ({ ref, field, label, ...props }: Props) {
 
 
     return (
@@ -29,4 +29,6 @@ export default function TextPreview({ ref, field, label, ...props }: Props) {
             </textarea>
         </>
     );
-}
+});
+
+export default TextPreview;

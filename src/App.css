@@ -2,6 +2,7 @@
 
 :root, :root.theme-light {
     --background: #d1d1d1;
+    --on-background: #1f1f1f;
     --slider-color: #1f1f1f;
     --icon-active: #00bbff;
     --icon-inactive: #495a5c;
@@ -11,6 +12,7 @@
 
 :root.theme-dark {
     --background: #202020;
+    --on-background: #ffffff;
     --slider-color: #d3d3d3;
     --icon-active: #00bbff;
     --icon-inactive: #495a5c;
@@ -25,6 +27,7 @@
 
 @theme {
     --color-background: var(--background);
+    --color-on-background: var(--on-background);
     --color-slider-color: var(--slider-color);
     --color-icon-active: var(--icon-active);
     --color-icon-inactive: var(--icon-inactive);

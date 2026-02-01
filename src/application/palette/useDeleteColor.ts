@@ -1,4 +1,4 @@
-import { usePalette } from "../../contexts/PaletteContext";
+import { usePalette } from "../../contexts/PaletteProvider";
 import usePaletteRepository from "./usePaletteRepository";
 
 export default function useDeleteColor() {

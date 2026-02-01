@@ -1,5 +1,5 @@
-import { usePalette } from "../../contexts/PaletteContext";
-import type { CreationPaletteData, PaletteData } from "../../types/palette";
+import { usePalette } from "../../contexts/PaletteProvider";
+import type { CreationPaletteData } from "../../domain/palette/types";
 import usePaletteRepository from "./usePaletteRepository";
 
 export default function useAddPalette() {

@@ -1,4 +1,4 @@
-import type { PaletteData } from "../../types/palette";
+import type { PaletteData } from "../../domain/palette/types";
 import usePaletteRepository from "./usePaletteRepository";
 
 export default function useSavePalettesData() {

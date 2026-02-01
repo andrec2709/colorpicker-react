@@ -1,5 +1,5 @@
-import { usePalette } from "../../contexts/PaletteContext";
-import type { Color } from "../../types/palette";
+import { usePalette } from "../../contexts/PaletteProvider";
+import type { Color } from "../../domain/color/types";
 import usePaletteRepository from "./usePaletteRepository";
 
 export default function useSaveColor() {

@@ -1,15 +1,13 @@
-import { usePalette } from "../../contexts/PaletteContext";
-import { useSettings } from "../../contexts/SettingsContext";
-import type { Color, CreationColor } from "../../types/palette";
+import { usePalette } from "../../contexts/PaletteProvider";
+import type { CreationColor } from "../../domain/color/types";
 import usePaletteRepository from "./usePaletteRepository";
 
 export default function useAddColor() {
     const repo = usePaletteRepository();
-    const { addColorToEnd } = useSettings();
     const { setPalettesData } = usePalette();
 
     return (id: string, color: CreationColor) => {
-        repo.addColor(color, id, addColorToEnd);
+        repo.addColor(color, id, true); // TODO: addColorToEnd option
         const palettes = repo.getAll();
         setPalettesData(palettes);
     }
