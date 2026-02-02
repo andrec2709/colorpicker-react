@@ -17,7 +17,10 @@
     --palette-background: #2e3341;
     --palette-on-background: #1f1f1f;
     --palette-border: #000000;
+    --palette-border-hover: #000000;
     --focus-selection: #00bbff;
+
+    --link: #00bbff;
 }
 
 :root.theme-dark {
@@ -36,7 +39,10 @@
     --palette-background: #1b2c33;
     --palette-on-background: #ffffff;
     --palette-border: #0978a0;
+    --palette-border-hover: #0da1d6;
     --focus-selection: #00bbff;
+
+    --link: #00bbff;
 }
 
 * {
@@ -65,6 +71,8 @@
     --color-palette-background: var(--palette-background);
     --color-palette-on-background: var(--palette-on-background);
     --color-palette-border: var(--palette-border);
+    --color-palette-border-hover: var(--palette-border-hover);
     --color-focus-selection: var(--focus-selection);
+    --color-link: var(--link);
 }
 

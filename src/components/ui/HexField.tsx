@@ -28,14 +28,14 @@ export default function HexField({
         if (value.length === 7) setActiveColor(hexToRgb(value));
     };
 
-    const handleHexPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const handleHexPaste = async (e: React.ClipboardEvent<HTMLInputElement>) => {
         e.stopPropagation();
         e.preventDefault();
 
-        let pasted = e.clipboardData.getData('plain/text').toLowerCase();
-
+        let pasted = await navigator.clipboard.readText();
+        
         if (!pasted.startsWith('#')) pasted = '#'.concat(pasted);
-
+        
         setHex(pasted.substring(0, 7));
 
     };

@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { usePalette } from "../../contexts/PaletteProvider";
 import ColorPreview from "./ColorPreview";
 import {
@@ -36,7 +36,7 @@ export const PaletteView = memo(
             }),
         );
         const save = useSavePalette();
-
+        const scrollableRef = useRef<HTMLDivElement>(null);
         const colors = useMemo(() =>
             selectedPalette?.colors.map(color => (
                 <ColorPreview data={color} key={color.id} />
@@ -57,6 +57,15 @@ export const PaletteView = memo(
             }
         };
 
+        useEffect(() => {
+            const element = scrollableRef.current;
+            if (selectedPalette && element) {
+                element.scrollTo({
+                    behavior: 'smooth',
+                    top: element.scrollHeight,
+                });
+            }
+        }, [selectedPalette]);
 
         return (
             <DndContext
@@ -75,6 +84,7 @@ export const PaletteView = memo(
                                 <div
                                     className="grid grid-cols-[repeat(auto-fit,minmax(min-content,5rem))] 
                                 gap-2 justify-center overflow-y-scroll h-fit max-h-80"
+                                    ref={scrollableRef}
                                 >
                                     {colors}
                                 </div>
@@ -83,6 +93,7 @@ export const PaletteView = memo(
                             : (
                                 <div
                                     className="flex flex-col gap-y-2 overflow-y-scroll h-[inherit]"
+                                    ref={scrollableRef}
                                 >
                                     {colors}
                                 </div>

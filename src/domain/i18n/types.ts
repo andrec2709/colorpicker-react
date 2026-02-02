@@ -22,6 +22,7 @@ export type Translation = {
     goBack: string;
     deletePalette: string;
     addPalette: string;
+    madeBy: string;
 };
 
 export type Translations = Record<Language, Translation>;

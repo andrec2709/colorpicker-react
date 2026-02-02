@@ -68,10 +68,10 @@ export const ColorPreview = memo(
                     {...attributes}
                     {...listeners}
                     onClick={handleSelectColor}
-                    className="w-20 aspect-square rounded-sm relative"
+                    className="w-20 aspect-square rounded-sm relative touch-pan-y"
                 >
                     <div
-                        className="absolute right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
+                        className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
                     >
                         <CopyIcon
@@ -80,7 +80,7 @@ export const ColorPreview = memo(
                         />
                     </div>
                     <div
-                        className="absolute left-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
+                        className="absolute cursor-pointer left-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleDeleteColor}
                     >
                         <DeleteIcon size={18} color="white" />
@@ -90,7 +90,7 @@ export const ColorPreview = memo(
         } else {
             return (
                 <div
-                    className="flex relative cursor-pointer border border-palette-border bg-palette-background rounded-sm items-center gap-x-5"
+                    className="flex relative cursor-pointer hover:border-palette-border-hover transition-[border-color] duration-150 touch-pan-y border border-palette-border bg-palette-background rounded-sm items-center gap-x-5"
                     onClick={handleSelectColor}
                     ref={setNodeRef}
                     style={style}
@@ -101,7 +101,7 @@ export const ColorPreview = memo(
                         style={{
                             backgroundColor: `rgb(${data.r},${data.g},${data.b})`,
                         }}
-                        className="w-18 m-1 aspect-square rounded-sm"
+                        className="w-18 m-1 aspect-square cursor-pointer rounded-sm"
 
                     >
                     </div>
@@ -122,7 +122,7 @@ export const ColorPreview = memo(
                         }}
                     />
                     <div
-                        className="absolute right-1 bottom-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
+                        className="absolute cursor-pointer right-1 bottom-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
                     >
                         <CopyIcon
@@ -131,7 +131,7 @@ export const ColorPreview = memo(
                         />
                     </div>
                     <div
-                        className="absolute right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
+                        className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleDeleteColor}
                     >
                         <DeleteIcon size={18} color="white" />

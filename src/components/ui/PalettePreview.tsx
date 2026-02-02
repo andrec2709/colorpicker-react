@@ -89,7 +89,7 @@ export const PalettePreview = memo(
         if (viewLayout === 'grid') {
             return (
                 <div
-                    className="grid cursor-pointer grid-cols-2 border border-palette-border justify-items-center items-center w-20 p-1 aspect-square bg-palette-background rounded-sm"
+                    className="grid touch-pan-y cursor-pointer grid-cols-2 border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 justify-items-center items-center w-20 p-1 aspect-square bg-palette-background rounded-sm"
                     style={style}
                     onClick={() => setSelectedPaletteId(data.id)}
                     ref={setNodeRef}
@@ -102,7 +102,7 @@ export const PalettePreview = memo(
         } else {
             return (
                 <div
-                    className="flex box-border cursor-pointer border border-palette-border bg-palette-background rounded-sm items-center gap-x-5"
+                    className="flex touch-pan-y box-border cursor-pointer border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 bg-palette-background rounded-sm items-center gap-x-5"
                     ref={setNodeRef}
                     style={style}
                     onClick={(e) => {

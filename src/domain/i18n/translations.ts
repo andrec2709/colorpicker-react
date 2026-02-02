@@ -27,7 +27,8 @@ export const translations: Translations = {
         switchToListView: 'Mudar para visualização em lista',
         goBack: 'Voltar',
         deletePalette: 'Remover paleta',
-        addPalette: 'Adicionar paleta'
+        addPalette: 'Adicionar paleta',
+        madeBy: 'Criado por © Andre Carvalho, 2025',
     },
     en: {
         addColorLabel: 'Add color to palette',
@@ -54,6 +55,7 @@ export const translations: Translations = {
         switchToListView: 'Switch to list view',
         goBack: 'Go back',
         deletePalette: 'Delete palette',
-        addPalette: 'Add palette'
+        addPalette: 'Add palette',
+        madeBy: 'Made by © Andre Carvalho, 2025',
     },
 };
