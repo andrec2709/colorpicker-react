@@ -10,16 +10,36 @@ import PalettesView from "./PalettesView";
 import useSavePalette from "../../application/palette/useSavePalette";
 import { useLanguage } from "../../contexts/LanguageProvider";
 import PaletteView from "./PaletteView";
+import useDeletePalette from "../../application/palette/useDeletePalette";
+import useAddPalette from "../../application/palette/useAddPalette";
+import type { CreationPaletteData } from "../../domain/palette/types";
 
 export const Editor = memo(function () {
-    const { selectedPaletteId, setSelectedPaletteId, viewLayout, setViewLayout, selectedPalette } = usePalette();
+    const { selectedPaletteId, setSelectedPaletteId, viewLayout, setViewLayout, selectedPalette, palettesData } = usePalette();
     const { i18n } = useLanguage();
     const save = useSavePalette();
+    const deletePalette = useDeletePalette();
+    const add = useAddPalette();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
         if (selectedPalette) {
             save({ ...selectedPalette, name: e.currentTarget.value });
         }
+    };
+
+    const handleDeletePalette = () => {
+        if (!selectedPalette) return;
+
+        deletePalette(selectedPalette, null);
+    };
+
+    const handleAddPalette = () => {
+        const palette: CreationPaletteData = {
+            name: `Palette ${palettesData.length + 1}`,
+            colors: []
+        };
+
+        add(palette);
     };
 
     return (
@@ -77,6 +97,7 @@ export const Editor = memo(function () {
                             focusable
                             tabIndex={0}
                             aria-label={i18n.t('deletePalette')}
+                            onClick={handleDeletePalette}
                         />
                         : <AddIcon
                             className="fill-icon-active cursor-pointer"
@@ -84,6 +105,7 @@ export const Editor = memo(function () {
                             focusable
                             tabIndex={0}
                             aria-label={i18n.t('addPalette')}
+                            onClick={handleAddPalette}
                         />
                 }
             </div>

@@ -6,5 +6,6 @@ export default function useSavePalettesData() {
 
     return (data: PaletteData[]) => {
         repo.saveAll(data);
+        // TODO: update palettesData state when this is called
     };
 }

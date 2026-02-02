@@ -3,6 +3,7 @@ import Slider from '@mui/material/Slider';
 import CopyIcon from '../icons/CopyIcon';
 import { useLanguage } from '../../contexts/LanguageProvider';
 import { useMemo } from 'react';
+import { clamp } from '../../utils';
 
 type Props = {
     value: number;
@@ -12,6 +13,8 @@ type Props = {
     idSlider: string;
     labelSlider: string;
     channel: 'red' | 'green' | 'blue';
+    min?: number;
+    max?:number;
 };
 
 export default function SliderWithField({
@@ -22,6 +25,8 @@ export default function SliderWithField({
     idSlider,
     labelSlider,
     channel,
+    min = 0,
+    max = 255,
 }: Props) {
 
     const { i18n } = useLanguage();
@@ -38,7 +43,22 @@ export default function SliderWithField({
             return;
         }
 
-        onChange(channel, parseInt(newValue));
+        const clamped = clamp(min, max, parseInt(newValue));
+
+        onChange(channel, clamped);
+
+    };
+
+    const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const pasted = parseInt(e.clipboardData.getData('text/plain'));
+
+        if (isNaN(pasted)) return;
+
+        const clamped = clamp(min, max, pasted);
+
+        onChange(channel, clamped);
 
     };
 
@@ -53,29 +73,12 @@ export default function SliderWithField({
                     color: 'var(--slider-color)',
                 }), [])}
                 aria-labelledby={idSlider}
-                min={0}
-                max={255}
+                min={min}
+                max={max}
                 value={value}
                 disableSwap
                 onChange={(e, newValue) => onChange(channel, newValue)}
             />
-            {/* <Slider 
-                onChange={(newValue) => onChange(channel, newValue)}
-                value={value}
-                min={0}
-                max={255}
-                style={{width: '50%'}}
-            /> */}
-            {/* <input
-                type="range"
-                name={labelSlider}
-                aria-labelledby={idSlider}
-                className='slider'
-                value={value}
-                min={0}
-                max={255}
-                onChange={(e) => onChange(channel, e.currentTarget.valueAsNumber)}
-            /> */}
             <label className='sr-only text-on-background' htmlFor={idInput}>
                 {labelInput}
             </label>
@@ -87,6 +90,7 @@ export default function SliderWithField({
                     maxLength={3}
                     value={value}
                     onChange={handleChangeInput}
+                    onPaste={handlePaste}
                 />
                 <CopyIcon
                     color='var(--field-on-background)'

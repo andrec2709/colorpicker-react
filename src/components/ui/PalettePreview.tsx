@@ -27,36 +27,69 @@ export const PalettePreview = memo(
         const save = useSavePalette();
 
         const maxPreviewColors = 4;
-        const previewColors = useMemo(() =>
-            data.colors.slice(0, maxPreviewColors)
-                .map(color => {
-                    const colorBg = `rgb(${color.r},${color.g},${color.b})`;
-                    return (
-                        <div
-                            key={color.id}
+        const previewColors = useMemo(
+            () => {
 
+                const components = data.colors.slice(0, maxPreviewColors)
+                    .map(color => {
+                        const colorBg = `rgb(${color.r},${color.g},${color.b})`;
+                        return (
+                            <div
+                                key={color.id}
+
+                                style={{
+                                    backgroundColor: colorBg,
+                                    width: '2rem',
+                                    aspectRatio: '1 / 1',
+                                    borderRadius: '5px',
+                                }}
+                            >
+                            </div>
+
+                        );
+                    }
+
+                    )
+
+                /* 
+                This conditional is for controlling how the color previews are displayed in the palette preview.
+                
+                In order to keep the grid correctly aligned, I add two transparent placeholders just to keep
+                it structurally the same as a palette with 4+ colors.
+                
+                If this is not done, palettes with two colors will have the color previews centered in the palette
+                preview.
+                */
+                if (components.length < 3) {
+                    
+                    const placeholder = (fakeId: string) => (
+                        <div
+                            key={fakeId}
                             style={{
-                                backgroundColor: colorBg,
+                                backgroundColor: 'transparent',
                                 width: '2rem',
                                 aspectRatio: '1 / 1',
                                 borderRadius: '5px',
                             }}
                         >
                         </div>
-
                     );
+
+                    components.push(placeholder('FAKE_ITEM_1@--__220912389'));
+                    components.push(placeholder('FAKE_ITEM_2@--__231238726'));
                 }
 
-            ), [data]);
+                return components;
+            }, [data]);
 
         const handleInputChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-            save({...data, name: e.currentTarget.value});
+            save({ ...data, name: e.currentTarget.value });
         }
 
         if (viewLayout === 'grid') {
             return (
                 <div
-                    className="grid cursor-pointer grid-cols-2 border border-palette-border items-center place-items-center w-20 p-1 aspect-square bg-palette-background rounded-sm"
+                    className="grid cursor-pointer grid-cols-2 border border-palette-border justify-items-center items-center w-20 p-1 aspect-square bg-palette-background rounded-sm"
                     style={style}
                     onClick={() => setSelectedPaletteId(data.id)}
                     ref={setNodeRef}
@@ -85,21 +118,21 @@ export const PalettePreview = memo(
                     >
                         {previewColors}
                     </div>
-                    <ThemedInput 
-                    value={data.name} 
-                    className="h-fit w-1/2" 
-                    maxLength={30}
-                    onChange={handleInputChange}
-                    onClick={e => {
-                        // Stops click event from bubbling up to parent (palette selection)
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }}
-                    onFocus={e => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        e.currentTarget.select();
-                    }}
+                    <ThemedInput
+                        value={data.name}
+                        className="h-fit w-1/2 text-palette-on-background"
+                        maxLength={30}
+                        onChange={handleInputChange}
+                        onClick={e => {
+                            // Stops click event from bubbling up to parent (palette selection)
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }}
+                        onFocus={e => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            e.currentTarget.select();
+                        }}
                     />
                 </div>
             );

@@ -18,6 +18,7 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
+import useSavePalette from "../../application/palette/useSavePalette";
 
 
 export const PaletteView = memo(
@@ -34,6 +35,7 @@ export const PaletteView = memo(
                 coordinateGetter: sortableKeyboardCoordinates,
             }),
         );
+        const save = useSavePalette();
 
         const colors = useMemo(() =>
             selectedPalette?.colors.map(color => (
@@ -41,9 +43,17 @@ export const PaletteView = memo(
             )), [selectedPalette]);
 
         const handleDragEnd = (e: DragEndEvent) => {
+            if (!selectedPalette) return;
+
             const { active, over } = e;
             if (over && active.id !== over.id) {
-               
+                const oldIndex = selectedPalette.colors.findIndex(color => color.id === active.id);
+                const newIndex = selectedPalette.colors.findIndex(color => color.id === over.id);
+
+                if (oldIndex !== -1 && newIndex !== -1) {
+                    const newColors = arrayMove(selectedPalette.colors, oldIndex, newIndex);
+                    save({ ...selectedPalette, colors: newColors });
+                }
             }
         };
 
@@ -64,7 +74,7 @@ export const PaletteView = memo(
                             ? (
                                 <div
                                     className="grid grid-cols-[repeat(auto-fit,minmax(min-content,5rem))] 
-                                gap-2 justify-center overflow-y-scroll h-[inherit]"
+                                gap-2 justify-center overflow-y-scroll h-fit max-h-80"
                                 >
                                     {colors}
                                 </div>

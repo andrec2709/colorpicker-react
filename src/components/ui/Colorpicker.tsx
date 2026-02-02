@@ -49,17 +49,6 @@ export default function Colorpicker() {
         setActiveColor(newColor);
     }, [activeColor]);
 
-    const handleHexChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-        const value = e.target.value || '#'
-        setHex(value);
-        if (value.length === 7) setActiveColor(hexToRgb(value));
-    };
-
-    const commitHex = () => {
-        const rgb = hexToRgb(hex);
-        setActiveColor(rgb);
-    }
-
     const handleAddColor = () => {
         if (!selectedPaletteId) return;
 
@@ -150,9 +139,6 @@ export default function Colorpicker() {
                         value={hex}
                         idInput='hex-field'
                         label='HEX'
-                        onChange={handleHexChange}
-                        onBlur={commitHex}
-                        onKeyDown={e => e.key === 'Enter' && commitHex()}
                     />
                 </div>
             </div>

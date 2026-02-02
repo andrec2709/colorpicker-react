@@ -69,7 +69,7 @@ export const PalettesView = memo(function () {
                         ? (
                             <div
                                 className="grid grid-cols-[repeat(auto-fit,minmax(min-content,5rem))] 
-                                gap-2 justify-center overflow-y-scroll h-[inherit]"
+                                gap-2 justify-center overflow-y-scroll h-fit max-h-80"
                             >
                                 {palettes}
                             </div>

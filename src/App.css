@@ -15,6 +15,7 @@
     --contrast-ratio-good: #00ff00;
 
     --palette-background: #2e3341;
+    --palette-on-background: #1f1f1f;
     --palette-border: #000000;
     --focus-selection: #00bbff;
 }
@@ -33,6 +34,7 @@
     --contrast-ratio-good: #00ff00;
 
     --palette-background: #1b2c33;
+    --palette-on-background: #ffffff;
     --palette-border: #0978a0;
     --focus-selection: #00bbff;
 }
@@ -61,6 +63,7 @@
     --color-contrast-ratio-warning: var(--contrast-ratio-warning);
     --color-contrast-ratio-good: var(--contrast-ratio-good);
     --color-palette-background: var(--palette-background);
+    --color-palette-on-background: var(--palette-on-background);
     --color-palette-border: var(--palette-border);
     --color-focus-selection: var(--focus-selection);
 }
