@@ -1,9 +1,11 @@
 import { memo, useMemo } from "react";
 import { useColor } from "../../contexts/ColorProvider";
 import { calculateLuminanceRatio } from "../../domain/color/utils";
+import { useLanguage } from "../../contexts/LanguageProvider";
 
 export const ContrastRatio = memo(function () {
     const { bgColor, txtColor } = useColor();
+    const { i18n } = useLanguage();
 
     const contrast = calculateLuminanceRatio(bgColor, txtColor);
     
@@ -14,7 +16,7 @@ export const ContrastRatio = memo(function () {
     }, [contrast]);
 
     return (
-        <p className={`${color}`}>{`Contrast: ${contrast.toFixed(2)}`}</p>
+        <p className={`${color}`}>{`${i18n.t('contrast')} ${contrast.toFixed(2)}`}</p>
     );
 });
 

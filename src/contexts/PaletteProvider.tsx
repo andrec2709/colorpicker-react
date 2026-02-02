@@ -11,7 +11,7 @@ type PaletteContextValue = {
 
     selectedPalette: PaletteData | null;
 
-    viewLayout: string;
+    viewLayout: 'grid' | 'block';
     setViewLayout: React.Dispatch<React.SetStateAction<'grid' | 'block'>>;
 
     selectPalette: (paletteData: PaletteData | null) => void;

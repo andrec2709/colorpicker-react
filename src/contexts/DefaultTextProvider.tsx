@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import useTextState from "../application/default-text/useTextState";
+import { useLanguage } from "./LanguageProvider";
 
 type DefaultTextContextType = {
     title: string;
@@ -19,8 +20,9 @@ export const useDefaultText = () => {
 };
 
 export const DefaultTextProvider = ({ children }: { children: React.ReactNode }) => {
-    const [title, setTitle] = useTextState('title', 'You can write a title');
-    const [body, setBody] = useTextState('body', 'and some body text too')
+    const { i18n } = useLanguage();
+    const [title, setTitle] = useTextState('title', i18n.t('defaultTitle'));
+    const [body, setBody] = useTextState('body', i18n.t('defaultBodyText'));
 
     return (
         <DefaultTextContext.Provider value={{

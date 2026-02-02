@@ -10,14 +10,18 @@ import SettingsIcon from '../icons/SettingsIcon';
 import SliderWithField from './SliderWithField';
 import { useLanguage } from '../../contexts/LanguageProvider';
 import HexField from './HexField';
-import { hexToRgb, rgbToHex } from '../../domain/color/utils';
+import { hexToRgb, NEAREST_COLOR, rgbToHex } from '../../domain/color/utils';
 import type { RGB } from '../../domain/color/types';
 import { useCallback } from 'react';
 import ContrastRatio from './ContrastRatio';
+import { usePalette } from '../../contexts/PaletteProvider';
+import useAddColor from '../../application/palette/useAddColor';
 
 export default function Colorpicker() {
     const { selection, setSelection, activeColor, setActiveColor, hex, setHex } = useColor();
+    const { selectedPaletteId } = usePalette();
     const { i18n } = useLanguage();
+    const addColor = useAddColor();
 
     const handleRgbChange = useCallback((channel: 'red' | 'green' | 'blue', newValue: number) => {
         let [r, g, b] = activeColor;
@@ -56,6 +60,21 @@ export default function Colorpicker() {
         setActiveColor(rgb);
     }
 
+    const handleAddColor = () => {
+        if (!selectedPaletteId) return;
+
+        const [r, g, b] = activeColor;
+        const name = NEAREST_COLOR(hex)?.name ?? '';
+
+        addColor(selectedPaletteId, {
+            r, 
+            g, 
+            b, 
+            name, 
+            hex
+        });
+    };
+
     return (
         <div className='flex flex-col gap-y-5 w-full'>
             <div className='flex gap-x-2 mt-5'>
@@ -79,12 +98,12 @@ export default function Colorpicker() {
                     onClick={() => setSelection('text')}
                 />
                 <AddIcon
-                    onClick={() => { }}
+                    onClick={handleAddColor}
                     tabIndex={0}
                     focusable
                     aria-label={i18n.t('addColorLabel')}
                     role='button'
-                    className='cursor-pointer'
+                    className={`cursor-pointer ${selectedPaletteId !== null ? 'fill-icon-active' : 'fill-icon-inactive'}`}
                     size={28}
                 />
                 <SettingsIcon

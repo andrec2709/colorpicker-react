@@ -20,6 +20,14 @@ export const translations: Translations = {
             male: 'azul',
             female: 'azul',
         },
+        contrast: 'Contraste',
+        defaultBodyText: 'E um parágrafo',
+        defaultTitle: 'Você pode escrever um título',
+        switchToGridView: 'Mudar para visualização em grade',
+        switchToListView: 'Mudar para visualização em lista',
+        goBack: 'Voltar',
+        deletePalette: 'Remover paleta',
+        addPalette: 'Adicionar paleta'
     },
     en: {
         addColorLabel: 'Add color to palette',
@@ -39,5 +47,13 @@ export const translations: Translations = {
             male: 'blue',
             female: 'blue',
         },
+        contrast: 'Contrast',
+        defaultBodyText: 'And a paragraph',
+        defaultTitle: 'You can write a title',
+        switchToGridView: 'Switch to grid view',
+        switchToListView: 'Switch to list view',
+        goBack: 'Go back',
+        deletePalette: 'Delete palette',
+        addPalette: 'Add palette'
     },
 };

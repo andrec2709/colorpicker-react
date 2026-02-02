@@ -13,6 +13,10 @@
     --contrast-ratio-bad: #ff0000;
     --contrast-ratio-warning: #ffff00;
     --contrast-ratio-good: #00ff00;
+
+    --palette-background: #2e3341;
+    --palette-border: #000000;
+    --focus-selection: #00bbff;
 }
 
 :root.theme-dark {
@@ -27,11 +31,21 @@
     --contrast-ratio-bad: #ff0000;
     --contrast-ratio-warning: #ffff00;
     --contrast-ratio-good: #00ff00;
+
+    --palette-background: #1b2c33;
+    --palette-border: #0978a0;
+    --focus-selection: #00bbff;
 }
 
 * {
     box-sizing: border-box;
     font-family: 'Inter';
+    scrollbar-width: none;
+
+    &:focus-visible {
+        outline: 2px double var(--focus-selection);
+        /* outline-offset: 2px; */
+    }
 }
 
 @theme {
@@ -46,4 +60,8 @@
     --color-contrast-ratio-bad: var(--contrast-ratio-bad);
     --color-contrast-ratio-warning: var(--contrast-ratio-warning);
     --color-contrast-ratio-good: var(--contrast-ratio-good);
+    --color-palette-background: var(--palette-background);
+    --color-palette-border: var(--palette-border);
+    --color-focus-selection: var(--focus-selection);
 }
+

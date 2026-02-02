@@ -14,6 +14,14 @@ export type Translation = {
     red: GenderTypeTranslation;
     green: GenderTypeTranslation;
     blue: GenderTypeTranslation;
+    contrast: string;
+    defaultTitle: string;
+    defaultBodyText: string;
+    switchToListView: string;
+    switchToGridView: string;
+    goBack: string;
+    deletePalette: string;
+    addPalette: string;
 };
 
 export type Translations = Record<Language, Translation>;
