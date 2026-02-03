@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, memo, useContext, useEffect, useMemo, useState } from "react";
 import useColorState from "../application/color/useColorState";
 import type { RGB } from "../domain/color/types";
 import useHexState from "../application/color/useHexState";
@@ -27,7 +27,7 @@ export const useColor = () => {
     return ctx;
 };
 
-export const ColorProvider = ({ children }: { children: React.ReactNode }) => {
+export const ColorProvider = memo(function ColorProvider({ children }: { children: React.ReactNode }) {
     /* Represents the background color of the preview */
     const [bgColor, setBgColor] = useColorState('bg-color');
 
@@ -77,20 +77,28 @@ export const ColorProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [selection]);
 
+    const contextValue = useMemo(() => ({
+        bgColor,
+        setBgColor,
+        txtColor,
+        setTxtColor,
+        activeColor,
+        setActiveColor,
+        selection,
+        setSelection,
+        hex,
+        setHex
+    }), [
+        bgColor,
+        txtColor,
+        activeColor,
+        selection,
+        hex,
+    ]);
+
     return (
-        <ColorContext.Provider value={{
-            bgColor,
-            setBgColor,
-            txtColor,
-            setTxtColor,
-            activeColor,
-            setActiveColor,
-            selection,
-            setSelection,
-            hex,
-            setHex,
-        }}>
+        <ColorContext.Provider value={contextValue}>
             {children}
         </ColorContext.Provider>
     );
-};
+});

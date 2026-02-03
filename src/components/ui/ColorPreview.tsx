@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import type { Color, RGB } from "../../domain/color/types";
 import { usePalette } from "../../contexts/PaletteProvider";
 import { useSortable } from "@dnd-kit/sortable";
@@ -33,34 +33,34 @@ export const ColorPreview = memo(
             transition,
         };
 
-        const handleRenameColor = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+        const handleRenameColor = useCallback((e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
             if (selectedPaletteId) {
                 save({ ...data, name: e.currentTarget.value }, selectedPaletteId);
             }
-        }
+        }, [selectedPaletteId]);
 
-        const handleSelectColor = () => {
+        const handleSelectColor = useCallback(() => {
             const rgb: RGB = [data.r, data.g, data.b];
             setActiveColor(rgb);
             setHex(data.hex);
-        };
+        }, [data]);
 
-        const handleCopyColor = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const handleCopyColor = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.stopPropagation();
             e.preventDefault();
             navigator.clipboard.writeText(data.hex);
-        };
+        }, [data]);
 
-        const handleDeleteColor = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const handleDeleteColor = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.stopPropagation();
             e.preventDefault();
 
             if (!selectedPaletteId) return;
 
             deleteColor(data.id, selectedPaletteId);
-        };
+        }, [selectedPaletteId, data]);
 
-        const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
             if (e.key === 'Enter' && e.shiftKey) {
                 handleSelectColor();
                 return;
@@ -69,7 +69,11 @@ export const ColorPreview = memo(
             if (e.key === 'Enter' || e.key === ' ') {
                 if (listeners) return listeners.onKeyDown?.(e);
             }
-        };
+        }, [listeners]);
+
+        const handleIconsKeyDown = useCallback((e: React.KeyboardEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+        }, []);
 
         if (viewLayout === 'grid') {
             return (
@@ -91,31 +95,26 @@ export const ColorPreview = memo(
                     <ButtonWithIcon
                         className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
-                        onKeyDown={(e) => {
-                            // Stops the event from propagating and running on the parent element (selecting a color).
-                            e.stopPropagation();
-                        }}
+                        onKeyDown={handleIconsKeyDown}
                         aria-label={i18n.t('copyFromPalette')}
                         Icon={CopyIcon}
-                        iconProps={{
+                        iconProps={useMemo(() => ({
                             color: 'white',
                             "aria-label": i18n.t('copyIconLabel'),
                             size: 18,
-                        }}
+                        }), [])}
                     />
                     <ButtonWithIcon
                         Icon={DeleteIcon}
                         className="absolute cursor-pointer left-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         aria-label={i18n.t('deleteIconLabel')}
                         onClick={handleDeleteColor}
-                        onKeyDown={(e) => {
-                            e.stopPropagation();
-                        }}
-                        iconProps={{
+                        onKeyDown={handleIconsKeyDown}
+                        iconProps={useMemo(() => ({
                             color: 'white',
                             "aria-label": i18n.t('deleteIconLabel'),
                             size: 18,
-                        }}
+                        }), [])}
                     />
                 </div>
             );
