@@ -19,9 +19,11 @@ import {
 } from '@dnd-kit/sortable';
 import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 import useSavePalettesData from "../../application/palette/useSavePalettesData";
+import { useLanguage } from "../../contexts/LanguageProvider";
 
-export const PalettesView = memo(function () {
+export const PalettesView = memo(function PalettesView() {
     const { palettesData, viewLayout, setPalettesData } = usePalette();
+    const { i18n } = useLanguage();
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -59,6 +61,11 @@ export const PalettesView = memo(function () {
             collisionDetection={closestCenter}
             modifiers={[restrictToFirstScrollableAncestor]}
             onDragEnd={handleDragEnd}
+            accessibility={{
+                screenReaderInstructions: {
+                    draggable: i18n.t('sortableScreenReaderInstructions'),
+                }
+            }}
         >
             <SortableContext
                 items={palettesData}

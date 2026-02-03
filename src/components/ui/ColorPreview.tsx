@@ -10,9 +10,11 @@ import CopyIcon from "../icons/CopyIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import { useColor } from "../../contexts/ColorProvider";
 import useDeleteColor from "../../application/palette/useDeleteColor";
+import { useLanguage } from "../../contexts/LanguageProvider";
+import ButtonWithIcon from "./ButtonWithIcon";
 
 export const ColorPreview = memo(
-    function ({ data }: { data: Color }) {
+    function ColorPreview({ data }: { data: Color }) {
         const { viewLayout, selectedPaletteId } = usePalette();
         const { setActiveColor, setHex } = useColor();
         const {
@@ -22,6 +24,7 @@ export const ColorPreview = memo(
             transform,
             transition,
         } = useSortable({ id: data.id });
+        const { i18n } = useLanguage();
         const save = useSaveColor();
         const deleteColor = useDeleteColor();
 
@@ -42,19 +45,30 @@ export const ColorPreview = memo(
             setHex(data.hex);
         };
 
-        const handleCopyColor = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const handleCopyColor = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.stopPropagation();
             e.preventDefault();
             navigator.clipboard.writeText(data.hex);
         };
 
-        const handleDeleteColor = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const handleDeleteColor = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.stopPropagation();
             e.preventDefault();
 
             if (!selectedPaletteId) return;
 
             deleteColor(data.id, selectedPaletteId);
+        };
+
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === 'Enter' && e.shiftKey) {
+                handleSelectColor();
+                return;
+            }
+
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (listeners) return listeners.onKeyDown?.(e);
+            }
         };
 
         if (viewLayout === 'grid') {
@@ -68,23 +82,40 @@ export const ColorPreview = memo(
                     {...attributes}
                     {...listeners}
                     onClick={handleSelectColor}
+                    onKeyDown={handleKeyDown}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={i18n.t('selectAsActive')}
                     className="w-20 aspect-square rounded-sm relative touch-pan-y"
                 >
-                    <div
+                    <ButtonWithIcon
                         className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
-                    >
-                        <CopyIcon
-                            size={18}
-                            color="white"
-                        />
-                    </div>
-                    <div
+                        onKeyDown={(e) => {
+                            e.stopPropagation();
+                        }}
+                        aria-label={i18n.t('copyFromPalette')}
+                        Icon={CopyIcon}
+                        iconProps={{
+                            color: 'white',
+                            "aria-label": i18n.t('copyIconLabel'),
+                            size: 18,
+                        }}
+                    />
+                    <ButtonWithIcon
+                        Icon={DeleteIcon}
                         className="absolute cursor-pointer left-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
+                        aria-label={i18n.t('deleteIconLabel')}
                         onClick={handleDeleteColor}
-                    >
-                        <DeleteIcon size={18} color="white" />
-                    </div>
+                        onKeyDown={(e) => {
+                            e.stopPropagation();
+                        }}
+                        iconProps={{
+                            color: 'white',
+                            "aria-label": i18n.t('deleteIconLabel'),
+                            size: 18,
+                        }}
+                    />
                 </div>
             );
         } else {
@@ -121,7 +152,7 @@ export const ColorPreview = memo(
                             e.currentTarget.select();
                         }}
                     />
-                    <div
+                    <button
                         className="absolute cursor-pointer right-1 bottom-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
                     >
@@ -129,13 +160,13 @@ export const ColorPreview = memo(
                             size={18}
                             color="white"
                         />
-                    </div>
-                    <div
+                    </button>
+                    <button
                         className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleDeleteColor}
                     >
                         <DeleteIcon size={18} color="white" />
-                    </div>
+                    </button>
                 </div>
 
             );

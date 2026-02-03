@@ -5,13 +5,14 @@ import { CSS } from '@dnd-kit/utilities';
 import { usePalette } from "../../contexts/PaletteProvider";
 import ThemedInput from "./ThemedInput";
 import useSavePalette from "../../application/palette/useSavePalette";
+import { useLanguage } from "../../contexts/LanguageProvider";
 
 type Props = {
     data: PaletteData;
 };
 
 export const PalettePreview = memo(
-    function ({ data }: Props) {
+    function PalettePreview({ data }: Props) {
         const {
             attributes,
             listeners,
@@ -24,6 +25,7 @@ export const PalettePreview = memo(
             transition,
         };
         const { viewLayout, setSelectedPaletteId } = usePalette();
+        const { i18n } = useLanguage();
         const save = useSavePalette();
 
         const maxPreviewColors = 4;
@@ -61,7 +63,7 @@ export const PalettePreview = memo(
                 preview.
                 */
                 if (components.length < 3) {
-                    
+
                     const placeholder = (fakeId: string) => (
                         <div
                             key={fakeId}
@@ -91,10 +93,22 @@ export const PalettePreview = memo(
                 <div
                     className="grid touch-pan-y cursor-pointer grid-cols-2 border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 justify-items-center items-center w-20 p-1 aspect-square bg-palette-background rounded-sm"
                     style={style}
+                    aria-label={i18n.t('paletteLabel', { paletteName: data.name })}
                     onClick={() => setSelectedPaletteId(data.id)}
                     ref={setNodeRef}
                     {...attributes}
                     {...listeners}
+                    onKeyDown={e => {
+                        if (e.key === 'Enter' && e.shiftKey) {
+                            e.preventDefault();
+                            setSelectedPaletteId(data.id);
+                            return;
+                        }
+
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            if (listeners) return listeners.onKeyDown?.(e);
+                        }
+                    }}
                 >
                     {previewColors}
                 </div>

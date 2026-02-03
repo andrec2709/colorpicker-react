@@ -2,7 +2,7 @@
 import { memo } from "react";
 import type { IconProps } from "../../types/icon";
 
-export const SettingsIcon = memo(function ({ color = '#000000', size = 24, ...props }: IconProps) {
+export const SettingsIcon = memo(function SettingsIcon({ color = '#000000', size = 24, ...props }: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

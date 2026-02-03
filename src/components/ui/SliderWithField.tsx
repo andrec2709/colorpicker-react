@@ -4,6 +4,7 @@ import CopyIcon from '../icons/CopyIcon';
 import { useLanguage } from '../../contexts/LanguageProvider';
 import { useMemo } from 'react';
 import { clamp } from '../../utils';
+import ButtonWithIcon from './ButtonWithIcon';
 
 type Props = {
     value: number;
@@ -92,15 +93,18 @@ export default function SliderWithField({
                     onChange={handleChangeInput}
                     onPaste={handlePaste}
                 />
-                <CopyIcon
-                    color='var(--field-on-background)'
-                    tabIndex={0}
-                    focusable
-                    role='button'
-                    aria-label={i18n.t('copyFieldLabel', { color: i18n.t(`${channel}.female`) })}
+                <ButtonWithIcon 
+                    Icon={CopyIcon}
                     onClick={async () => {
                         navigator.clipboard.writeText(value.toString());
                     }}
+                    aria-label={i18n.t('copyFieldLabel', { color: i18n.t(`${channel}.female`) })}
+                    iconProps={{
+                        color: 'var(--field-on-background)',
+                        size: 20,
+                        "aria-label": i18n.t('copyFieldLabel', { color: i18n.t(`${channel}.female`) }),
+                    }}
+
                 />
             </div>
         </div>

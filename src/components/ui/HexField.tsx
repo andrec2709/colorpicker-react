@@ -2,6 +2,7 @@ import { useColor } from "../../contexts/ColorProvider";
 import { useLanguage } from "../../contexts/LanguageProvider";
 import { hexToRgb } from "../../domain/color/utils";
 import CopyIcon from "../icons/CopyIcon";
+import ButtonWithIcon from "./ButtonWithIcon";
 
 type Props = Omit<React.InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'onBlur' | 'onKeyDown' | 'maxLength' | 'className' | 'id' | 'type' | 'onPaste'>
@@ -60,16 +61,18 @@ export default function HexField({
                     onPaste={handleHexPaste}
                     {...props}
                 />
-                <CopyIcon
-                    color='var(--field-on-background)'
-                    tabIndex={0}
-                    focusable
-                    role='button'
-                    aria-label={i18n.t('copyFieldLabel', { color: 'hex' })}
+                <ButtonWithIcon 
+                    Icon={CopyIcon}
                     onClick={async () => {
                         if (props.value) {
                             navigator.clipboard.writeText(props.value.toString());
                         }
+                    }}
+                    aria-label={i18n.t('copyFieldLabel', { color: 'hex' })}
+                    iconProps={{
+                        color: 'var(--field-on-background)',
+                        "aria-label": i18n.t('copyFieldLabel', { color: 'hex' }),
+                        size: 20,
                     }}
                 />
             </div>

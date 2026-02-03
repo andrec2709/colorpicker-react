@@ -23,6 +23,13 @@ export type Translation = {
     deletePalette: string;
     addPalette: string;
     madeBy: string;
+    copyFromPalette: string;
+    copyIconLabel: string;
+    selectAsActive: string;
+    deleteIconLabel: string;
+    paletteTitleLabel: string;
+    paletteLabel: string;
+    sortableScreenReaderInstructions: string;
 };
 
 export type Translations = Record<Language, Translation>;

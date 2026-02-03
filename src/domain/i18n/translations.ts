@@ -1,5 +1,4 @@
 import type { Translations } from "./types";
-import { I18n } from 'i18n-js';
 
 export const translations: Translations = {
     "pt-BR": {
@@ -29,6 +28,13 @@ export const translations: Translations = {
         deletePalette: 'Remover paleta',
         addPalette: 'Adicionar paleta',
         madeBy: 'Criado por © Andre Carvalho, 2025',
+        copyFromPalette: 'Copiar cor da paleta',
+        copyIconLabel: 'Ícone representando ação de copiar',
+        selectAsActive: 'Selecionar como cor ativa',
+        deleteIconLabel: 'Remover cor da paleta',
+        paletteTitleLabel: 'Título da paleta',
+        paletteLabel: 'Abrir a paleta %{paletteName}',
+        sortableScreenReaderInstructions: 'Você pode usar espaço ou enter para ativar um item e reordená-lo. Você também pode pressionar Shift + Enter para selecionar um item, como por exemplo para abrir uma paleta, ou selecionar uma cor como ativa.',
     },
     en: {
         addColorLabel: 'Add color to palette',
@@ -57,5 +63,12 @@ export const translations: Translations = {
         deletePalette: 'Delete palette',
         addPalette: 'Add palette',
         madeBy: 'Made by © Andre Carvalho, 2025',
+        copyFromPalette: 'Copy color from palette',
+        copyIconLabel: 'Icon representing the copy action',
+        selectAsActive: 'Select as active colors',
+        deleteIconLabel: 'Remove color from palette',
+        paletteTitleLabel: 'Palette title',
+        paletteLabel: 'Open palette %{paletteName}',
+        sortableScreenReaderInstructions: 'You can pick an item to sort by pressing space or enter. You can press Shift + Enter in order to click the item, for example in order to open a palette, or select a color as active.',
     },
 };

@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useLanguage } from "../../contexts/LanguageProvider";
 
 export const Credits = memo(
-    function () {
+    function Credits() {
         const { i18n } = useLanguage();
 
         return (

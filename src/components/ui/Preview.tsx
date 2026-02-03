@@ -3,7 +3,7 @@ import { useColor } from "../../contexts/ColorProvider";
 import { useDefaultText } from "../../contexts/DefaultTextProvider";
 import TextPreview from "./TextPreview";
 
-export const Preview = memo(function () {
+export const Preview = memo(function Preview() {
     const { bgColor, txtColor } = useColor();
     const { title, setTitle, body, setBody } = useDefaultText();
 

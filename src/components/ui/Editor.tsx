@@ -13,8 +13,9 @@ import PaletteView from "./PaletteView";
 import useDeletePalette from "../../application/palette/useDeletePalette";
 import useAddPalette from "../../application/palette/useAddPalette";
 import type { CreationPaletteData } from "../../domain/palette/types";
+import ButtonWithIcon from "./ButtonWithIcon";
 
-export const Editor = memo(function () {
+export const Editor = memo(function Editor() {
     const { selectedPaletteId, setSelectedPaletteId, viewLayout, setViewLayout, selectedPalette, palettesData } = usePalette();
     const { i18n } = useLanguage();
     const save = useSavePalette();
@@ -45,22 +46,29 @@ export const Editor = memo(function () {
     return (
         <div className="mt-5">
             <div className="flex items-center">
-                <BackIcon
-                    className={`
-                        ${selectedPaletteId !== null
+                <ButtonWithIcon
+                    onClick={() => setSelectedPaletteId(null)}
+                    disabled={selectedPaletteId === null}
+                    aria-label={i18n.t('goBack')}
+                    Icon={BackIcon}
+                    iconProps={{
+                        className: `${selectedPaletteId !== null
                             ? 'fill-icon-active'
                             : 'fill-icon-inactive'
-                        }
-                        cursor-pointer
-                        `}
-                    onClick={() => setSelectedPaletteId(null)}
-                    role="button"
-                    tabIndex={0}
-                    focusable
-                    aria-label={i18n.t('goBack')}
+                            }
+                            cursor-pointer`,
+                        "aria-label": i18n.t('goBack'),
+                    }}
                 />
+                <label
+                    htmlFor="palette-title-input"
+                    className="text-on-background sr-only"
+                >
+                    {i18n.t('paletteTitleLabel')}
+                </label>
                 <ThemedInput
                     className="ml-auto text-center w-1/2"
+                    id="palette-title-input"
                     maxLength={30}
                     disabled={selectedPaletteId === null}
                     value={
@@ -72,48 +80,57 @@ export const Editor = memo(function () {
                 />
                 {
                     viewLayout === 'grid'
-                        ? <GridViewIcon
-                            className="fill-icon-active cursor-pointer ml-auto mr-5"
-                            focusable
-                            tabIndex={0}
-                            aria-label={i18n.t('switchToListView')}
-                            role="button"
+                        ? <ButtonWithIcon
                             onClick={() => setViewLayout('block')}
+                            aria-label={i18n.t('switchToListView')}
+                            className="ml-auto mr-5 cursor-pointer"
+                            Icon={GridViewIcon}
+                            iconProps={{
+                                className: 'fill-icon-active',
+                                "aria-label": i18n.t('switchToListView')
+                            }}
                         />
-                        : <ListViewIcon
-                            className="fill-icon-active cursor-pointer ml-auto mr-5"
-                            focusable
-                            tabIndex={0}
-                            aria-label={i18n.t('switchToGridView')}
-                            role="button"
+                        : <ButtonWithIcon
                             onClick={() => setViewLayout('grid')}
+                            aria-label={i18n.t('switchToGridView')}
+                            className="ml-auto mr-5 cursor-pointer"
+                            Icon={ListViewIcon}
+                            iconProps={{
+                                className: 'fill-icon-active',
+                                "aria-label": i18n.t('switchToGridView')
+                            }}
                         />
                 }
                 {
                     selectedPaletteId !== null
-                        ? <DeleteIcon
-                            className="fill-icon-active cursor-pointer"
-                            role="button"
-                            focusable
-                            tabIndex={0}
-                            aria-label={i18n.t('deletePalette')}
+                        ? <ButtonWithIcon
                             onClick={handleDeletePalette}
+                            aria-label={i18n.t('deletePalette')}
+                            className="cursor-pointer"
+                            Icon={DeleteIcon}
+                            iconProps={{
+                                className: 'fill-icon-active',
+                                "aria-label": i18n.t('deletePalette'),
+                            }}
                         />
-                        : <AddIcon
-                            className="fill-icon-active cursor-pointer"
-                            role="button"
-                            focusable
-                            tabIndex={0}
-                            aria-label={i18n.t('addPalette')}
+                        : <ButtonWithIcon
                             onClick={handleAddPalette}
+                            aria-label={i18n.t('addPalette')}
+                            className="cursor-pointer"
+                            Icon={AddIcon}
+                            iconProps={{
+                                className: 'fill-icon-active',
+                                "aria-label": i18n.t('addPalette'),
+                            }}
                         />
+
                 }
             </div>
             <div className="h-80 mt-5">
                 {
                     selectedPaletteId !== null
-                    ? <PaletteView />
-                    : <PalettesView />
+                        ? <PaletteView />
+                        : <PalettesView />
                 }
             </div>
         </div>

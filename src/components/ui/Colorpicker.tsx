@@ -16,6 +16,7 @@ import { useCallback } from 'react';
 import ContrastRatio from './ContrastRatio';
 import { usePalette } from '../../contexts/PaletteProvider';
 import useAddColor from '../../application/palette/useAddColor';
+import ButtonWithIcon from './ButtonWithIcon';
 
 export default function Colorpicker() {
     const { selection, setSelection, activeColor, setActiveColor, hex, setHex } = useColor();
@@ -56,10 +57,10 @@ export default function Colorpicker() {
         const name = NEAREST_COLOR(hex)?.name ?? '';
 
         addColor(selectedPaletteId, {
-            r, 
-            g, 
-            b, 
-            name, 
+            r,
+            g,
+            b,
+            name,
             hex
         });
     };
@@ -67,41 +68,45 @@ export default function Colorpicker() {
     return (
         <div className='flex flex-col gap-y-5 w-full'>
             <div className='flex gap-x-2 mt-5'>
-                <BackgroundIcon
-                    color={selection === 'background' ? 'var(--icon-active)' : 'var(--icon-inactive)'}
+                <ButtonWithIcon
+                    Icon={BackgroundIcon}
                     className='cursor-pointer'
-                    size={28}
                     onClick={() => setSelection('background')}
-                    role='button'
-                    tabIndex={0}
-                    focusable
                     aria-label={i18n.t('selectBackgroundLabel')}
+                    iconProps={{
+                        color: selection === 'background' ? 'var(--icon-active)' : 'var(--icon-inactive)',
+                        "aria-label": i18n.t('selectBackgroundLabel'),
+                    }}
                 />
-                <TextIcon
-                    color={selection === 'text' ? 'var(--icon-active)' : 'var(--icon-inactive)'}
+                <ButtonWithIcon
+                    Icon={TextIcon}
                     className='cursor-pointer'
-                    focusable
-                    tabIndex={0}
-                    role='button'
-                    aria-label={i18n.t('selectForegroundLabel')}
                     onClick={() => setSelection('text')}
+                    aria-label={i18n.t('selectForegroundLabel')}
+                    iconProps={{
+                        color: selection === 'text' ? 'var(--icon-active)' : 'var(--icon-inactive)',
+                        "aria-label": i18n.t('selectForegroundLabel'),
+                    }}
                 />
-                <AddIcon
+                <ButtonWithIcon
+                    Icon={AddIcon}
+                    className='cursor-pointer'
                     onClick={handleAddColor}
-                    tabIndex={0}
-                    focusable
                     aria-label={i18n.t('addColorLabel')}
-                    role='button'
-                    className={`cursor-pointer ${selectedPaletteId !== null ? 'fill-icon-active' : 'fill-icon-inactive'}`}
-                    size={28}
+                    iconProps={{
+                        color: selectedPaletteId !== null ? 'var(--icon-active)' : 'var(--icon-inactive)',
+                        "aria-label": i18n.t('addColorLabel'),
+                    }}
                 />
-                <SettingsIcon
-                    className='fill-icon-inactive active:fill-icon-active cursor-pointer ml-auto'
+                <ButtonWithIcon
+                    Icon={SettingsIcon}
+                    className='cursor-pointer ml-auto'
                     onClick={() => { }}
-                    tabIndex={0}
-                    focusable
                     aria-label={i18n.t('openSettingsLabel')}
-                    role='button'
+                    iconProps={{
+                        className: 'fill-icon-active',
+                        "aria-label": i18n.t('openSettingsLabel'),
+                    }}
                 />
             </div>
 

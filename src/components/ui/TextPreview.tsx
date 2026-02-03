@@ -7,8 +7,7 @@ type Props = Omit<React.InputHTMLAttributes<HTMLTextAreaElement>,
         label?: string;
     };
 
-export const TextPreview = memo(function ({ ref, field, label, ...props }: Props) {
-
+export const TextPreview = memo(function TextPreview({ ref, field, label, ...props }: Props) {
 
     return (
         <>

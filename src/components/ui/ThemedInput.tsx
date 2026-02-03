@@ -4,7 +4,7 @@ type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'className'> & {
     className?: string
 };
 
-export const ThemedInput = memo(function ({className = '', ...props}: Props) {
+export const ThemedInput = memo(function ThemedInput({className = '', ...props}: Props) {
     return (
         <input 
             type="text"

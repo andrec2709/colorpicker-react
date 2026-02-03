@@ -1,7 +1,7 @@
 import { memo } from "react";
 import type { IconProps } from "../../types/icon";
 
-export const BackIcon = memo(function ({ color = '#000000', size = 24, ...props }: IconProps) {
+export const BackIcon = memo(function BackIcon({ color = '#000000', size = 24, ...props }: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

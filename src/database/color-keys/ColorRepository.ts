@@ -1,4 +1,4 @@
-import type { RGB } from "../../types/palette";
+import type { RGB } from "../../domain/color/types";
 
 export default interface ColorRepository {
     get(key: string): RGB | null;

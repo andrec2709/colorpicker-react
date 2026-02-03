@@ -1,4 +1,5 @@
-import type { Color, CreationColor, CreationPaletteData, PaletteData } from "../../types/palette";
+import type { Color, CreationColor } from "../../domain/color/types";
+import type { PaletteData, CreationPaletteData } from "../../domain/palette/types";
 
 export default interface PaletteRepository {
     getAll(): PaletteData[];
