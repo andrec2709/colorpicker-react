@@ -30,6 +30,10 @@ export type Translation = {
     paletteTitleLabel: string;
     paletteLabel: string;
     sortableScreenReaderInstructions: string;
+    colorName: string;
+    toEndSettingLabel: string;
+    top: string;
+    bottom: string;
 };
 
 export type Translations = Record<Language, Translation>;

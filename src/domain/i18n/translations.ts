@@ -35,6 +35,10 @@ export const translations: Translations = {
         paletteTitleLabel: 'Título da paleta',
         paletteLabel: 'Abrir a paleta %{paletteName}',
         sortableScreenReaderInstructions: 'Você pode usar espaço ou enter para ativar um item e reordená-lo. Você também pode pressionar Shift + Enter para selecionar um item, como por exemplo para abrir uma paleta, ou selecionar uma cor como ativa.',
+        colorName: 'Mudar nome da cor',
+        top: 'Topo',
+        bottom: 'Fundo',
+        toEndSettingLabel: 'Como adicionar cores a paleta.',
     },
     en: {
         addColorLabel: 'Add color to palette',
@@ -70,5 +74,9 @@ export const translations: Translations = {
         paletteTitleLabel: 'Palette title',
         paletteLabel: 'Open palette %{paletteName}',
         sortableScreenReaderInstructions: 'You can pick an item to sort by pressing space or enter. You can press Shift + Enter in order to click the item, for example in order to open a palette, or select a color as active.',
+        colorName: 'Change color name',
+        top: 'Top',
+        bottom: 'Bottom',
+        toEndSettingLabel: 'How to add colors to a palette.',
     },
 };

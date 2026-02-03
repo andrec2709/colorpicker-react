@@ -92,6 +92,7 @@ export const ColorPreview = memo(
                         className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
                         onKeyDown={(e) => {
+                            // Stops the event from propagating and running on the parent element (selecting a color).
                             e.stopPropagation();
                         }}
                         aria-label={i18n.t('copyFromPalette')}
@@ -139,6 +140,7 @@ export const ColorPreview = memo(
                     <ThemedInput
                         value={data.name}
                         className="h-fit w-1/2 text-palette-on-background"
+                        id={`input-color-${data.id}`}
                         maxLength={30}
                         onChange={handleRenameColor}
                         onClick={e => {
@@ -151,22 +153,33 @@ export const ColorPreview = memo(
                             e.preventDefault();
                             e.currentTarget.select();
                         }}
+                        label={i18n.t('colorName')}
+                        labelProps={{
+                            className: 'text-palette-on-background',
+                        }}
                     />
-                    <button
+                    <ButtonWithIcon
+                        Icon={CopyIcon}
                         className="absolute cursor-pointer right-1 bottom-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
-                    >
-                        <CopyIcon
-                            size={18}
-                            color="white"
-                        />
-                    </button>
-                    <button
+                        aria-label={i18n.t('copyIconLabel')}
+                        iconProps={{
+                            'aria-label': i18n.t('copyIconLabel'),
+                            color: 'white',
+                            size: 18,
+                        }}
+                    />
+                    <ButtonWithIcon
+                        Icon={DeleteIcon}
                         className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleDeleteColor}
-                    >
-                        <DeleteIcon size={18} color="white" />
-                    </button>
+                        aria-label={i18n.t('deleteIconLabel')}
+                        iconProps={{
+                            'aria-label': i18n.t('deleteIconLabel'),
+                            color: 'white',
+                            size: 18,
+                        }}
+                    />
                 </div>
 
             );

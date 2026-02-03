@@ -51,6 +51,7 @@ export const Editor = memo(function Editor() {
                     disabled={selectedPaletteId === null}
                     aria-label={i18n.t('goBack')}
                     Icon={BackIcon}
+                    className="active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl"
                     iconProps={{
                         className: `${selectedPaletteId !== null
                             ? 'fill-icon-active'
@@ -60,12 +61,6 @@ export const Editor = memo(function Editor() {
                         "aria-label": i18n.t('goBack'),
                     }}
                 />
-                <label
-                    htmlFor="palette-title-input"
-                    className="text-on-background sr-only"
-                >
-                    {i18n.t('paletteTitleLabel')}
-                </label>
                 <ThemedInput
                     className="ml-auto text-center w-1/2"
                     id="palette-title-input"
@@ -77,13 +72,14 @@ export const Editor = memo(function Editor() {
                             : 'Palettes'
                     }
                     onChange={handleInputChange}
+                    label={i18n.t('paletteTitleLabel')}
                 />
                 {
                     viewLayout === 'grid'
                         ? <ButtonWithIcon
                             onClick={() => setViewLayout('block')}
                             aria-label={i18n.t('switchToListView')}
-                            className="ml-auto mr-5 cursor-pointer"
+                            className="ml-auto mr-5 cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl"
                             Icon={GridViewIcon}
                             iconProps={{
                                 className: 'fill-icon-active',
@@ -93,7 +89,7 @@ export const Editor = memo(function Editor() {
                         : <ButtonWithIcon
                             onClick={() => setViewLayout('grid')}
                             aria-label={i18n.t('switchToGridView')}
-                            className="ml-auto mr-5 cursor-pointer"
+                            className="ml-auto mr-5 cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl"
                             Icon={ListViewIcon}
                             iconProps={{
                                 className: 'fill-icon-active',
@@ -106,7 +102,7 @@ export const Editor = memo(function Editor() {
                         ? <ButtonWithIcon
                             onClick={handleDeletePalette}
                             aria-label={i18n.t('deletePalette')}
-                            className="cursor-pointer"
+                            className="cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl"
                             Icon={DeleteIcon}
                             iconProps={{
                                 className: 'fill-icon-active',
@@ -116,7 +112,7 @@ export const Editor = memo(function Editor() {
                         : <ButtonWithIcon
                             onClick={handleAddPalette}
                             aria-label={i18n.t('addPalette')}
-                            className="cursor-pointer"
+                            className="cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl"
                             Icon={AddIcon}
                             iconProps={{
                                 className: 'fill-icon-active',

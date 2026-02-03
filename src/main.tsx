@@ -7,18 +7,21 @@ import { ColorProvider } from './contexts/ColorProvider.tsx'
 import { DefaultTextProvider } from './contexts/DefaultTextProvider.tsx'
 import { LanguageProvider } from './contexts/LanguageProvider.tsx'
 import { PaletteProvider } from './contexts/PaletteProvider.tsx'
+import { SettingsProvider } from './contexts/SettingsProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LanguageProvider>
       <ThemeProvider>
-        <PaletteProvider>
-          <ColorProvider>
-            <DefaultTextProvider>
-              <App />
-            </DefaultTextProvider>
-          </ColorProvider>
-        </PaletteProvider>
+        <SettingsProvider>
+          <PaletteProvider>
+            <ColorProvider>
+              <DefaultTextProvider>
+                <App />
+              </DefaultTextProvider>
+            </ColorProvider>
+          </PaletteProvider>
+        </SettingsProvider>
       </ThemeProvider>
     </LanguageProvider>
   </StrictMode>,

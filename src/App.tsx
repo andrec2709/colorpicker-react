@@ -4,6 +4,7 @@ import Colorpicker from './components/ui/Colorpicker';
 import Credits from './components/ui/Credits';
 import Editor from './components/ui/Editor';
 import Preview from './components/ui/Preview';
+import Settings from './components/ui/Settings';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Preview />
       <Colorpicker />
       <Editor />
+      <Settings />
       <Credits />
     </>
   );

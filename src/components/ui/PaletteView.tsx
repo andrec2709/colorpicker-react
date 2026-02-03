@@ -20,11 +20,13 @@ import {
 import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 import useSavePalette from "../../application/palette/useSavePalette";
 import { useLanguage } from "../../contexts/LanguageProvider";
+import { useSettings } from "../../contexts/SettingsProvider";
 
 
 export const PaletteView = memo(
     function PaletteView() {
         const { selectedPalette, viewLayout } = usePalette();
+        const { addColorToEnd } = useSettings();
         const { i18n } = useLanguage();
         const sensors = useSensors(
             useSensor(PointerSensor, {
@@ -62,10 +64,17 @@ export const PaletteView = memo(
         useEffect(() => {
             const element = scrollableRef.current;
             if (selectedPalette && element) {
-                element.scrollTo({
-                    behavior: 'smooth',
-                    top: element.scrollHeight,
-                });
+                if (addColorToEnd) {
+                    element.scrollTo({
+                        behavior: 'smooth',
+                        top: element.scrollHeight,
+                    });
+                } else {
+                    element.scrollTo({
+                        behavior: 'smooth',
+                        top: 0,
+                    });
+                }
             }
         }, [selectedPalette]);
 

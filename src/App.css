@@ -2,39 +2,55 @@
 
 :root,
 :root.theme-light {
-    --background: #d1d1d1;
+    --background: #c4c4c4;
+    --background-container: #c4c4c4;
+    --on-background-container: #1f1f1f;
     --on-background: #1f1f1f;
     --slider-color: #1f1f1f;
-    --icon-active: #00bbff;
-    --icon-inactive: #495a5c;
-    --field-background: #2e3341;
-    --field-on-background: #e0e0e0;
+    --icon-active: #006eff;
+    --icon-inactive: #333b3b;
+    --field: #cbced4;
+    --on-field: #0f0f0f;
 
-    --contrast-ratio-bad: #ff0000;
-    --contrast-ratio-warning: #ffff00;
-    --contrast-ratio-good: #00ff00;
+    --contrast-ratio-bad: #a70000;
+    --contrast-ratio-warning: #5a3b00;
+    --contrast-ratio-good: #004900;
 
-    --palette-background: #2e3341;
-    --palette-on-background: #1f1f1f;
-    --palette-border: #000000;
-    --palette-border-hover: #000000;
-    --focus-selection: #00bbff;
+    --select-background: #cbced4;
+    --select-on-background: #080808;
+    --select-border: #368497;
+    --select-border--hover: #368497;
+    --select-border--active: #368497;
 
-    --link: #00bbff;
+    --palette-background: #cbced4;
+    --palette-on-background: #080808;
+    --palette-border: #368497;
+    --palette-border-hover: #18c2ec;
+    --focus-selection: #005675;
+
+    --link: #004c68;
 }
 
 :root.theme-dark {
     --background: #202020;
+    --background-container: #303638;
+    --on-background-container: #ffffff;
     --on-background: #ffffff;
     --slider-color: #d3d3d3;
     --icon-active: #00bbff;
     --icon-inactive: #495a5c;
-    --field-background: #2e3341;
-    --field-on-background: #e0e0e0;
+    --field: #2e3341;
+    --on-field: #e0e0e0;
 
     --contrast-ratio-bad: #ff0000;
     --contrast-ratio-warning: #ffff00;
     --contrast-ratio-good: #00ff00;
+
+    --select-background: #1b2c33;
+    --select-on-background: #ffffff;
+    --select-border: #0978a0;
+    --select-border--hover: #0da1d6;
+    --select-border--active: #0db0eb;
 
     --palette-background: #1b2c33;
     --palette-on-background: #ffffff;
@@ -58,12 +74,14 @@
 
 @theme {
     --color-background: var(--background);
+    --color-background-container: var(--background-container);
+    --color-on-background-container: var(--on-background-container);
     --color-on-background: var(--on-background);
     --color-slider-color: var(--slider-color);
     --color-icon-active: var(--icon-active);
     --color-icon-inactive: var(--icon-inactive);
-    --color-field-background: var(--field-background);
-    --color-field-on-background: var(--field-on-background);
+    --color-field: var(--field);
+    --color-on-field: var(--on-field);
 
     --color-contrast-ratio-bad: var(--contrast-ratio-bad);
     --color-contrast-ratio-warning: var(--contrast-ratio-warning);
@@ -74,5 +92,23 @@
     --color-palette-border-hover: var(--palette-border-hover);
     --color-focus-selection: var(--focus-selection);
     --color-link: var(--link);
+
+    --color-select-background: var(--select-background);
+    --color-select-on-background: var(--select-on-background);
+    --color-select-border: var(--select-border);
+    --color-select-border-hover: var(--select-border--hover);
+    --color-select-border-active: var(--select-border--active);
 }
 
+.ant-select-item-option {
+    border: 1px solid transparent;
+    transition: border .15s ease !important;
+}
+
+.ant-select-item-option-active {
+    border: 1px solid var(--color-select-border-hover) !important;
+}
+
+.ant-select-suffix {
+    color: var(--color-select-on-background) !important;
+}

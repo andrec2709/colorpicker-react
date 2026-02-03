@@ -134,6 +134,7 @@ export const PalettePreview = memo(
                     </div>
                     <ThemedInput
                         value={data.name}
+                        id={`input-palette-${data.id}`}
                         className="h-fit w-1/2 text-palette-on-background"
                         maxLength={30}
                         onChange={handleInputChange}
@@ -146,6 +147,10 @@ export const PalettePreview = memo(
                             e.stopPropagation();
                             e.preventDefault();
                             e.currentTarget.select();
+                        }}
+                        label={i18n.t('paletteTitleLabel')}
+                        labelProps={{
+                            className: 'text-palette-on-background'
                         }}
                     />
                 </div>

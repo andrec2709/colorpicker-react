@@ -17,10 +17,12 @@ import ContrastRatio from './ContrastRatio';
 import { usePalette } from '../../contexts/PaletteProvider';
 import useAddColor from '../../application/palette/useAddColor';
 import ButtonWithIcon from './ButtonWithIcon';
+import { useSettings } from '../../contexts/SettingsProvider';
 
 export default function Colorpicker() {
     const { selection, setSelection, activeColor, setActiveColor, hex, setHex } = useColor();
     const { selectedPaletteId } = usePalette();
+    const { addColorToEnd, setIsSettingsVisible } = useSettings();
     const { i18n } = useLanguage();
     const addColor = useAddColor();
 
@@ -62,7 +64,7 @@ export default function Colorpicker() {
             b,
             name,
             hex
-        });
+        }, addColorToEnd);
     };
 
     return (
@@ -70,7 +72,7 @@ export default function Colorpicker() {
             <div className='flex gap-x-2 mt-5'>
                 <ButtonWithIcon
                     Icon={BackgroundIcon}
-                    className='cursor-pointer'
+                    className='cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl'
                     onClick={() => setSelection('background')}
                     aria-label={i18n.t('selectBackgroundLabel')}
                     iconProps={{
@@ -80,7 +82,7 @@ export default function Colorpicker() {
                 />
                 <ButtonWithIcon
                     Icon={TextIcon}
-                    className='cursor-pointer'
+                    className='cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl'
                     onClick={() => setSelection('text')}
                     aria-label={i18n.t('selectForegroundLabel')}
                     iconProps={{
@@ -90,7 +92,8 @@ export default function Colorpicker() {
                 />
                 <ButtonWithIcon
                     Icon={AddIcon}
-                    className='cursor-pointer'
+                    className='cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl'
+                    disabled={selectedPaletteId === null}
                     onClick={handleAddColor}
                     aria-label={i18n.t('addColorLabel')}
                     iconProps={{
@@ -100,8 +103,8 @@ export default function Colorpicker() {
                 />
                 <ButtonWithIcon
                     Icon={SettingsIcon}
-                    className='cursor-pointer ml-auto'
-                    onClick={() => { }}
+                    className='cursor-pointer ml-auto active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl'
+                    onClick={() => setIsSettingsVisible(true)}
                     aria-label={i18n.t('openSettingsLabel')}
                     iconProps={{
                         className: 'fill-icon-active',
