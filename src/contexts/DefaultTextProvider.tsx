@@ -20,9 +20,9 @@ export const useDefaultText = () => {
 };
 
 export const DefaultTextProvider = ({ children }: { children: React.ReactNode }) => {
-    const { i18n } = useLanguage();
-    const [title, setTitle] = useTextState('title', i18n.t('defaultTitle'));
-    const [body, setBody] = useTextState('body', i18n.t('defaultBodyText'));
+    
+    const [title, setTitle] = useTextState('title', 'defaultTitle');
+    const [body, setBody] = useTextState('body', 'defaultBodyText');
 
     return (
         <DefaultTextContext.Provider value={{

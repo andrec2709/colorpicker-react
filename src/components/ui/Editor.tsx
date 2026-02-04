@@ -69,7 +69,7 @@ export const Editor = memo(function Editor() {
                     value={
                         selectedPalette
                             ? selectedPalette.name
-                            : 'Palettes'
+                            : i18n.t('palettes')
                     }
                     onChange={handleInputChange}
                     label={i18n.t('paletteTitleLabel')}

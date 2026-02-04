@@ -8,10 +8,14 @@ import SettingWithSelect from "./SettingWithSelect";
 import { useSettings } from "../../contexts/SettingsProvider";
 import { useLanguage } from "../../contexts/LanguageProvider";
 import { clamp } from "../../utils";
+import { useTheme } from "../../contexts/ThemeProvider";
+import { isTheme } from "../../domain/settings/theme/utils";
+import isLanguage from "../../domain/i18n/utils";
 
 export const Settings = memo(function Settings() {
     const { addColorToEnd, setAddColorToEnd, isSettingsVisible, setIsSettingsVisible } = useSettings();
-    const { i18n } = useLanguage();
+    const { theme, setTheme } = useTheme();
+    const { i18n, lang, setLang } = useLanguage();
 
     const settingWindowRef = useRef<HTMLDivElement | null>(null);
     const [loading, setLoading] = useState(true);
@@ -22,6 +26,14 @@ export const Settings = memo(function Settings() {
         } else {
             setAddColorToEnd(false);
         }
+    };
+
+    const handleThemeChange = (value: string) => {
+        if (isTheme(value)) setTheme(value);
+    };
+
+    const handleLangChange = (value: string) => {
+        if (isLanguage(value)) setLang(value);
     };
 
     const handleClickOut = (e: PointerEvent) => {
@@ -64,7 +76,7 @@ export const Settings = memo(function Settings() {
 
     return (
         <div
-            className="absolute w-full h-full top-0 left-0 bg-background/90"
+            className="fixed w-full h-full top-0 left-0 bg-background/90"
             hidden={!isSettingsVisible}
         >
             <div
@@ -82,17 +94,37 @@ export const Settings = memo(function Settings() {
                     />
                 </nav>
                 <section
-                    className="p-5"
+                    className="p-5 gap-y-10 flex flex-col"
                 >
                     <SettingWithSelect
-                        defaultValue={addColorToEnd ? i18n.t('bottom') : i18n.t('top')}
+                        value={addColorToEnd ? i18n.t('bottom') : i18n.t('top')}
                         id="add-color-to-end-opt"
                         options={[
                             { value: 'top', label: i18n.t('top') },
                             { value: 'bottom', label: i18n.t('bottom') },
                         ]}
-                        description="How to add colors to a palette."
+                        description={i18n.t('toEndSettingLabel')}
                         onChange={handleColorToEndChange}
+                    />
+                    <SettingWithSelect 
+                        value={theme === 'theme-dark' ? i18n.t('darkMode') : i18n.t('lightMode')}
+                        id="change-theme-opt"
+                        options={[
+                            { value: 'theme-dark', label: i18n.t('darkMode') },
+                            { value: 'theme-light', label: i18n.t('lightMode') },
+                        ]}
+                        description={i18n.t('chooseThemeLabel')}
+                        onChange={handleThemeChange}
+                    />
+                    <SettingWithSelect 
+                        value={lang === 'en' ? i18n.t('en') : i18n.t('ptBR')}
+                        id="change-lang-opt"
+                        options={[
+                            {value: 'en', label: i18n.t('en')},
+                            {value: 'pt-BR', label: i18n.t('ptBR')},
+                        ]}
+                        description={i18n.t('chooseLangLabel')}
+                        onChange={handleLangChange}
                     />
                 </section>
             </div>

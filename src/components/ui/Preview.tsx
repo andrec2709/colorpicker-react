@@ -71,7 +71,7 @@ export const Preview = memo(function Preview() {
                 name="title-preview"
                 id="title-preview"
                 ref={titleRef}
-                defaultValue={title}
+                value={title}
                 field="title"
                 onInput={e => handleInput(e.currentTarget.value, 'title', titleRef)}
                 style={{ color: `rgb(${txtColor.join(',')})` }}
@@ -81,7 +81,7 @@ export const Preview = memo(function Preview() {
                 name="text-preview"
                 id="text-preview"
                 ref={bodyTextRef}
-                defaultValue={body}
+                value={body}
                 field="body"
                 onInput={e => handleInput(e.currentTarget.value, 'body', bodyTextRef)}
                 style={{ color: `rgb(${txtColor.join(',')})` }}

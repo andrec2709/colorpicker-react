@@ -34,6 +34,13 @@ export type Translation = {
     toEndSettingLabel: string;
     top: string;
     bottom: string;
+    darkMode: string;
+    lightMode: string;
+    ptBR: string;
+    en: string;
+    palettes: string;
+    chooseThemeLabel: string;
+    chooseLangLabel: string;
 };
 
 export type Translations = Record<Language, Translation>;
