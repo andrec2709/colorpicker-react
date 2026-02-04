@@ -61,6 +61,9 @@ export const PalettesView = memo(function PalettesView() {
             collisionDetection={closestCenter}
             modifiers={[restrictToFirstScrollableAncestor]}
             onDragEnd={handleDragEnd}
+            autoScroll={{
+                acceleration: 1,
+            }}
             accessibility={{
                 screenReaderInstructions: {
                     draggable: i18n.t('sortableScreenReaderInstructions'),

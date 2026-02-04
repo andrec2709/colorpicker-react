@@ -96,6 +96,9 @@ export const PaletteView = memo(
                 sensors={sensors}
                 collisionDetection={closestCenter}
                 modifiers={[restrictToFirstScrollableAncestor]}
+                autoScroll={{
+                    acceleration: 1,
+                }}
                 onDragEnd={handleDragEnd}
                 accessibility={{
                     screenReaderInstructions: {
