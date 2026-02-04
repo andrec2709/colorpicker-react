@@ -98,11 +98,11 @@ export const ColorPreview = memo(
                         onKeyDown={handleIconsKeyDown}
                         aria-label={i18n.t('copyFromPalette')}
                         Icon={CopyIcon}
-                        iconProps={useMemo(() => ({
+                        iconProps={{
                             color: 'white',
                             "aria-label": i18n.t('copyIconLabel'),
                             size: 18,
-                        }), [])}
+                        }}
                     />
                     <ButtonWithIcon
                         Icon={DeleteIcon}
@@ -110,11 +110,11 @@ export const ColorPreview = memo(
                         aria-label={i18n.t('deleteIconLabel')}
                         onClick={handleDeleteColor}
                         onKeyDown={handleIconsKeyDown}
-                        iconProps={useMemo(() => ({
+                        iconProps={{
                             color: 'white',
                             "aria-label": i18n.t('deleteIconLabel'),
                             size: 18,
-                        }), [])}
+                        }}
                     />
                 </div>
             );

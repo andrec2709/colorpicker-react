@@ -2,7 +2,6 @@
 import Slider from '@mui/material/Slider';
 import CopyIcon from '../icons/CopyIcon';
 import { useLanguage } from '../../contexts/LanguageProvider';
-import { useMemo } from 'react';
 import { clamp } from '../../utils';
 import ButtonWithIcon from './ButtonWithIcon';
 import ThemedInput from './ThemedInput';
@@ -70,10 +69,10 @@ export default function SliderWithField({
                 {labelSlider}
             </label>
             <Slider
-                sx={useMemo(() => ({
+                sx={{
                     width: '50%',
                     color: 'var(--slider-color)',
-                }), [])}
+                }}
                 aria-labelledby={idSlider}
                 min={min}
                 max={max}
