@@ -6,9 +6,9 @@ export default function useSavePalette() {
     const repo = usePaletteRepository();
     const { setPalettesData } = usePalette();
 
-    return (palette: PaletteData) => {
-        repo.save(palette);
-        const palettes = repo.getAll();
+    return async (palette: PaletteData) => {
+        await repo.save(palette);
+        const palettes = await repo.getAll();
         setPalettesData(palettes);
     };
 }

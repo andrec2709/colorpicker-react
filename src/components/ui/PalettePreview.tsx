@@ -84,8 +84,8 @@ export const PalettePreview = memo(
                 return components;
             }, [data]);
 
-        const handleInputChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-            save({ ...data, name: e.currentTarget.value });
+        const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+            await save({ ...data, name: e.currentTarget.value });
         }
 
         if (viewLayout === 'grid') {

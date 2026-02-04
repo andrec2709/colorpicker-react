@@ -6,9 +6,9 @@ export default function useAddPalette() {
     const repo = usePaletteRepository();
     const { setPalettesData, selectPalette } = usePalette();
 
-    return (palette: CreationPaletteData) => {
-        const createdPalette = repo.addPalette(palette);
-        const palettes = repo.getAll();
+    return async (palette: CreationPaletteData) => {
+        const createdPalette = await repo.addPalette(palette);
+        const palettes = await repo.getAll();
         selectPalette(createdPalette);
         setPalettesData(palettes);
     };

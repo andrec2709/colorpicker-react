@@ -52,13 +52,13 @@ export default function Colorpicker() {
         setActiveColor(newColor);
     }, [activeColor]);
 
-    const handleAddColor = () => {
+    const handleAddColor = async () => {
         if (!selectedPaletteId) return;
 
         const [r, g, b] = activeColor;
         const name = NEAREST_COLOR(hex)?.name ?? '';
 
-        addColor(selectedPaletteId, {
+        await addColor(selectedPaletteId, {
             r,
             g,
             b,

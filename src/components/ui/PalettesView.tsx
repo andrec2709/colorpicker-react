@@ -37,7 +37,7 @@ export const PalettesView = memo(function PalettesView() {
     );
     const saveAll = useSavePalettesData();
 
-    const handleDragEnd = (e: DragEndEvent) => {
+    const handleDragEnd = async (e: DragEndEvent) => {
         const { active, over } = e;
         if (over && active.id !== over.id) {
             const oldIndex = palettesData.findIndex(palette => palette.id === active.id);
@@ -45,7 +45,7 @@ export const PalettesView = memo(function PalettesView() {
 
             if (oldIndex !== -1 && newIndex !== -1) {
                 const newPalettesData = arrayMove(palettesData, oldIndex, newIndex);
-                saveAll(newPalettesData);
+                await saveAll(newPalettesData);
                 setPalettesData(newPalettesData);
             }
         }

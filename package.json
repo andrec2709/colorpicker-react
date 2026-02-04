@@ -19,6 +19,7 @@
     "antd": "^6.2.2",
     "color-name-list": "^14.29.0",
     "i18n-js": "^4.5.1",
+    "idb": "^8.0.3",
     "nearest-color": "^0.4.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

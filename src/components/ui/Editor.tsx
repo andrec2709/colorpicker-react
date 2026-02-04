@@ -22,25 +22,25 @@ export const Editor = memo(function Editor() {
     const deletePalette = useDeletePalette();
     const add = useAddPalette();
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+    const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
         if (selectedPalette) {
-            save({ ...selectedPalette, name: e.currentTarget.value });
+            await save({ ...selectedPalette, name: e.currentTarget.value });
         }
     };
 
-    const handleDeletePalette = () => {
+    const handleDeletePalette = async () => {
         if (!selectedPalette) return;
 
-        deletePalette(selectedPalette, null);
+        await deletePalette(selectedPalette, null);
     };
 
-    const handleAddPalette = () => {
+    const handleAddPalette = async () => {
         const palette: CreationPaletteData = {
             name: `Palette ${palettesData.length + 1}`,
             colors: []
         };
 
-        add(palette);
+        await add(palette);
     };
 
     return (

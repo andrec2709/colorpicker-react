@@ -54,7 +54,7 @@ export const PaletteView = memo(
                 <ColorPreview data={color} key={color.id} />
             )), [selectedPalette]);
 
-        const handleDragEnd = (e: DragEndEvent) => {
+        const handleDragEnd = async (e: DragEndEvent) => {
             if (!selectedPalette) return;
 
             const { active, over } = e;
@@ -64,7 +64,7 @@ export const PaletteView = memo(
 
                 if (oldIndex !== -1 && newIndex !== -1) {
                     const newColors = arrayMove(selectedPalette.colors, oldIndex, newIndex);
-                    save({ ...selectedPalette, colors: newColors });
+                    await save({ ...selectedPalette, colors: newColors });
                     changeComesFromSort.current = true;
                 }
             }

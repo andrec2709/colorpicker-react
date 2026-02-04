@@ -3,8 +3,8 @@ import usePaletteRepository from "./usePaletteRepository"
 export default function useReadPalettesData() {
     const repo = usePaletteRepository();
     
-    return () => {
-        const palettes = repo.getAll();
+    return async () => {
+        const palettes = await repo.getAll();
 
         return palettes;
     }

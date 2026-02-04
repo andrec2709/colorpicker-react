@@ -6,9 +6,9 @@ export default function useAddColor() {
     const repo = usePaletteRepository();
     const { setPalettesData } = usePalette();
 
-    return (id: string, color: CreationColor, toEnd: boolean = false) => {
-        repo.addColor(color, id, toEnd); // TODO: addColorToEnd option
-        const palettes = repo.getAll();
+    return async (id: string, color: CreationColor, toEnd: boolean = false) => {
+        await repo.addColor(color, id, toEnd); // TODO: addColorToEnd option
+        const palettes = await repo.getAll();
         setPalettesData(palettes);
     }
 }

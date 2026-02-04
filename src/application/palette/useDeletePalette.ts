@@ -6,14 +6,14 @@ export default function useDeletePalette() {
     const repo = usePaletteRepository();
     const { setPalettesData, selectPalette } = usePalette();
 
-    return (palette: PaletteData, newSelection: undefined | null | PaletteData = undefined) => {
-        repo.deletePalette(palette);
+    return async (palette: PaletteData, newSelection: undefined | null | PaletteData = undefined) => {
+        await repo.deletePalette(palette);
 
         if (newSelection !== undefined) {
             selectPalette(newSelection);
         }
 
-        const palettes = repo.getAll();
+        const palettes = await repo.getAll();
         setPalettesData(palettes);
     };
 }

@@ -5,9 +5,9 @@ export default function useDeleteColor() {
     const repo = usePaletteRepository();
     const { setPalettesData } = usePalette();
 
-    return (colorId: string, paletteId: string) => {
-        repo.deleteColor(colorId, paletteId);
-        const palettes = repo.getAll();
+    return async (colorId: string, paletteId: string) => {
+        await repo.deleteColor(colorId, paletteId);
+        const palettes = await repo.getAll();
         setPalettesData(palettes);
     };
 }

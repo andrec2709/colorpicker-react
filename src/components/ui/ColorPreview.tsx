@@ -33,9 +33,9 @@ export const ColorPreview = memo(
             transition,
         };
 
-        const handleRenameColor = useCallback((e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+        const handleRenameColor = useCallback(async (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
             if (selectedPaletteId) {
-                save({ ...data, name: e.currentTarget.value }, selectedPaletteId);
+               await save({ ...data, name: e.currentTarget.value }, selectedPaletteId);
             }
         }, [selectedPaletteId]);
 
@@ -51,13 +51,13 @@ export const ColorPreview = memo(
             navigator.clipboard.writeText(data.hex);
         }, [data]);
 
-        const handleDeleteColor = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const handleDeleteColor = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.stopPropagation();
             e.preventDefault();
 
             if (!selectedPaletteId) return;
 
-            deleteColor(data.id, selectedPaletteId);
+            await deleteColor(data.id, selectedPaletteId);
         }, [selectedPaletteId, data]);
 
         const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {

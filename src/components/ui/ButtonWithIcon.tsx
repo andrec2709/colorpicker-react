@@ -8,14 +8,15 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
     iconProps?: IconProps;
 };
 
-export const ButtonWithIcon = memo(
-    function ButtonWithIcon({Icon, iconProps, ...buttonProps}: Props) {
-        return (
-            <button {...buttonProps}>
-                <Icon {...iconProps} />
-            </button>
-        );
-    }
+export const ButtonWithIcon = memo(function ButtonWithIcon({
+    Icon, iconProps, ...buttonProps
+}: Props) {
+    return (
+        <button {...buttonProps}>
+            <Icon {...iconProps} />
+        </button>
+    );
+}
 );
 
 export default ButtonWithIcon;

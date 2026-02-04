@@ -6,9 +6,9 @@ export default function useSaveColor() {
     const repo = usePaletteRepository();
     const { setPalettesData } = usePalette();
 
-    return (color: Color, paletteId: string) => {
-        repo.saveColor(color, paletteId);
-        const palettes = repo.getAll();
+    return async (color: Color, paletteId: string) => {
+        await repo.saveColor(color, paletteId);
+        const palettes = await repo.getAll();
 
         setPalettesData(palettes);
     };
