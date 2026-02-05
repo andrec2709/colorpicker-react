@@ -1,4 +1,4 @@
-import { useColor } from "../../contexts/ColorProvider";
+import { useColorActions, useColorStateContext } from "../../contexts/ColorProvider";
 import { useLanguage } from "../../contexts/LanguageProvider";
 import { hexToRgb } from "../../domain/color/utils";
 import CopyIcon from "../icons/CopyIcon";
@@ -21,7 +21,8 @@ export default function HexField({
 }: Props) {
 
     const { i18n } = useLanguage();
-    const { setActiveColor, setHex, hex } = useColor();
+    const { setActiveColor, setHex } = useColorActions();
+    const { hex } = useColorStateContext();
 
 
     const handleHexChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
@@ -35,9 +36,9 @@ export default function HexField({
         e.preventDefault();
 
         let pasted = await navigator.clipboard.readText();
-        
+
         if (!pasted.startsWith('#')) pasted = '#'.concat(pasted);
-        
+
         setHex(pasted.substring(0, 7));
 
     };
@@ -50,7 +51,7 @@ export default function HexField({
     return (
         <div className="flex items-center justify-end ml-auto">
             <div className='flex bg-field rounded-sm items-center p-2 w-25'>
-                <ThemedInput 
+                <ThemedInput
                     type="text"
                     id={idInput}
                     className={'text-on-field w-full focus:outline-none text-sm' + ' ' + className}
@@ -62,7 +63,7 @@ export default function HexField({
                     label={label}
                     {...props}
                 />
-                <ButtonWithIcon 
+                <ButtonWithIcon
                     Icon={CopyIcon}
                     onClick={async () => {
                         if (props.value) {

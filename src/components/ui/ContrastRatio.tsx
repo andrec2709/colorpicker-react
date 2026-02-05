@@ -1,10 +1,10 @@
 import { memo, useMemo } from "react";
-import { useColor } from "../../contexts/ColorProvider";
+import { useColorStateContext } from "../../contexts/ColorProvider";
 import { calculateLuminanceRatio } from "../../domain/color/utils";
 import { useLanguage } from "../../contexts/LanguageProvider";
 
 export const ContrastRatio = memo(function ContrastRatio() {
-    const { bgColor, txtColor } = useColor();
+    const { bgColor, txtColor } = useColorStateContext();
     const { i18n } = useLanguage();
 
     const contrast = calculateLuminanceRatio(bgColor, txtColor);

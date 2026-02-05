@@ -2,7 +2,7 @@ import { blue } from '@mui/material/colors';
 import Slider from '@mui/material/Slider';
 import { createTheme } from '@mui/material/styles';
 import BackgroundIcon from '../icons/BackgroundIcon';
-import { useColor } from '../../contexts/ColorProvider';
+import { useColorActions, useColorStateContext } from '../../contexts/ColorProvider';
 import TextIcon from '../icons/TextIcon';
 import AddIcon from '../icons/AddIcon';
 import CopyIcon from '../icons/CopyIcon';
@@ -20,7 +20,9 @@ import ButtonWithIcon from './ButtonWithIcon';
 import { useSettings } from '../../contexts/SettingsProvider';
 
 export default function Colorpicker() {
-    const { selection, setSelection, activeColor, setActiveColor, hex, setHex } = useColor();
+    
+    const { selection, activeColor, hex } = useColorStateContext();
+    const { setSelection, setActiveColor, setHex } = useColorActions();
     const { selectedPaletteId } = usePalette();
     const { addColorToEnd, setIsSettingsVisible } = useSettings();
     const { i18n } = useLanguage();

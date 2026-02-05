@@ -1,9 +1,9 @@
-import { useColor } from '../../contexts/ColorProvider';
+import { useColorStateContext } from '../../contexts/ColorProvider';
 import { memo, useCallback, useMemo } from 'react';
 import { NEAREST_COLOR } from '../../domain/color/utils';
 
 export const ColorName = memo(function ColorName() {
-    const { activeColor } = useColor();
+    const { activeColor } = useColorStateContext();
 
     return (
         <p

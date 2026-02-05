@@ -8,7 +8,7 @@ import useSaveColor from "../../application/palette/useSaveColor";
 import EllipsisVerticalIcon from "../icons/EllipsisVerticalIcon";
 import CopyIcon from "../icons/CopyIcon";
 import DeleteIcon from "../icons/DeleteIcon";
-import { useColor } from "../../contexts/ColorProvider";
+import { useColorActions } from "../../contexts/ColorProvider";
 import useDeleteColor from "../../application/palette/useDeleteColor";
 import { useLanguage } from "../../contexts/LanguageProvider";
 import ButtonWithIcon from "./ButtonWithIcon";
@@ -16,7 +16,7 @@ import ButtonWithIcon from "./ButtonWithIcon";
 export const ColorPreview = memo(
     function ColorPreview({ data }: { data: Color }) {
         const { viewLayout, selectedPaletteId } = usePalette();
-        const { setActiveColor, setHex } = useColor();
+        const { setActiveColor, setHex } = useColorActions();
         const {
             attributes,
             listeners,
@@ -33,9 +33,27 @@ export const ColorPreview = memo(
             transition,
         };
 
+        /* 
+        Memoized since iconProps was causing components to render even though they didn't change.
+        */
+        const iconPropsDeleteButton = useMemo(() => ({
+            color: 'white',
+            "aria-label": i18n.t('deleteIconLabel'),
+            size: 18,
+        }), []);
+
+        /* 
+        Memoized since iconProps was causing components to render even though they didn't change.
+        */
+        const iconPropsCopyButton = useMemo(() => ({
+            color: 'white',
+            "aria-label": i18n.t('copyIconLabel'),
+            size: 18,
+        }), []);
+
         const handleRenameColor = useCallback(async (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
             if (selectedPaletteId) {
-               await save({ ...data, name: e.currentTarget.value }, selectedPaletteId);
+                await save({ ...data, name: e.currentTarget.value }, selectedPaletteId);
             }
         }, [selectedPaletteId]);
 
@@ -98,11 +116,7 @@ export const ColorPreview = memo(
                         onKeyDown={handleIconsKeyDown}
                         aria-label={i18n.t('copyFromPalette')}
                         Icon={CopyIcon}
-                        iconProps={{
-                            color: 'white',
-                            "aria-label": i18n.t('copyIconLabel'),
-                            size: 18,
-                        }}
+                        iconProps={iconPropsCopyButton}
                     />
                     <ButtonWithIcon
                         Icon={DeleteIcon}
@@ -110,11 +124,7 @@ export const ColorPreview = memo(
                         aria-label={i18n.t('deleteIconLabel')}
                         onClick={handleDeleteColor}
                         onKeyDown={handleIconsKeyDown}
-                        iconProps={{
-                            color: 'white',
-                            "aria-label": i18n.t('deleteIconLabel'),
-                            size: 18,
-                        }}
+                        iconProps={iconPropsDeleteButton}
                     />
                 </div>
             );
@@ -162,22 +172,14 @@ export const ColorPreview = memo(
                         className="absolute cursor-pointer right-1 bottom-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleCopyColor}
                         aria-label={i18n.t('copyIconLabel')}
-                        iconProps={{
-                            'aria-label': i18n.t('copyIconLabel'),
-                            color: 'white',
-                            size: 18,
-                        }}
+                        iconProps={iconPropsCopyButton}
                     />
                     <ButtonWithIcon
                         Icon={DeleteIcon}
                         className="absolute cursor-pointer right-1 top-1 bg-black/60 active:bg-black/80 h-fit aspect-square rounded-4xl p-0.5"
                         onClick={handleDeleteColor}
                         aria-label={i18n.t('deleteIconLabel')}
-                        iconProps={{
-                            'aria-label': i18n.t('deleteIconLabel'),
-                            color: 'white',
-                            size: 18,
-                        }}
+                        iconProps={iconPropsDeleteButton}
                     />
                 </div>
 

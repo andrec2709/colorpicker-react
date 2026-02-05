@@ -9,7 +9,7 @@ export const DebugPanel = memo(function DebugPanel({
     const repo = usePaletteRepository();
     const { setPalettesData, palettesData } = usePalette();
     const handleGeneratePalettes = async () => {
-        await generatePalettes(repo, { paletteCount: 100, colorsPerPalette: 100 });
+        await generatePalettes(repo, { paletteCount: 10, colorsPerPalette: 30 });
         setPalettesData(await repo.getAll());
     };
 

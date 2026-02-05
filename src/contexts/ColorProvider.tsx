@@ -1,28 +1,41 @@
 import { createContext, memo, useContext, useEffect, useMemo, useState } from "react";
 import useColorState from "../application/color/useColorState";
 import type { RGB } from "../domain/color/types";
-import useHexState from "../application/color/useHexState";
 import { rgbToHex } from "../domain/color/utils";
 
-type ColorContextType = {
+type ColorStateContextType = {
     bgColor: RGB;
-    setBgColor: (next: RGB) => void;
     txtColor: RGB;
-    setTxtColor: (next: RGB) => void;
     activeColor: RGB;
-    setActiveColor: React.Dispatch<React.SetStateAction<RGB>>;
     selection: 'text' | 'background';
-    setSelection: React.Dispatch<React.SetStateAction<'text' | 'background'>>;
     hex: string;
-    setHex: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const ColorContext = createContext<ColorContextType | null>(null);
+type ColorActionsContextType = {
+    setBgColor: (next: RGB) => void;
+    setTxtColor: (next: RGB) => void;
+    setActiveColor: React.Dispatch<React.SetStateAction<RGB>>;
+    setSelection: React.Dispatch<React.SetStateAction<'text' | 'background'>>;
+    setHex: React.Dispatch<React.SetStateAction<string>>;
 
-export const useColor = () => {
-    const ctx = useContext(ColorContext);
+};
+
+const ColorStateContext = createContext<ColorStateContextType | null>(null);
+
+const ColorActionsContext = createContext<ColorActionsContextType | null>(null);
+
+export const useColorStateContext = () => {
+    const ctx = useContext(ColorStateContext);
     if (!ctx) {
-        throw new Error('useColor must be inside a ColorProvider');
+        throw new Error('useColorStateContext must be inside a ColorProvider');
+    }
+    return ctx;
+};
+
+export const useColorActions = () => {
+    const ctx = useContext(ColorActionsContext);
+    if (!ctx) {
+        throw new Error('useColorActions must be inside a ColorProvider');
     }
     return ctx;
 };
@@ -96,9 +109,33 @@ export const ColorProvider = memo(function ColorProvider({ children }: { childre
         hex,
     ]);
 
+    const stateValue = useMemo(() => ({
+        bgColor,
+        txtColor,
+        activeColor,
+        selection,
+        hex,
+    }), [
+        bgColor,
+        txtColor,
+        activeColor,
+        selection,
+        hex
+    ]);
+
+    const actionsValue = useMemo(() => ({
+        setBgColor,
+        setTxtColor,
+        setActiveColor,
+        setSelection,
+        setHex,
+    }), []);
+
     return (
-        <ColorContext.Provider value={contextValue}>
-            {children}
-        </ColorContext.Provider>
+        <ColorStateContext.Provider value={stateValue}>
+            <ColorActionsContext.Provider value={actionsValue}>
+                {children}
+            </ColorActionsContext.Provider>
+        </ColorStateContext.Provider>
     );
 });

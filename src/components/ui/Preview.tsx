@@ -1,10 +1,10 @@
 import { memo, useCallback, useEffect, useRef } from "react";
-import { useColor } from "../../contexts/ColorProvider";
+import { useColorStateContext } from "../../contexts/ColorProvider";
 import { useDefaultText } from "../../contexts/DefaultTextProvider";
 import TextPreview from "./TextPreview";
 
 export const Preview = memo(function Preview() {
-    const { bgColor, txtColor } = useColor();
+    const { bgColor, txtColor } = useColorStateContext();
     const { title, setTitle, body, setBody } = useDefaultText();
 
     const titleRef = useRef<HTMLTextAreaElement | null>(null);
