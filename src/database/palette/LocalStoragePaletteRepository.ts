@@ -1,4 +1,6 @@
 import type { Color, CreationColor } from "../../domain/color/types";
+import type IPaletteSorter from "../../domain/palette/sorter/IPaletteSorter";
+import type { PaletteSorter } from "../../domain/palette/sorter/PaletteSorter";
 import type { PaletteData, CreationPaletteData } from "../../domain/palette/types";
 import type PaletteRepository from "./PaletteRepository";
 import { v4 as uuidv4 } from 'uuid';
@@ -6,9 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default class LocalStoragePaletteRepository implements PaletteRepository {
     public key: string;
-    
-    constructor(key: string) { 
-        this.key = key
+    private sorter: IPaletteSorter;
+
+    constructor(key: string, sorter: IPaletteSorter) { 
+        this.key = key;
+        this.sorter = sorter;
     }
 
     async getAll(): Promise<PaletteData[]> {
@@ -80,7 +84,8 @@ export default class LocalStoragePaletteRepository implements PaletteRepository 
     async addPalette(palette: CreationPaletteData): Promise<PaletteData> {
         const palettes = await this.getAll();
         const id = uuidv4();
-        const newPalette: PaletteData = {...palette, id: id};
+        const sortOrder = await this.sorter.create(false);
+        const newPalette: PaletteData = {...palette, id, sortOrder};
 
         await this.saveAll([...palettes, newPalette]);
         return newPalette;
