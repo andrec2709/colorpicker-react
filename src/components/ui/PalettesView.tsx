@@ -24,6 +24,7 @@ import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 import useSavePalettesData from "../../application/palette/useSavePalettesData";
 import { useLanguage } from "../../contexts/LanguageProvider";
 import { PaletteDraggablePreview } from "./PaletteDraggablePreview";
+import usePaletteSorter from "../../application/palette/usePaletteSorter";
 
 export const PalettesView = memo(function PalettesView() {
     const { palettesData, viewLayout, setPalettesData } = usePalette();
@@ -40,19 +41,21 @@ export const PalettesView = memo(function PalettesView() {
         }),
     );
     const saveAll = useSavePalettesData();
+    const sorter = usePaletteSorter();
     const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
     const activeItemData = useMemo(() => palettesData.find(plt => plt.id === activeId), [activeId]);
 
     const handleDragEnd = async (e: DragEndEvent) => {
-        const { active, over } = e;
-        console.log(active);
+        const { active, over, collisions, delta, activatorEvent } = e;
+
         if (over && active.id !== over.id) {
             const oldIndex = palettesData.findIndex(palette => palette.id === active.id);
             const newIndex = palettesData.findIndex(palette => palette.id === over.id);
 
             if (oldIndex !== -1 && newIndex !== -1) {
                 const newPalettesData = arrayMove(palettesData, oldIndex, newIndex);
-                await saveAll(newPalettesData);
+                // await saveAll(newPalettesData);
+                await sorter.moveOver(active.id.toString(), over.id.toString());
                 setPalettesData(newPalettesData);
             }
         }

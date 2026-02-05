@@ -25,7 +25,7 @@ import { useSettings } from "../../contexts/SettingsProvider";
 
 export const PaletteView = memo(
     function PaletteView() {
-        const { selectedPalette, viewLayout } = usePalette();
+        const { selectedPalette, viewLayout, selectedPaletteId, setPalettesData } = usePalette();
         const { addColorToEnd } = useSettings();
         const { i18n } = useLanguage();
         
@@ -55,7 +55,7 @@ export const PaletteView = memo(
             )), [selectedPalette]);
 
         const handleDragEnd = async (e: DragEndEvent) => {
-            if (!selectedPalette) return;
+            if (!selectedPalette || !selectedPaletteId) return;
 
             const { active, over } = e;
             if (over && active.id !== over.id) {

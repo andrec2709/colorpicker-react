@@ -4,6 +4,7 @@ export type PaletteData = {
     name: string;
     id: string;
     colors: Color[];
+    sortOrder: number;
 };
 
-export type CreationPaletteData = Omit<PaletteData, 'id'>;
+export type CreationPaletteData = Omit<PaletteData, 'id' | 'sortOrder'>;

@@ -90,25 +90,6 @@ export const ColorProvider = memo(function ColorProvider({ children }: { childre
         }
     }, [selection]);
 
-    const contextValue = useMemo(() => ({
-        bgColor,
-        setBgColor,
-        txtColor,
-        setTxtColor,
-        activeColor,
-        setActiveColor,
-        selection,
-        setSelection,
-        hex,
-        setHex
-    }), [
-        bgColor,
-        txtColor,
-        activeColor,
-        selection,
-        hex,
-    ]);
-
     const stateValue = useMemo(() => ({
         bgColor,
         txtColor,
