@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { usePalette } from "../../contexts/PaletteProvider";
 import PalettePreview from "./PalettePreview";
 import {
@@ -9,6 +9,9 @@ import {
     useSensor,
     useSensors,
     type DragEndEvent,
+    DragOverlay,
+    type DragStartEvent,
+    type UniqueIdentifier,
 } from '@dnd-kit/core';
 import {
     arrayMove,
@@ -20,6 +23,7 @@ import {
 import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 import useSavePalettesData from "../../application/palette/useSavePalettesData";
 import { useLanguage } from "../../contexts/LanguageProvider";
+import { PaletteDraggablePreview } from "./PaletteDraggablePreview";
 
 export const PalettesView = memo(function PalettesView() {
     const { palettesData, viewLayout, setPalettesData } = usePalette();
@@ -36,9 +40,12 @@ export const PalettesView = memo(function PalettesView() {
         }),
     );
     const saveAll = useSavePalettesData();
+    const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+    const activeItemData = useMemo(() => palettesData.find(plt => plt.id === activeId), [activeId]);
 
     const handleDragEnd = async (e: DragEndEvent) => {
         const { active, over } = e;
+        console.log(active);
         if (over && active.id !== over.id) {
             const oldIndex = palettesData.findIndex(palette => palette.id === active.id);
             const newIndex = palettesData.findIndex(palette => palette.id === over.id);
@@ -49,11 +56,18 @@ export const PalettesView = memo(function PalettesView() {
                 setPalettesData(newPalettesData);
             }
         }
+        setActiveId(null);
+    };
+
+    const handleDragStart = (event: DragStartEvent) => {
+        const { active } = event;
+        setActiveId(active.id);
     };
 
     const palettes = useMemo(() =>
         palettesData.map(palette => <PalettePreview key={palette.id} data={palette} />)
         , [palettesData]);
+
 
     return (
         <DndContext
@@ -61,6 +75,7 @@ export const PalettesView = memo(function PalettesView() {
             collisionDetection={closestCenter}
             modifiers={[restrictToFirstScrollableAncestor]}
             onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
             autoScroll={{
                 acceleration: 1,
             }}
@@ -94,6 +109,18 @@ export const PalettesView = memo(function PalettesView() {
                         )
                 }
             </SortableContext>
+            <DragOverlay>
+                {activeId && activeItemData && (
+                    <PaletteDraggablePreview 
+                        data={activeItemData}
+                        className="border-dashed border-2 border-palette-border-hover bg-palette-background/30"
+                        isOverlay
+                        inputProps={{
+                            value: activeItemData.name,
+                        }}
+                    />
+                )}
+            </DragOverlay>
         </DndContext>
     );
 });

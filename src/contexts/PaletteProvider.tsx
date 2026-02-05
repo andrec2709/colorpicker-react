@@ -52,6 +52,22 @@ export const PaletteProvider = ({ children }: Props) => {
         setSelectedPaletteId(paletteData?.id ?? null);
     }
 
+    useEffect(() => {
+        console.log('palettesData changed');
+    }, [palettesData]);
+
+    useEffect(() => {
+        console.log('viewLayout changed');
+    }, [viewLayout]);
+
+    useEffect(() => {
+        console.log('selectedPaletteId changed');
+    }, [selectedPaletteId]);
+
+    useEffect(() => {
+        console.log('selectedPalette changed');
+    }, [selectedPalette]);
+
     return (
         <PaletteContext.Provider
             value={{

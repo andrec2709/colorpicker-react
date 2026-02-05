@@ -6,6 +6,7 @@ import { usePalette } from "../../contexts/PaletteProvider";
 import ThemedInput from "./ThemedInput";
 import useSavePalette from "../../application/palette/useSavePalette";
 import { useLanguage } from "../../contexts/LanguageProvider";
+import { PaletteDraggablePreview } from "./PaletteDraggablePreview";
 
 type Props = {
     data: PaletteData;
@@ -88,74 +89,105 @@ export const PalettePreview = memo(
             await save({ ...data, name: e.currentTarget.value });
         }
 
-        if (viewLayout === 'grid') {
-            return (
-                <div
-                    className="grid touch-pan-y cursor-pointer grid-cols-2 border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 justify-items-center items-center w-20 p-1 aspect-square bg-palette-background rounded-sm"
-                    style={style}
-                    aria-label={i18n.t('paletteLabel', { paletteName: data.name })}
-                    onClick={() => setSelectedPaletteId(data.id)}
-                    ref={setNodeRef}
-                    {...attributes}
-                    {...listeners}
-                    onKeyDown={e => {
-                        if (e.key === 'Enter' && e.shiftKey) {
-                            e.preventDefault();
-                            setSelectedPaletteId(data.id);
-                            return;
-                        }
-
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            if (listeners) return listeners.onKeyDown?.(e);
-                        }
-                    }}
-                >
-                    {previewColors}
-                </div>
-            );
-        } else {
-            return (
-                <div
-                    className="flex touch-pan-y box-border cursor-pointer border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 bg-palette-background rounded-sm items-center gap-x-5"
-                    ref={setNodeRef}
-                    style={style}
-                    onClick={(e) => {
-                        e.stopPropagation();
+        return (
+            <PaletteDraggablePreview
+                inputProps={{
+                    value: data.name,
+                    id: `input-palette-${data.id}`,
+                    onChange: handleInputChange,
+                    onClick: (e) => { e.stopPropagation(); e.preventDefault(); },
+                    onFocus: (e) => { e.stopPropagation(); e.preventDefault(); e.currentTarget.select(); },
+                    label: i18n.t('paletteTitleLabel'),
+                }}
+                data={data}
+                ref={setNodeRef}
+                style={style}
+                {...attributes}
+                {...listeners}
+                aria-label={i18n.t('paletteLabel', { paletteName: data.name })}
+                onClick={e => { e.stopPropagation(); e.preventDefault(); setSelectedPaletteId(data.id); }}
+                onKeyDown={e => {
+                    if (e.key === 'Enter' && e.shiftKey) {
                         e.preventDefault();
                         setSelectedPaletteId(data.id);
-                    }}
-                    {...attributes}
-                    {...listeners}
-                >
-                    <div
-                        className="grid grid-cols-2 items-center place-items-center w-20 p-1 aspect-square rounded-sm"
-                    >
-                        {previewColors}
-                    </div>
-                    <ThemedInput
-                        value={data.name}
-                        id={`input-palette-${data.id}`}
-                        className="h-fit w-1/2 text-palette-on-background"
-                        maxLength={30}
-                        onChange={handleInputChange}
-                        onClick={e => {
-                            // Stops click event from bubbling up to parent (palette selection)
-                            e.stopPropagation();
-                            e.preventDefault();
-                        }}
-                        onFocus={e => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            e.currentTarget.select();
-                        }}
-                        label={i18n.t('paletteTitleLabel')}
-                        labelProps={{
-                            className: 'text-palette-on-background'
-                        }}
-                    />
-                </div>
-            );
-        }
+                        return;
+                    }
+
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        if (listeners) return listeners.onKeyDown?.(e);
+                    }
+                }}
+            />
+        );
+
+        // if (viewLayout === 'grid') {
+        //     return (
+        //         <div
+        //             className="grid touch-pan-y cursor-pointer grid-cols-2 border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 justify-items-center items-center w-20 p-1 aspect-square bg-palette-background rounded-sm"
+        //             style={style}
+        //             aria-label={i18n.t('paletteLabel', { paletteName: data.name })}
+        //             onClick={() => setSelectedPaletteId(data.id)}
+        //             ref={setNodeRef}
+        //             {...attributes}
+        //             {...listeners}
+        //             onKeyDown={e => {
+        //                 if (e.key === 'Enter' && e.shiftKey) {
+        //                     e.preventDefault();
+        //                     setSelectedPaletteId(data.id);
+        //                     return;
+        //                 }
+
+        //                 if (e.key === 'Enter' || e.key === ' ') {
+        //                     if (listeners) return listeners.onKeyDown?.(e);
+        //                 }
+        //             }}
+        //         >
+        //             {previewColors}
+        //         </div>
+        //     );
+        // } else {
+        //     return (
+        //         <div
+        //             className="flex touch-pan-y box-border cursor-pointer border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 bg-palette-background rounded-sm items-center gap-x-5"
+        //             ref={setNodeRef}
+        //             style={style}
+        //             onClick={(e) => {
+        //                 e.stopPropagation();
+        //                 e.preventDefault();
+        //                 setSelectedPaletteId(data.id);
+        //             }}
+        //             {...attributes}
+        //             {...listeners}
+        //         >
+        //             <div
+        //                 className="grid grid-cols-2 items-center place-items-center w-20 p-1 aspect-square rounded-sm"
+        //             >
+        //                 {previewColors}
+        //             </div>
+        //             <ThemedInput
+        //                 value={data.name}
+        //                 id={`input-palette-${data.id}`}
+        //                 className="h-fit w-1/2 text-palette-on-background"
+        //                 maxLength={30}
+        //                 onChange={handleInputChange}
+        //                 onClick={e => {
+        //                     // Stops click event from bubbling up to parent (palette selection)
+        //                     e.stopPropagation();
+        //                     e.preventDefault();
+        //                 }}
+        //                 onFocus={e => {
+        //                     e.stopPropagation();
+        //                     e.preventDefault();
+        //                     e.currentTarget.select();
+        //                 }}
+        //                 label={i18n.t('paletteTitleLabel')}
+        //                 labelProps={{
+        //                     className: 'text-palette-on-background'
+        //                 }}
+        //             />
+        //         </div>
+        //     );
+        // }
     });
 
 export default PalettePreview;
