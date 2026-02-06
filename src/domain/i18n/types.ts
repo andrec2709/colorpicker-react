@@ -41,6 +41,7 @@ export type Translation = {
     palettes: string;
     chooseThemeLabel: string;
     chooseLangLabel: string;
+    randomColorLabel: string;
 };
 
 export type Translations = Record<Language, Translation>;

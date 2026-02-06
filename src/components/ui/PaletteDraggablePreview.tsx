@@ -89,7 +89,7 @@ export const PaletteDraggablePreview = memo(function PaletteDraggablePreview({
         return (
             <div
                 {...props}
-                className={'flex touch-pan-y box-border cursor-pointer border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 bg-palette-background rounded-sm items-center gap-x-5' + ' ' + (props.className ?? '')}
+                className={'flex relative touch-pan-y box-border cursor-pointer border border-palette-border hover:border-palette-border-hover transition-[border-color] duration-150 bg-palette-background rounded-sm items-center gap-x-5' + ' ' + (props.className ?? '')}
             >
                 <div
                     className="grid grid-cols-2 items-center place-items-center w-20 p-1 aspect-square rounded-sm"

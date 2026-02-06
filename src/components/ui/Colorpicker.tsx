@@ -10,7 +10,7 @@ import SettingsIcon from '../icons/SettingsIcon';
 import SliderWithField from './SliderWithField';
 import { useLanguage } from '../../contexts/LanguageProvider';
 import HexField from './HexField';
-import { hexToRgb, NEAREST_COLOR, rgbToHex } from '../../domain/color/utils';
+import { hexToRgb, NEAREST_COLOR, randomRGB, rgbToHex } from '../../domain/color/utils';
 import type { RGB } from '../../domain/color/types';
 import { useCallback } from 'react';
 import ContrastRatio from './ContrastRatio';
@@ -18,6 +18,7 @@ import { usePalette } from '../../contexts/PaletteProvider';
 import useAddColor from '../../application/palette/useAddColor';
 import ButtonWithIcon from './ButtonWithIcon';
 import { useSettings } from '../../contexts/SettingsProvider';
+import ShuffleIcon from '../icons/ShuffleIcon';
 
 export default function Colorpicker() {
     
@@ -69,6 +70,11 @@ export default function Colorpicker() {
         }, addColorToEnd);
     };
 
+    const handleRandomColor = () => {
+        const rgb = randomRGB();
+        setActiveColor(rgb);
+    };
+
     return (
         <div className='flex flex-col gap-y-5 w-full'>
             <div className='flex gap-x-2 mt-5'>
@@ -101,6 +107,16 @@ export default function Colorpicker() {
                     iconProps={{
                         color: selectedPaletteId !== null ? 'var(--icon-active)' : 'var(--icon-inactive)',
                         "aria-label": i18n.t('addColorLabel'),
+                    }}
+                />
+                <ButtonWithIcon
+                    Icon={ShuffleIcon}
+                    className='cursor-pointer active:bg-icon-active/20 hover:bg-icon-active/10 transition-[background-color] duration-150 p-1 rounded-4xl'
+                    onClick={handleRandomColor}
+                    aria-label={i18n.t('randomColorLabel')}
+                    iconProps={{
+                        color: 'var(--icon-active)',
+                        "aria-label": i18n.t('randomColorLabel'),
                     }}
                 />
                 <ButtonWithIcon

@@ -44,7 +44,7 @@ export const Editor = memo(function Editor() {
     };
 
     return (
-        <div className="mt-5">
+        <div className="mt-5 min-h-0">
             <div className="flex items-center">
                 <ButtonWithIcon
                     onClick={() => setSelectedPaletteId(null)}
@@ -122,7 +122,7 @@ export const Editor = memo(function Editor() {
 
                 }
             </div>
-            <div className="h-80 mt-5">
+            <div className="h-80 min-h-0 mt-5">
                 {
                     selectedPaletteId !== null
                         ? <PaletteView />

@@ -50,3 +50,11 @@ export const calculateLuminanceRatio = (color1: RGB, color2: RGB) => {
 
     return luminanceColor2 / luminanceColor1;
 };
+
+export const randomRGB = (): RGB => {
+    const r = Math.round(Math.random() * 255);
+    const g = Math.round(Math.random() * 255);
+    const b = Math.round(Math.random() * 255);
+
+    return [r, g, b];
+}

@@ -46,6 +46,7 @@ export const translations: Translations = {
         palettes: 'Paletas',
         chooseThemeLabel: 'Tema da aplicação.',
         chooseLangLabel: 'Linguagem da aplicação.',
+        randomColorLabel: 'Gerar cor aleatória',
     },
     en: {
         addColorLabel: 'Add color to palette',
@@ -92,5 +93,6 @@ export const translations: Translations = {
         palettes: 'Palettes',
         chooseThemeLabel: 'Application theme.',
         chooseLangLabel: 'Application language.',
+        randomColorLabel: 'Generate random color',
     },
 };

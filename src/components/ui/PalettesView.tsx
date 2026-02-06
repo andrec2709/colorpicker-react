@@ -105,7 +105,7 @@ export const PalettesView = memo(function PalettesView() {
                         )
                         : (
                             <div
-                                className="flex flex-col gap-y-2 overflow-y-scroll h-[inherit]"
+                                className="flex flex-col gap-y-2 overflow-y-scroll h-[inherit] min-h-0"
                             >
                                 {palettes}
                             </div>
