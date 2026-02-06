@@ -43,7 +43,7 @@ export const PalettesView = memo(function PalettesView() {
     const saveAll = useSavePalettesData();
     const sorter = usePaletteSorter();
     const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
-    const activeItemData = useMemo(() => palettesData.find(plt => plt.id === activeId), [activeId]);
+    const activeItemData = useMemo(() => palettesData.find(plt => plt.id === activeId), [activeId, palettesData]);
 
     const handleDragEnd = async (e: DragEndEvent) => {
         const { active, over, collisions, delta, activatorEvent } = e;
@@ -119,7 +119,7 @@ export const PalettesView = memo(function PalettesView() {
                         className="border-dashed border-2 border-palette-border-hover bg-palette-background/30"
                         isOverlay
                         inputProps={{
-                            value: activeItemData.name,
+                            defaultValue: activeItemData.name,
                         }}
                     />
                 )}

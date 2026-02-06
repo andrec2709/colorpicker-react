@@ -9,6 +9,9 @@ import {
     useSensor,
     useSensors,
     type DragEndEvent,
+    type UniqueIdentifier,
+    type DragStartEvent,
+    DragOverlay,
 } from '@dnd-kit/core';
 import {
     arrayMove,
@@ -21,6 +24,7 @@ import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 import useSavePalette from "../../application/palette/useSavePalette";
 import { useLanguage } from "../../contexts/LanguageProvider";
 import { useSettings } from "../../contexts/SettingsProvider";
+import ColorDraggablePreview from "./ColorDraggablePreview";
 
 
 export const PaletteView = memo(
@@ -28,7 +32,7 @@ export const PaletteView = memo(
         const { selectedPalette, viewLayout, selectedPaletteId, setPalettesData } = usePalette();
         const { addColorToEnd } = useSettings();
         const { i18n } = useLanguage();
-        
+
         /* 
         This ref is used to avoid scrolling to the top or bottom or the
         PaletteView container when the user is sorting the items.
@@ -49,6 +53,9 @@ export const PaletteView = memo(
         );
         const save = useSavePalette();
         const scrollableRef = useRef<HTMLDivElement>(null);
+        const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+        const activeItemData = useMemo(() => selectedPalette?.colors.find(clr => clr.id === activeId), [activeId, selectedPalette]);
+
         const colors = useMemo(() =>
             selectedPalette?.colors.map(color => (
                 <ColorPreview data={color} key={color.id} />
@@ -68,13 +75,19 @@ export const PaletteView = memo(
                     changeComesFromSort.current = true;
                 }
             }
+            setActiveId(null);
         };
+
+        const handleDragStart = (event: DragStartEvent) => {
+            const { active } = event;
+            setActiveId(active.id);
+        }
 
         useEffect(() => {
             const element = scrollableRef.current;
             if (selectedPalette && element) {
                 if (!changeComesFromSort.current) {
-                 
+
                     if (addColorToEnd) {
                         element.scrollTo({
                             behavior: 'smooth',
@@ -100,6 +113,7 @@ export const PaletteView = memo(
                     acceleration: 1,
                 }}
                 onDragEnd={handleDragEnd}
+                onDragStart={handleDragStart}
                 accessibility={{
                     screenReaderInstructions: {
                         draggable: i18n.t('sortableScreenReaderInstructions'),
@@ -133,6 +147,18 @@ export const PaletteView = memo(
                             )
                     }
                 </SortableContext>
+                <DragOverlay>
+                    {activeId && activeItemData && (
+                        <ColorDraggablePreview
+                            data={activeItemData}
+                            className="border-dashed border-2 border-palette-border-hover bg-palette-background/30!"
+                            isOverlay
+                            inputProps={{
+                                defaultValue: activeItemData.name
+                            }}
+                        />
+                    )}
+                </DragOverlay>
             </DndContext>
         );
 

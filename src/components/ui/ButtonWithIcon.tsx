@@ -3,14 +3,14 @@ import type { IconProps } from "../../types/icon";
 
 
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ButtonWithIconProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     Icon: React.ComponentType<IconProps>;
     iconProps?: IconProps;
 };
 
 export const ButtonWithIcon = memo(function ButtonWithIcon({
     Icon, iconProps, ...buttonProps
-}: Props) {
+}: ButtonWithIconProps) {
     return (
         <button {...buttonProps}>
             <Icon {...iconProps} />
