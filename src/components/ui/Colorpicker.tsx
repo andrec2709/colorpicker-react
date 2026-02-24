@@ -73,6 +73,7 @@ export default function Colorpicker() {
     const handleRandomColor = () => {
         const rgb = randomRGB();
         setActiveColor(rgb);
+        setHex(rgbToHex(rgb));
     };
 
     return (
